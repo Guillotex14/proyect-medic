@@ -8,7 +8,7 @@ import { Images } from '../assets/imgs/imgs';
 
 interface Props extends StackScreenProps<any, any>{}
 
-export const ProfileScreen = ({navigation}: Props) => {
+export const ProfileDoctorScreen = ({navigation}: Props) => {
 
     const { top } = useSafeAreaInsets();
 

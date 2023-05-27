@@ -9,7 +9,7 @@ interface Props extends StackScreenProps<any, any> {}
 export const ServicesScreen = ({navigation}:Props) => {
 
     const { top } = useSafeAreaInsets();
-    
+
     return (
 
         <View style={{...styles.container}}>

@@ -1,38 +1,21 @@
 import React from 'react';
 import { View, Text, ScrollView, Image } from 'react-native';
-import { styles } from '../theme/ThemeApp';
+import { styles } from '../../theme/ThemeApp';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { CardHome } from '../components/CardHome';
+import { CardHome } from '../../components/CardHome';
 import { AddIcon} from 'native-base';
-import { LastDate } from '../components/LastDate';
-import { CardMedicsHome } from '../components/CardMedicsHome';
+import { LastDate } from '../../components/LastDate';
+import { CardMedicsHome } from '../../components/CardMedicsHome';
 import { StackScreenProps } from '@react-navigation/stack';
-import { Images } from '../assets/imgs/imgs';
-// import { CardDateHome } from '../components/CardDateHome';
+import { Images } from '../../assets/imgs/imgs';
+import { CardDateHome } from '../../components/CardDateHome';
 
 // import Carousel from 'react-native-snap-carousel';
 
 interface Props extends StackScreenProps<any, any>{}
-export const HomeScreen = ({navigation}: Props) => {
+export const HomeDoctorScreen = ({navigation}: Props) => {
 
     const { top } = useSafeAreaInsets();
-
-    // const [isDate, setIsDate] = useState('');
-    // const [isHour, setIsHour] = useState('');
-
-    // useEffect(() => {
-    //     let date = new Date();
-    //     let day = date.getDate();
-    //     let month = date.getMonth()+1;
-    //     let year = date.getFullYear();
-
-    //     let hour = date.getHours();
-    //     let minutes = date.getMinutes();
-
-
-    //     setIsDate(`${day}/${month}/${year}`);
-    //     setIsHour(`${hour}:${minutes}`);
-    // }, []);
 
     return (
         <ScrollView>
@@ -51,9 +34,7 @@ export const HomeScreen = ({navigation}: Props) => {
 
                 {/* Card Fecha */}
                 <View style={{backgroundColor: '#DEF2FF', flexDirection: 'row', borderRadius: 10, position: 'absolute', alignSelf: 'center', zIndex: 1, marginVertical: top+130, alignContent: 'center', alignItems: 'center', width: '95%'}}>
-                    {/* <CardDateHome /> */}
-                    <Text style={{...styles.title, color: 'black', fontSize: 13, width: '50%', fontWeight: '400'}} />
-                    <Text style={{...styles.title, color: 'black', fontSize: 13, width: '50%', fontWeight: '400'}} />
+                    <CardDateHome />
                 </View>
 
                 <View style={{...styles.container, backgroundColor: '#F8F8F8', borderTopLeftRadius: 30, borderTopRightRadius: 30}}>

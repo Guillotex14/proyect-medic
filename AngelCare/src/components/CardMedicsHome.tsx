@@ -36,7 +36,7 @@ const stylesCardMedicsHome = StyleSheet.create({
         width: '50%',
         height: 250,
         marginTop: 20,
-        marginBottom: 20,
+        marginBottom: 90,
     },
     image: {
         flex: 1,

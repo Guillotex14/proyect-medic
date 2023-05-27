@@ -2,7 +2,12 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { HomeScreen } from '../views/HomeScreen';
 import { ProfileScreen } from '../views/ProfileScreen';
-import { ChevronDownIcon } from 'native-base';
+// import { ChevronDownIcon } from 'native-base';
+import { Image } from 'react-native';
+import { Images } from '../assets/imgs/imgs';
+// import { StackNavigations } from './StackNavigations';
+import { DateHistorialScreen } from '../views/DateHistorialScreen';
+import { ServicesScreen } from '../views/ServicesScreen';
 
 
 
@@ -29,14 +34,8 @@ export const TabsNavigation = () => {
             width: '95%',
             borderTopLeftRadius: 30,
             borderTopRightRadius: 30,
-            // borderRadius: 30,
-            // shadowColor: "#000",
-            // shadowOffset: {
-            //   width: 0,
-            //   height: 0,
-            // },
-            // shadowOpacity: 0.25,
-            // shadowRadius: 3.84,
+            borderBottomLeftRadius: 30,
+            borderBottomRightRadius: 30,
           },
           tabBarIconStyle: {
             justifyContent: 'center',
@@ -45,26 +44,35 @@ export const TabsNavigation = () => {
             height: 50,
           },
           tabBarShowLabel: false,
-          // tabBarShowIcon: true,
-          // tabBarLabelPosition: 'below-icon',
-          // tabBarLabelStyle: {
-          //   fontSize: 15,
-          //   fontWeight: 'bold',
-          // },
         }
       }>
         <Tabs.Screen name="Home" component={HomeScreen} options={{
           // eslint-disable-next-line react/no-unstable-nested-components
           tabBarIcon: () => (
-            <ChevronDownIcon style={{color: 'white'}}/>
+            <Image source={Images.grids} style={{width: 25, height: 25, alignSelf: 'center'}}/>
           ),
         }}/>
+        <Tabs.Screen name="DatesHistorial" component={DateHistorialScreen} options={{
+          // eslint-disable-next-line react/no-unstable-nested-components
+          tabBarIcon: () => (
+            <Image source={Images.historial} style={{width: 25, height: 25, alignSelf: 'center'}}/>
+          ),
+        }}/>
+
+        <Tabs.Screen name="Search" component={ServicesScreen} options={{
+          // eslint-disable-next-line react/no-unstable-nested-components
+          tabBarIcon: () => (
+            <Image source={Images.search} style={{width: 25, height: 25, alignSelf: 'center'}}/>
+          ),
+        }}/>
+
         <Tabs.Screen name="Profile" component={ProfileScreen} options={{
           // eslint-disable-next-line react/no-unstable-nested-components
           tabBarIcon: () => (
-            <ChevronDownIcon style={{color: 'white'}}/>
+            <Image source={Images.profile} style={{width: 25, height: 25, alignSelf: 'center'}}/>
           ),
         }}/>
+
       </Tabs.Navigator>
     );
 };

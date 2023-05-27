@@ -18,5 +18,10 @@ export const Images = {
     ritmo_cardiaco: require('./ritmo_cardiaco.png'),
     sensor_cardiaco: require('./sensor_cardiaco.png'),
     sueño: require('./sueño.png'),
+    chat: require('./chat.png'),
+    grids: require('./grids.png'),
+    historial: require('./historial.png'),
+    profile: require('./profile.png'),
+    search: require('./search.png'),
 
 };
