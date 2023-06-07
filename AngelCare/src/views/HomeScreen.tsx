@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { View, Text, ScrollView, Image } from 'react-native';
 import { styles } from '../theme/ThemeApp';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -11,28 +11,30 @@ import { Images } from '../assets/imgs/imgs';
 // import { CardDateHome } from '../components/CardDateHome';
 
 // import Carousel from 'react-native-snap-carousel';
+import { Button, Card } from 'react-native-paper';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 interface Props extends StackScreenProps<any, any>{}
 export const HomeScreen = ({navigation}: Props) => {
 
     const { top } = useSafeAreaInsets();
 
-    // const [isDate, setIsDate] = useState('');
-    // const [isHour, setIsHour] = useState('');
+    const [isDate, setIsDate] = useState('');
+    const [isHour, setIsHour] = useState('');
 
-    // useEffect(() => {
-    //     let date = new Date();
-    //     let day = date.getDate();
-    //     let month = date.getMonth()+1;
-    //     let year = date.getFullYear();
+    useEffect(() => {
+        let date = new Date();
+        let day = date.getDate();
+        let month = date.getMonth()+1;
+        let year = date.getFullYear();
 
-    //     let hour = date.getHours();
-    //     let minutes = date.getMinutes();
+        let hour = date.getHours();
+        let minutes = date.getMinutes();
 
 
-    //     setIsDate(`${day}/${month}/${year}`);
-    //     setIsHour(`${hour}:${minutes}`);
-    // }, []);
+        setIsDate(`${day}/${month}/${year}`);
+        setIsHour(`${hour}:${minutes}`);
+    }, []);
 
     return (
         <ScrollView>
@@ -45,15 +47,18 @@ export const HomeScreen = ({navigation}: Props) => {
                         <Text style={{...styles.title, color: 'white', fontSize: 13,}} onPress={()=>{navigation.navigate('Profile')}}>Bienvenido, Usuario</Text>
                     </View>
                     <View style={{width: '30%', marginTop: top+50 }}>
-                        <Image source={Images.chat} style={{width: 25, height: 25, alignSelf: 'center'}}/>
+
+                        <TouchableOpacity style={{}} onPress={()=>{navigation.navigate('Profile')}}>
+                            <Image source={Images.chat} style={{width: 25, height: 25, alignSelf: 'center'}}/>
+                        </TouchableOpacity>
                     </View>
                 </View>
 
                 {/* Card Fecha */}
-                <View style={{backgroundColor: '#DEF2FF', flexDirection: 'row', borderRadius: 10, position: 'absolute', alignSelf: 'center', zIndex: 1, marginVertical: top+130, alignContent: 'center', alignItems: 'center', width: '95%'}}>
+                <View style={{backgroundColor: '#DEF2FF', flexDirection: 'row', borderRadius: 10, position: 'absolute', alignSelf: 'center', zIndex: 1, marginVertical: top+130, alignContent: 'center', alignItems: 'center', width: '95%', height: 45}}>
                     {/* <CardDateHome /> */}
-                    <Text style={{...styles.title, color: 'black', fontSize: 13, width: '50%', fontWeight: '400'}} />
-                    <Text style={{...styles.title, color: 'black', fontSize: 13, width: '50%', fontWeight: '400'}} />
+                    <Text style={{...styles.title, color: 'black', fontSize: 13, width: '50%', fontWeight: '400', marginTop: -5}} >{isDate}</Text>
+                    <Text style={{...styles.title, color: 'black', fontSize: 13, width: '50%', fontWeight: '400', marginTop: -5}} >{isHour}</Text>
                 </View>
 
                 <View style={{...styles.container, backgroundColor: '#F8F8F8', borderTopLeftRadius: 30, borderTopRightRadius: 30}}>
@@ -62,17 +67,22 @@ export const HomeScreen = ({navigation}: Props) => {
                     <CardHome/>
 
                     {/* Card comenzar servicio medico */}
-                    <View style={{width: '90%', height: 80 , borderRadius: 12, backgroundColor: '#0E54BE', flexDirection: 'row', alignSelf: 'center', marginTop: 25}}>
-                        <View style={{width: '80%', alignSelf: 'center'}}>
-                            <Text style={{color: 'white', fontSize: 15,textAlign: 'left', marginHorizontal: 10}}>Comenzar</Text>
-                            <Text style={{color: 'white', fontSize: 8, textAlign: 'left', marginHorizontal: 10}}>Presione aquí para solicitar un nuevo servicio</Text>
-                        </View>
-                        <View style={{width: '20%', alignSelf: 'center'}} >
-                            <View style={{backgroundColor: 'white', borderRadius: 10, width: 30, height: 30, justifyContent: 'center', alignItems: 'center', alignSelf: 'center' }}>
-                                <AddIcon color="blue.500" size="4" onPress={()=>{navigation.navigate('Services')}}/>
+
+                    <Card style={{width: '90%', height: 80 , borderRadius: 12, backgroundColor: '#0E54BE', alignSelf: 'center', marginTop: 25}}>
+                        <Card.Content>
+                            <View style={{flexDirection: 'row'}}>
+                                <View style={{width: '80%', alignSelf: 'center'}}>
+                                    <Text style={{color: 'white', fontSize: 15,textAlign: 'left', marginHorizontal: 10}}>Comenzar</Text>
+                                    <Text style={{color: 'white', fontSize: 8, textAlign: 'left', marginHorizontal: 10}}>Presione aquí para solicitar un nuevo servicio</Text>
+                                </View>
+                                <View style={{width: '20%', alignSelf: 'center'}} >
+                                    <View style={{backgroundColor: 'white', borderRadius: 10, width: 30, height: 30, justifyContent: 'center', alignItems: 'center', alignSelf: 'center' }}>
+                                        <AddIcon color="blue.500" size="4" onPress={()=>{navigation.navigate('Services')}}/>
+                                    </View>
+                                </View>
                             </View>
-                        </View>
-                    </View>
+                        </Card.Content>
+                    </Card>
 
                     {/* Card ultima cita */}
                     <LastDate />
@@ -84,6 +94,7 @@ export const HomeScreen = ({navigation}: Props) => {
                         sliderWidth={300}
                         itemWidth={300}
                     /> */}
+
                     <CardMedicsHome />
 
                 </View>

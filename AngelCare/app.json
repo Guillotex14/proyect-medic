@@ -1,4 +1,14 @@
 {
   "name": "AngelCare",
-  "displayName": "AngelCare"
+  "displayName": "AngelCare",
+  "extra": {
+    "eas": {
+      "projectId": "03f81e48-704f-4ec5-bb76-1d50da8af168"
+    }
+  },
+  "expo": {
+    "android": {
+      "package": "com.mujica93.angelcare"
+    }
+  }
 }

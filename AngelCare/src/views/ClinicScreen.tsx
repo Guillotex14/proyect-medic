@@ -1,15 +1,45 @@
 import { Text, TextInput, TouchableOpacity, View,ScrollView, SafeAreaView, Image } from 'react-native';
 import React, { useState } from 'react';
 import { styles } from '../theme/ThemeApp';
-import { ChevronLeftIcon, Select, Radio, Stack, Modal } from 'native-base';
+import { ChevronLeftIcon, Select, Radio, Stack } from 'native-base';
 import { StackScreenProps } from '@react-navigation/stack';
 import { Images } from '../assets/imgs/imgs';
+import { Card } from 'react-native-paper';
 
 interface Props extends StackScreenProps<any, any> {}
 
 export const ClinicScreen = ({navigation}: Props) => {
 
-  const [isOpen, setIsOpen] = useState(false)
+  const [isSend, setIsSend] = useState(false);
+
+  if (isSend) {
+
+    return (
+      <View style={{...styles.container, alignItems: 'center', alignContent: 'center', justifyContent: 'center'}}>
+        <Card style={{width: '90%', alignItems: 'center', alignContent: 'center', justifyContent: 'center', backgroundColor: 'white'}}>
+
+          <Card.Content>
+
+          <View style={{width: '100%', alignContent: 'center', marginHorizontal: 20, alignSelf: 'center', marginVertical: 20, alignItems: 'center'}}>
+            <Image source={Images.thumbUp} style={{width: 150, height: 150}}/>
+            <Text style={{fontSize: 20, color: 'black', fontWeight: 'bold', alignSelf: 'center', marginVertical: 10}}>¡Gracias!</Text>
+            <Text style={{fontSize: 10, color: 'black', fontWeight: '300', alignSelf: 'center', marginVertical: 10}}>Tu formulario se a enviado
+            </Text>
+            <Text style={{fontSize: 10, color: 'black', fontWeight: '300', alignSelf: 'center', marginVertical: 20, textAlign: 'center'}}>Tomara unos minutos revisar su solicitud, en caso de ser aprobada le llegará un mensaje al chat.
+            </Text>
+
+            <TouchableOpacity style={{...styles.button, width: '80%', alignSelf: 'center', marginVertical: 20}} onPress={()=>{navigation.pop()}}>
+              <Text style={{color: 'white', fontSize: 12, fontWeight: 'bold'}}>Aceptar</Text>
+            </TouchableOpacity>
+          </View>
+
+          </Card.Content>
+
+        </Card>
+      </View>
+    );
+
+  }
 
   return (
 
@@ -98,6 +128,7 @@ export const ClinicScreen = ({navigation}: Props) => {
             </Text>
             <TextInput style={{...styles.input}} />
           </View>
+
           {/* condicion */}
           <View style={{width: '100%', alignContent: 'center', marginHorizontal: 20, alignSelf: 'center', marginTop: 10, alignItems: 'center'}}>
             <Text style={{fontSize: 11,marginHorizontal: 10, color: 'black', fontWeight: '300', alignSelf:'flex-start', marginLeft: 20}}>
@@ -105,6 +136,7 @@ export const ClinicScreen = ({navigation}: Props) => {
             </Text>
             <TextInput style={{...styles.input}} />
           </View>
+
           {/* enfermedad */}
           <View style={{width: '100%', alignContent: 'center', marginHorizontal: 20, alignSelf: 'center', marginTop: 10, alignItems: 'center'}}>
             <Text style={{fontSize: 11,marginHorizontal: 10, color: 'black', fontWeight: '300',alignSelf:'flex-start', marginLeft: 20}}>
@@ -112,6 +144,7 @@ export const ClinicScreen = ({navigation}: Props) => {
             </Text>
             <TextInput style={{...styles.input}} />
           </View>
+
           {/* Radios */}
           <View style={{width: '100%', alignContent: 'center', marginHorizontal: 50, alignSelf: 'center', marginTop: 10, alignItems: 'center' }}>
             <Radio.Group name="exampleGroup" defaultValue="1" accessibilityLabel="pick a choice">
@@ -134,6 +167,7 @@ export const ClinicScreen = ({navigation}: Props) => {
               </Stack>
             </Radio.Group>
           </View>
+
           {/* fechas tentativas*/}
           <View style={{width: '100%', alignContent: 'center', marginHorizontal: 20, alignSelf: 'center', marginTop: 10, alignItems: 'center'}}>
             <Text style={{fontSize: 11,marginHorizontal: 10, color: 'black', fontWeight: '300',alignSelf:'flex-start', marginLeft: 20}}>
@@ -147,7 +181,7 @@ export const ClinicScreen = ({navigation}: Props) => {
                 <TextInput style={{...styles.input}} />
               </View>
           </View>
-        </View>
+          </View>
 
         {/* Diagnóstico detallado del paciente (Alergias o algo importante) */}
 
@@ -169,27 +203,11 @@ export const ClinicScreen = ({navigation}: Props) => {
           </View>
 
           <View style={{width: '100%', alignContent: 'center', marginHorizontal: 20, alignSelf: 'center', marginVertical: 20, alignItems: 'center'}}>
-            <TouchableOpacity style={{...styles.button, width: '80%', alignSelf: 'center', marginVertical: 20}} onPress={()=>{setIsOpen(true)}}>
+            <TouchableOpacity style={{...styles.button, width: '80%', alignSelf: 'center', marginVertical: 20}} onPress={()=>{setIsSend(true)}}>
               <Text style={{color: 'white', fontSize: 12, fontWeight: 'bold'}}>Guardar</Text>
             </TouchableOpacity>
           </View>
 
-          <Modal isOpen={isOpen} onClose={!isOpen}>
-            <Modal.Content width="350">
-              <View style={{width: '100%', alignContent: 'center', marginHorizontal: 20, alignSelf: 'center', marginVertical: 20, alignItems: 'center'}}>
-                <Image source={Images.thumbUp} style={{width: 150, height: 150}}/>
-                <Text style={{fontSize: 20, color: 'black', fontWeight: 'bold', alignSelf: 'center', marginVertical: 10}}>¡Gracias!</Text>
-                <Text style={{fontSize: 10, color: 'black', fontWeight: '300', alignSelf: 'center', marginVertical: 10}}>Tu formulario se a enviado
-                </Text>
-                <Text style={{fontSize: 10, color: 'black', fontWeight: '300', alignSelf: 'center', marginVertical: 20, textAlign: 'center'}}>Tomara unos minutos revisar su solicitud, en caso de ser aprobada le llegará un mensaje al chat.
-                </Text>
-
-                <TouchableOpacity style={{...styles.button, width: '80%', alignSelf: 'center', marginVertical: 20}} onPress={()=>{setIsOpen(false)}}>
-                  <Text style={{color: 'white', fontSize: 12, fontWeight: 'bold'}}>Aceptar</Text>
-                </TouchableOpacity>
-              </View>
-            </Modal.Content>
-          </Modal>
         </View>
 
       </ScrollView>

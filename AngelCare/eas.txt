@@ -1,0 +1,36 @@
+// {
+//   "cli": {
+//     "version": ">= 3.13.2"
+//   },
+//   "build": {
+//     "development": {
+//       "distribution": "internal",
+//       "android": {
+//         "gradleCommand": ":app:assembleDebug"
+//       },
+//       "ios": {
+//         "buildConfiguration": "Debug"
+//       }
+//     },
+//     "preview": {
+//       "distribution": "internal"
+//     },
+
+//     "production": {
+//       "android":{
+//         "buildType": "apk"
+//       }
+//     },
+
+//     "simulator":{
+//       "ios":{ 
+//         "simulator": true
+//       }
+//     }
+
+    
+//   },
+//   "submit": {
+//     "production": {}
+//   }
+// }

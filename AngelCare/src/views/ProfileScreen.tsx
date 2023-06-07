@@ -3,8 +3,10 @@ import { View, Text, ScrollView, TextInput, TouchableOpacity, Image } from 'reac
 import { styles } from '../theme/ThemeApp';
 import { StackScreenProps } from '@react-navigation/stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Actionsheet, ChevronLeftIcon, Radio, Stack, useDisclose } from 'native-base';
+import { Actionsheet, ChevronLeftIcon, Icon, Radio, Stack, useDisclose } from 'native-base';
 import { Images } from '../assets/imgs/imgs';
+import { Avatar } from 'react-native-paper';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 interface Props extends StackScreenProps<any, any>{}
 
@@ -35,26 +37,24 @@ export const ProfileScreen = ({navigation}: Props) => {
             <View style={{...styles.container, backgroundColor: '#0E54BE'}}>
 
                 {/* Header */}
-                <View style={{ flexDirection: 'row', height: 150,  alignItems: 'center', alignSelf: 'center'}}>
+                <View style={{ flexDirection: 'row', height: 150,  alignItems: 'center', alignSelf: 'center', marginTop: -30}}>
                     <View style={{width: '20%', alignItems: 'center'}} >
-                        <ChevronLeftIcon onPress={()=>{navigation.navigate('Home')}}/>
+                        <ChevronLeftIcon onPress={()=>{navigation.navigate('Home')}} color="white" size="lg" style={{alignSelf: 'center', marginTop: 15}}/>
                     </View>
                     <View style={{width: '70%'}}>
-                        <Text style={{...styles.title, color: 'white', fontSize: 13, width: '60%'}}>Perfil</Text>
+                        <Text style={{...styles.title, color: 'white', fontSize: 15, width: '60%', marginLeft: 10}}>Perfil</Text>
                     </View>
-                    {/* 
-                    {/* <AddIcon onPress={()=>{navigation.navigate('Profile')}}/> */}
-                    {/* <Text style={{...styles.title, color: 'white', fontSize: 13, textAlign:'right', width: '30%'}} onPress={()=>{navigation.navigate('Home')}}>Profile</Text> * */}
+
                 </View>
 
                 {/* Card Fecha */}
-                <View style={{backgroundColor: '#DEF2FF', flexDirection: 'row', borderRadius: 10, position: 'absolute', alignSelf: 'center', zIndex: 1, marginVertical: top+130, alignContent: 'center', alignItems: 'center', width: '95%'}}>
-                    <Image source={Images.doctor} style={{width: 50, height: 50, marginHorizontal: 10}}/>
+                <View style={{borderRadius: 10, position: 'absolute', alignSelf: 'center', zIndex: 1, marginVertical: top+100, alignContent: 'center', alignItems: 'center', width: '95%'}}>
+                    <Avatar.Image size={85} source={Images.doctor} style={{backgroundColor: 'white', marginHorizontal: 10}}/>
                 </View>
 
-                <View style={{...styles.container, backgroundColor: '#F8F8F8', borderTopLeftRadius: 30, borderTopRightRadius: 30}}>
+                <View style={{...styles.container, backgroundColor: '#F8F8F8', borderTopLeftRadius: 30, borderTopRightRadius: 30, marginTop: 20}}>
 
-                    <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>
+                    <View style={{width: '95%', alignSelf: 'center', marginTop: 50}}>
                         <Text style={{color: '#0E54BE', fontSize: 11, fontWeight: 'bold', marginHorizontal: 15}}>Nombre completo</Text>
                         <TextInput placeholder="Nombre completo" style={{...styles.input, backgroundColor: 'white'}} editable={isEdit} />
                     </View>
@@ -129,6 +129,7 @@ export const ProfileScreen = ({navigation}: Props) => {
                                 onPress={editProfile}>
                                     <Text style={styles.buttonLoginText}>Editar</Text>
                                 </TouchableOpacity>
+                                
                         }
 
                         {

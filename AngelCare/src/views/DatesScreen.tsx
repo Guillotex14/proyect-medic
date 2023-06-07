@@ -5,6 +5,7 @@ import { AddIcon, ChevronLeftIcon, Modal } from 'native-base';
 import { StackScreenProps } from '@react-navigation/stack';
 import { Images } from '../assets/imgs/imgs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Avatar, Card, Button } from 'react-native-paper';
 
 interface Props extends StackScreenProps<any, any> {}
 
@@ -23,16 +24,25 @@ export const DatesScreen = ({navigation}:Props) => {
     setIsSend(false);
   }
 
+  const sendDates = () => {
+    setIsSend(true);
+    setIsSeach(false);
+    setTimeout(() => {
+      searchDoctor();
+    }, 2000);
+  }
+
   if (isSend && !isSeach){
     return (
       <View style={{...styles.container, justifyContent: 'center', alignItems: 'center', alignContent: 'center'}}>
-        <Text style={{fontSize: 20, fontWeight: 'bold', color: '#000',  marginBottom: bottom + 120 }}>Permitir ubicación</Text>
-        <Image source={Images.pin_mapa} alt="step4" style={{width: 250, height: 250, marginTop: top - 50}} />
-        <Text style={{fontSize: 15, fontWeight: 'bold', color: '#000',marginTop: top + 30}}>Ubicación</Text>
-        <Text style={{fontSize: 12, fontWeight: '300', color: '#000', marginTop: top + 10}}>Permite que el dispositivo acceda a tu ubicación</Text>
-        <TouchableOpacity style={{...styles.button, marginTop: 50}} onPress={searchDoctor}>
+        <Image source={Images.clipboard} alt="step4" style={{width: 250, height: 250, marginTop: top + 50}} />
+        <Text style={{fontSize: 15, fontWeight: 'bold', color: '#000',marginTop: top + 30, textAlign: 'center'}}>
+          Estamos buscando un medico internista disponible
+        </Text>
+        <Text style={{fontSize: 12, fontWeight: '300', color: '#000', marginTop: top + 10, }}>Este proceso puede demorar unos minutos...</Text>
+        {/* <TouchableOpacity style={{...styles.button, marginTop: 50}} onPress={searchDoctor}>
           <Text style={{color: '#fff', fontSize: 15, fontWeight: 'bold'}} >Permitir</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       );
   }
@@ -40,34 +50,43 @@ export const DatesScreen = ({navigation}:Props) => {
   if (isSeach && !isSend){
     return (
       <View style={{...styles.container, justifyContent: 'center', alignItems: 'center', alignContent: 'center'}}>
-        <View style={{
+        <Card style={{
             width: '90%',
-            // marginHorizontal: 40,
-            alignSelf: 'center',
             marginTop: 70,
-            alignContent: 'center',
-            alignItems: 'center',
             backgroundColor: '#fff',
             borderRadius: 12,
-            height: 550,
-
+            height: 550
           }}>
-            <Image source={Images.doctor} alt="step4" style={{width: 100, height: 100, marginTop: 50}} />
+          <Card.Content style={{
+            alignSelf: 'center',
+            alignContent: 'center',
+            alignItems: 'center',
+          }}>
+
+            <Avatar.Image size={120} source={Images.doctor} style={{marginTop: 50}}/>
+
             <Text style={{fontSize: 15, fontWeight: 'bold', color: '#000',marginTop: top + 30}}>Dr. Eduardo Medina</Text>
             <Text style={{fontSize: 12, fontWeight: '300', color: '#0E54BE'}}>Internista</Text>
             <Text style={{fontSize: 10, fontWeight: '300', color: '#000', marginTop: top + 10, textAlign: 'center', marginHorizontal: 25}}>
               El dr Eduardo Medina será el especialista que atenderá tu consulta</Text>
             <Text style={{fontSize: 12, fontWeight: '300', color: '#000', marginTop: top + 10}}>
-              Activo <AddIcon size={6} color="emerald.500" />
+                Activo
               </Text>
             <Text style={{fontSize: 12, fontWeight: '300', color: '#000', marginTop: top + 10}}>2001 - 2008</Text>
             <Text style={{fontSize: 10, fontWeight: '300', color: '#000', marginTop: top + 10}}>Universidad Central Lisandro Alvarado</Text>
 
-            <TouchableOpacity style={{...styles.button, marginTop: 50}} onPress={navigation.navigate('Home')}>
-              <Text style={{color: '#fff', fontSize: 15, fontWeight: 'bold'}} >Continuar</Text>
-            </TouchableOpacity>
+            <Button  mode="contained" onPress={()=>{ navigation.navigate('Home')}} style={{
+              backgroundColor: '#0E54BE',
+              borderRadius: 12,
+              marginTop: 50,
+              width: 230,
+            }}>
+              Continuar
+            </Button>
 
-        </View>
+          </Card.Content>
+        </Card>
+
       </View>
     );
   }
@@ -131,7 +150,7 @@ export const DatesScreen = ({navigation}:Props) => {
           </View>
 
           <View style={{width: '100%', alignContent: 'center', marginHorizontal: 20, alignSelf: 'center', marginVertical: 20, alignItems: 'center'}}>
-            <TouchableOpacity style={{...styles.button, width: '80%', alignSelf: 'center', marginVertical: 20}} onPress={()=>{setIsSend(true);}}>
+            <TouchableOpacity style={{...styles.button, width: '80%', alignSelf: 'center', marginVertical: 20}} onPress={sendDates}>
               <Text style={{color: 'white', fontSize: 12, fontWeight: 'bold'}}>Guardar</Text>
             </TouchableOpacity>
           </View>
