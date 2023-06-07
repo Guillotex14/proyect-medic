@@ -2,36 +2,47 @@ import  Express  from "express";
 import { MongoClient, ServerApiVersion } from "mongodb";
 
 const app = Express();
-const urlDB = "mongodb+srv://jefersonmujica:<Mujica0413.>@cluster0.luvml6n.mongodb.net/?retryWrites=true&w=majority";
-const clientDB = new MongoClient(urlDB,{
-    serverApi: {
-        version: ServerApiVersion.v1,
-        strict: true,
-        deprecationErrors: true
-    }
-});
+const mongoose = require("mongoose");
+const urlDB = "mongodb://localhost:27017";
+const dbName = "angelCare_db";
+const collectionName = "Users";
 
-async function run() {
-    try {
-      // Connect the client to the server	(optional starting in v4.7)
-        await clientDB.connect();
-      // Send a ping to confirm a successful connection
-        await clientDB.db("angelCareDB").command({ ping: 1 });
-        console.log("Pinged your deployment. You successfully connected to MongoDB!");
-    } finally {
-      // Ensures that the client will close when you finish/error
-        await clientDB.close();
-    }
-}
-console.log("Connecting to MongoDB...")
-console.log("*****************")
-run().catch(console.dir);
-// console.log("*****************")
+const client = new MongoClient(urlDB);
+
+mongoose.connect("mongodb://127.0.0.1:27017/angelCare_db", {
+
+  useNewUrlParser: "true",
+  useUnifiedTopology: true,
+
+})
+
+mongoose.connection.on("error", (err:any) => {
+
+  console.log("err", err)
+
+})
+
+mongoose.connection.on("connected", (err:any, res:any) => {
+
+  console.log("mongoose is connected")
+
+})
+
+const db = client.db(dbName);
+const collection = db.collection(collectionName);
+
+
+
+console.log( collection.find().toArray())
+
+
+// Settings
+app.set('port', process.env.PORT || 3000);
 
 
 app.get("/", (req, res) => {
     res.send("Hello World!");
-    }
+  }
 );
 
 app.listen(3000, () => {
