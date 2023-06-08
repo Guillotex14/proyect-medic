@@ -23,5 +23,5 @@ export const Images = {
     historial: require('./historial.png'),
     profile: require('./profile.png'),
     search: require('./search.png'),
-
+    files: require('./files.png'),
 };

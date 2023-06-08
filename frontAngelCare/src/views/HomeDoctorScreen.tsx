@@ -26,7 +26,7 @@ export const HomeDoctorScreen = ({navigation}: Props) => {
                 <View style={{ flexDirection: 'row', height: 150}}>
 
                     <View style={{width: '70%', marginTop: top+30, }}>
-                        <Text style={{...styles.title, color: 'white', fontSize: 14, textAlign: 'left', marginLeft: 25}} onPress={()=>{navigation.navigate('ProfileMedic')}}>Bienvenido, Doctor</Text>
+                        <Text style={{...styles.title, color: 'white', fontSize: 18, textAlign: 'left', marginLeft: 25}} onPress={()=>{navigation.navigate('ProfileMedic')}}>Bienvenido, Doctor</Text>
                     </View>
                     <View style={{width: '30%', marginTop: top+50 }}>
                         <Image source={Images.chat} style={{width: 25, height: 25, alignSelf: 'center'}}/>

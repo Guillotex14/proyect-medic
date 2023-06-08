@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { View, Text, ScrollView, Image } from 'react-native';
+import { View, Text, ScrollView, Image,TouchableOpacity } from 'react-native';
 import { styles } from '../theme/ThemeApp';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CardHome } from '../components/CardHome';
@@ -8,11 +8,9 @@ import { LastDate } from '../components/LastDate';
 import { CardMedicsHome } from '../components/CardMedicsHome';
 import { StackScreenProps } from '@react-navigation/stack';
 import { Images } from '../assets/imgs/imgs';
-// import { CardDateHome } from '../components/CardDateHome';
 
 // import Carousel from 'react-native-snap-carousel';
-import { Button, Card } from 'react-native-paper';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {  Card } from 'react-native-paper';
 
 interface Props extends StackScreenProps<any, any>{}
 export const HomeScreen = ({navigation}: Props) => {
@@ -44,10 +42,12 @@ export const HomeScreen = ({navigation}: Props) => {
                 <View style={{ flexDirection: 'row', height: 150}}>
 
                     <View style={{width: '70%', marginTop: top+30, }}>
-                        <Text style={{...styles.title, color: 'white', fontSize: 14, textAlign: 'left', marginLeft: 25}} onPress={()=>{navigation.navigate('ProfileMedic')}}>Bienvenido, Doctor</Text>
+                        <Text style={{...styles.title, color: 'white', fontSize: 18, textAlign: 'left', marginLeft: 25}} onPress={()=>{navigation.navigate('Profile')}}>Bienvenido, Doctor</Text>
                     </View>
                     <View style={{width: '30%', marginTop: top+50 }}>
-                        <Image source={Images.chat} style={{width: 25, height: 25, alignSelf: 'center'}}/>
+                        <TouchableOpacity onPress={()=> navigation.navigate('ChatList')}>
+                            <Image source={Images.chat} style={{width: 25, height: 25, alignSelf: 'center'}}/>
+                        </TouchableOpacity>
                     </View>
                 </View>
 
@@ -94,7 +94,7 @@ export const HomeScreen = ({navigation}: Props) => {
                         sliderWidth={300}
                         itemWidth={300}
                     /> */}
-
+                    
                     <CardMedicsHome />
 
                 </View>

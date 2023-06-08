@@ -28,13 +28,13 @@ export const RegisterMedicStep3Screen = ({navigation}: Props) => {
       <ScrollView >
         <View style={{...styles.container}}>
           <View style={{flexDirection: 'row', alignItems: 'center', marginTop: top+50}}>
-            <View style={{width: '30%', alignItems: 'center'}} >
+            <View style={{width: '20%', alignItems: 'center'}} >
               <TouchableOpacity onPress={()=> navigation.navigate('RegisterMedicStep2')}>
-                <ChevronLeftIcon size="6" />
+                <ChevronLeftIcon size="6" style={{color: '#000'}}/>
               </TouchableOpacity>
             </View>
             <View style={
-              {width: '60%'}}>
+              {width: '70%'}}>
               <Text style={{fontSize: 20, textAlign: 'center', marginHorizontal: 10, color: 'black', fontWeight: 'bold'}}>Datos Profesionales</Text>
             </View>
           </View>
@@ -160,7 +160,7 @@ export const RegisterMedicStep3Screen = ({navigation}: Props) => {
               <Text style={{color: 'white'}}>Continuar</Text>
             </TouchableOpacity>
           </View>
-          {/* <DateTimePicker mode="date" value={date}/>s */}
+          <DateTimePicker mode="date" value={date}/>
         </View>
       </ScrollView>
     </SafeAreaView>

@@ -37,8 +37,8 @@ export const ProfileDoctorScreen = ({navigation}: Props) => {
             <View style={{...styles.container, backgroundColor: '#0E54BE'}}>
 
                 {/* Header */}
-                <View style={{ flexDirection: 'row', height: 150,  alignItems: 'center', alignSelf: 'center', marginTop: -30}}>
-                    <View style={{width: '20%'}} >
+                <View style={{ flexDirection: 'row', height: 150,  alignItems: 'center', alignSelf: 'center', marginTop: -30, justifyContent: 'space-between'}}>
+                    <View style={{width: 0}} >
                         <TouchableOpacity onPress={()=>{navigation.navigate('HomeMedic')}}>
                             <ChevronLeftIcon color="white" size="lg" style={{alignSelf: 'center', marginTop: 15, marginRight: 40 }}/>
                         </TouchableOpacity>
@@ -202,7 +202,7 @@ export const ProfileDoctorScreen = ({navigation}: Props) => {
                     <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>
                         <Text style={{fontSize: 15, fontWeight: 'bold', marginHorizontal: 15, color: '#677294'}}>Adjuntar Archivo</Text>
                         
-                        <Image style={{width: 100, height: 100, alignSelf: 'center', marginVertical: 10}} source={Images.pin_mapa}/>
+                        <Image style={{width: 100, height: 100, alignSelf: 'center', marginVertical: 10}} source={Images.files}/>
                         
                     </View>
 
@@ -224,7 +224,7 @@ export const ProfileDoctorScreen = ({navigation}: Props) => {
                             marginBottom: 20,
                             alignItems: 'center',
                             justifyContent: 'center',
-                            width: '95%',
+                            width: '100%',
                         }}>
 
                         {

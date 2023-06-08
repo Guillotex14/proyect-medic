@@ -22,6 +22,9 @@ import { VisualizeScreen } from '../views/VisualizeScreen';
 import { MedicalRecordScreen } from '../views/MedicalRecordScreen';
 import { VizualiseMatchScreen } from '../views/VizualiseMatchScreen';
 import { TabsNavigation } from './TabsNavigation';
+import { ChatScreen } from '../views/ChatScreen';
+import { ListachatScreen } from '../views/ListachatScreen';
+import { ListDoctorsScreen } from '../views/ListDoctorsScreen';
 
 
 export type StackParamList = {
@@ -46,6 +49,9 @@ export type StackParamList = {
     Vizualise: undefined;
     MedicalRecord: undefined;
     MedicalRecordMatch: undefined;
+    Chat: undefined;
+    ChatList: undefined;
+    DoctorList: undefined;
 }
 
 const Stack = createStackNavigator<StackParamList>();
@@ -63,15 +69,6 @@ export const StackNavigations = () => {
             },
         }}>
 
-        {/* {
-            isTypeUser === '1' && (
-
-                <Stack.Screen name="Login" component={LoginScreen} />
-
-            )
-
-        } */}
-            {/* <Stack.Screen name="HomeMedic" component={HomeDoctorScreen} /> */}
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Register" component={RegisterScreen} />
             <Stack.Screen name="RegisterStep2" component={RegisterStep2Screen} />
@@ -87,6 +84,9 @@ export const StackNavigations = () => {
             <Stack.Screen name="Ensurance" component={EnsuranceScreen} />
             <Stack.Screen name="Dates" component={DatesScreen} />
             <Stack.Screen name="Profile" component={ProfileScreen} />
+            <Stack.Screen name="ChatList" component={ListachatScreen} />
+            <Stack.Screen name="Chat" component={ChatScreen} />
+            <Stack.Screen name="DoctorList" component={ListDoctorsScreen} />
 
             {/* navigation of doctors */}
             <Stack.Screen name="HomeMedic" component={HomeDoctorScreen} />

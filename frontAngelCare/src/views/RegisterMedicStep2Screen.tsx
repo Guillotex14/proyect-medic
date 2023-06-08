@@ -45,12 +45,12 @@ export const RegisterMedicStep2Screen = ({navigation}:Props) => {
       <View style={{width: '100%',flexDirection: 'row', alignItems: 'center', marginTop: top+50}}>
         <View style={{width: '15%', alignItems: 'center'}} >
           <TouchableOpacity onPress={()=> navigation.navigate('Register')}>
-            <ChevronLeftIcon size="6" style={{color: "#000"}}/>
+            <ChevronLeftIcon size="6" style={{color: "#000", marginLeft: 20}}/>
           </TouchableOpacity>
         </View>
         <View style={
           {width: '75%'}}>
-          <Text style={{fontSize: 18, textAlign: 'center', color: 'black', fontWeight: 'bold'}}>Datos Personales</Text>
+          <Text style={{fontSize: 20, textAlign: 'center', color: 'black', fontWeight: 'bold'}}>Datos Personales</Text>
         </View>
       </View>
 
