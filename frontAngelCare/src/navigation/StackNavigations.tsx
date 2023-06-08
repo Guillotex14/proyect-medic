@@ -25,6 +25,7 @@ import { TabsNavigation } from './TabsNavigation';
 import { ChatScreen } from '../views/ChatScreen';
 import { ListachatScreen } from '../views/ListachatScreen';
 import { ListDoctorsScreen } from '../views/ListDoctorsScreen';
+import { ChatDateScreen } from '../views/ChatDateScreen';
 
 
 export type StackParamList = {
@@ -52,6 +53,7 @@ export type StackParamList = {
     Chat: undefined;
     ChatList: undefined;
     DoctorList: undefined;
+    ChatDate: undefined;
 }
 
 const Stack = createStackNavigator<StackParamList>();
@@ -68,7 +70,6 @@ export const StackNavigations = () => {
                 backgroundColor: 'white',
             },
         }}>
-
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Register" component={RegisterScreen} />
             <Stack.Screen name="RegisterStep2" component={RegisterStep2Screen} />
@@ -86,6 +87,7 @@ export const StackNavigations = () => {
             <Stack.Screen name="Profile" component={ProfileScreen} />
             <Stack.Screen name="ChatList" component={ListachatScreen} />
             <Stack.Screen name="Chat" component={ChatScreen} />
+            <Stack.Screen name="ChatDate" component={ChatDateScreen} />
             <Stack.Screen name="DoctorList" component={ListDoctorsScreen} />
 
             {/* navigation of doctors */}
