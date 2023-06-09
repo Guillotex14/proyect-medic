@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Text, View, TouchableOpacity, TextInput, Image } from 'react-native';
 import { styles } from '../theme/ThemeApp';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -13,8 +13,13 @@ export const RegisterScreen = ({navigation}:Props) => {
     const { top } = useSafeAreaInsets();
 
     //states for radio buttons
-    const [isRadio, setIsRadio] = React.useState(false);
-    const [isRadio2, setIsRadio2] = React.useState(false);
+    const [isRadio, setIsRadio] = useState(false);
+    const [isRadio2, setIsRadio2] = useState(false);
+
+    //datos de usuario
+    const [fullName, setFullName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     
     //function for radio buttons
     const onRadioButtons = (radio: string) => {
@@ -32,11 +37,20 @@ export const RegisterScreen = ({navigation}:Props) => {
     const nextStep = () => {
         
         if (isRadio && !isRadio2) {
-            navigation.navigate('RegisterStep2');
+            navigation.navigate('RegisterStep2',{
+                fullName: fullName,
+                email: email,
+                password: password
+            });
         }
 
         if (!isRadio && isRadio2) {
-            navigation.navigate('RegisterMedicStep2');
+            navigation.navigate('RegisterMedicStep2',{
+                fullName: fullName,
+                email: email,
+                password: password
+            }
+            );
         }
 
     }
@@ -148,16 +162,22 @@ export const RegisterScreen = ({navigation}:Props) => {
                 <TextInput style={styles.input}
                     placeholder="Nombre completo"
                     placeholderTextColor="#aaaaaa"
+                    value={fullName}
+                    onChangeText={setFullName}
                 />
                 <TextInput style={styles.input}
                     placeholder="Correo electrónico"
                     placeholderTextColor="#aaaaaa"
+                    value={email}
+                    onChangeText={setEmail}
                 />
 
                 <TextInput style={styles.input}
                     placeholder="Contraseña"
                     placeholderTextColor="#aaaaaa"
                     secureTextEntry={true}
+                    value={password}
+                    onChangeText={setPassword}
                 />
             </View>
 
