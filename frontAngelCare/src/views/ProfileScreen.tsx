@@ -1,16 +1,26 @@
 import React, { useState } from 'react'
-import { View, Text, ScrollView, TextInput, TouchableOpacity, Image } from 'react-native';
+import { View, Text, ScrollView, TextInput, TouchableOpacity, Image, Platform, Pressable } from 'react-native';
 import { styles } from '../theme/ThemeApp';
 import { StackScreenProps } from '@react-navigation/stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Actionsheet, ChevronLeftIcon, Icon, Radio, Stack, useDisclose } from 'native-base';
 import { Images } from '../assets/imgs/imgs';
 import { Avatar } from 'react-native-paper';
+import DatePicker from '@react-native-community/datetimepicker';
+import Moment from 'moment';
 // import Ionicons from 'react-native-vector-icons/Ionicons';
 
 interface Props extends StackScreenProps<any, any>{}
 
 export const ProfileScreen = ({navigation}: Props) => {
+
+    const [date, setDate] = useState(new Date());
+
+    const [showPicker, setShowPicker] = useState(false);
+
+    const [dateOfBirth, setDateOfBirth] = useState("");
+
+    const [isFocused, setIsFocused] = useState(false);
 
     const { top } = useSafeAreaInsets();
 
@@ -31,6 +41,37 @@ export const ProfileScreen = ({navigation}: Props) => {
         setIsEdit(!isEdit);
         onClose();
     }
+
+    const toggleDatepicker = () => {
+        setShowPicker(!showPicker);
+    };
+
+    const handleFocus = () => {
+        setIsFocused(true);
+        setShowPicker(true);
+    };
+
+    const handleBlur = () => {
+        setIsFocused(false);
+    };
+
+    const onChange = (event: any, selectedDate?: Date | undefined) => {
+        setShowPicker(false);
+        if (event.type === "set" && selectedDate){
+        const currentDate = Moment(selectedDate).toDate();
+        setDate(currentDate);
+
+            if (Platform.OS === 'android') {
+                toggleDatepicker();
+                setDateOfBirth(Moment(currentDate).format('DD/MM/YYYY'));
+            }
+
+        } else {
+
+        toggleDatepicker();
+
+        }
+    };
 
     return (
         <ScrollView>
@@ -65,8 +106,11 @@ export const ProfileScreen = ({navigation}: Props) => {
                     </View>
 
                     <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>
-                        <Text style={{color: '#0E54BE', fontSize: 11, fontWeight: 'bold', marginHorizontal: 15}}>Fecha de nacimiento</Text>
-                        <TextInput placeholder="Fecha de nacimiento" style={{...styles.input, backgroundColor: 'white'}} editable={isEdit}/>
+                        <Text style={{color: '#0E54BE', fontSize: 15, fontWeight: 'bold', marginHorizontal: 15}}>Fecha de nacimiento</Text>
+                        <Pressable onPress={toggleDatepicker}>
+                        <TextInput placeholder="Fecha de nacimiento" style={{...styles.input, backgroundColor: 'white'}} value={dateOfBirth} onChangeText={setDateOfBirth} onFocus={handleFocus} onBlur={handleBlur} editable={isEdit}/>
+                        </Pressable>
+                        {showPicker && isFocused && (<DatePicker mode="date" display="calendar" value={date} onChange={onChange}/>)}
                     </View>
 
                     <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>
