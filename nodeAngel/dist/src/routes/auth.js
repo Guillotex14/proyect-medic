@@ -16,33 +16,82 @@ const express_1 = require("express");
 //modelss
 const Users_1 = __importDefault(require("../models/Users"));
 const authRouter = (0, express_1.Router)();
-authRouter.get("/loginPatient", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(req.body);
+authRouter.post("/loginPatient", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const jsonRes = {
+        code: 0,
+        data: {},
+        message: "",
+        status: false,
+    };
     const { email, password } = req.body;
     const ress = yield Users_1.default.findOne({ email: email }).then((res) => {
         if (res) {
             if (res.password == password) {
-                return "login exitoso";
+                jsonRes.code = 200;
+                jsonRes.message = "login success";
+                jsonRes.status = true;
+                jsonRes.data = res;
+                return jsonRes;
             }
             else if (res.password != password && res.password != null) {
-                return "password incorrecto";
+                jsonRes.code = 400;
+                jsonRes.message = "password incorrecto";
+                jsonRes.status = false;
+                return jsonRes;
             }
-            return res;
         }
         else if (!res) {
-            return "no existe";
+            jsonRes.code = 400;
+            jsonRes.message = "no existe";
+            jsonRes.status = false;
+            return jsonRes;
+        }
+    }).catch((err) => {
+        console.log(err);
+    });
+    res.json(ress);
+}));
+authRouter.post("/loginMedic", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const jsonRes = {
+        code: 0,
+        data: {},
+        message: "",
+        status: false,
+    };
+    const { email, password } = req.body;
+    const ress = yield Users_1.default.findOne({ email: email }).then((res) => {
+        if (res) {
+            if (res.password == password) {
+                jsonRes.code = 200;
+                jsonRes.message = "login success";
+                jsonRes.status = true;
+                jsonRes.data = res;
+                return jsonRes;
+            }
+            else if (res.password != password && res.password != null) {
+                jsonRes.code = 400;
+                jsonRes.message = "password incorrecto";
+                jsonRes.status = false;
+                return jsonRes;
+            }
+        }
+        else if (!res) {
+            jsonRes.code = 400;
+            jsonRes.message = "no existe";
+            jsonRes.status = false;
+            return jsonRes;
         }
     }).catch((err) => {
         console.log(err);
     });
     console.log(ress);
-    res.send("loginPatient");
+    res.json(ress);
 }));
-authRouter.get("/loginMedic", (req, res) => {
-    console.log("loginMedic");
-    res.send("loginMedic");
+authRouter.get("/registerPatient", (req, res) => {
+    console.log("Register");
+    res.send("Register");
 });
-authRouter.get("/register", (req, res) => {
+authRouter.get("/registerMedic", (req, res) => {
     console.log("Register");
     res.send("Register");
 });

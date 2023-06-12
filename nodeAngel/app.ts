@@ -1,5 +1,6 @@
 import  Express  from "express";
 import { port } from "./config";
+import cors from "cors";
 import authRouter from "./src/routes/auth";
 import path from "path"
 
@@ -19,6 +20,7 @@ export class App {
 
     middlewares() {
         this.app.use(Express.json());
+        this.app.use(cors())
         this.app.use(Express.urlencoded({ extended: false }));
     }
 

@@ -9,6 +9,8 @@ import { Actionsheet, useDisclose } from 'native-base';
 import { Images } from '../assets/imgs/imgs';
 import { RadioButton } from 'react-native-paper';
 
+import apiConnection from '../api/Concecction';
+
 interface Props extends StackScreenProps<any, any>{}
 
 export const LoginScreen = ({navigation}: Props) => {
@@ -38,13 +40,34 @@ export const LoginScreen = ({navigation}: Props) => {
     const {isOpen, onOpen, onClose} = useDisclose();
 
     //functions for login
-    const Login = () => {
+    const Login = async () => {
         if (isRadio && !isRadio2) {
-            navigation.navigate('Home');
+            
+            const api = await apiConnection.post('/auth/loginPatient', {
+                email: email,
+                password: password
+            }).then((response) => {
+                if (response.data.status == true) {
+                    navigation.navigate('Home');
+                }
+                    
+            }).catch((error) => {
+                console.log(error);
+            });
         }
 
         if (!isRadio && isRadio2) {
-            navigation.navigate('HomeMedic');
+            const api = await apiConnection.post('/auth/loginMedic', {
+                email: email,
+                password: password
+            }).then((response) => {
+                if (response.data.status == true) {
+                    navigation.navigate('HomeMedic');
+                }
+                    
+            }).catch((error) => {
+                console.log(error);
+            });
         }
 
     };
@@ -89,7 +112,6 @@ export const LoginScreen = ({navigation}: Props) => {
             setIsThirdContent(false);
         }
     }
-
 
     //inputText
     const [text, setText] = useState('');
