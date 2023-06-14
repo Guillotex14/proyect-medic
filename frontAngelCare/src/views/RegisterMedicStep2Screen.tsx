@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { View, TextInput, Text, TouchableOpacity, Modal, FlatList, Image } from 'react-native';
 import { styles } from '../theme/ThemeApp';
-import { ChevronLeftIcon, FormControl, Input, Stack, Pressable, Spinner } from 'native-base';
+import { ChevronLeftIcon, FormControl,Stack, Spinner,Radio } from 'native-base';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
-import { Radio } from 'native-base';
 import { TypeDni } from '../interfaces/registerModels';
 import { styles_modal } from '../theme/Modal_Profile_Doctor';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { Images } from '../assets/imgs/imgs';
+import apiConection from '../api/Concecction';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 interface Props extends StackScreenProps<any, any>{};
+
+interface Option {
+  label: string;
+  value: string;
+}
 
 export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
 
@@ -33,11 +38,23 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
     }
   ];
 
+  const options: Option[] = [
+    { label: 'Lunes', value: 'Lunes' },
+    { label: 'Martes', value: 'Martes' },
+    { label: 'Miercoles', value: 'Miercoles' },
+    { label: 'Jueves', value: 'Jueves' },
+    { label: 'Viernes', value: 'Viernes' },
+    { label: 'Sabado', value: 'Sabado' },
+    { label: 'Domingo', value: 'Domingo' },
+];
+
   //states for radio buttons
   const [isRadio, setIsRadio] = useState(false);
   const [isRadio2, setIsRadio2] = useState(false);
   const [isRadio3, setIsRadio3] = useState(false);
   const [showTypeDNI, setShowTypeDNI] = useState(false);
+  const [showDayService, setShowDayService] = useState(false);
+  const [showDayService2, setShowDayService2] = useState(false);
   const [showSpinner, setShowSpinner] = useState(false);
   const [nextStep, setNextStep] = useState(false);
   const [nextStep2, setNextStep2] = useState(false);
@@ -54,13 +71,25 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
   const [speciality, setSpeciality] = useState('');
   const [gender, setGender] = useState('');
 
+  //data professional
+  const [university, setUniversity] = useState('');
+  const [uniAdmissionDate, setuniAdmissionDate ] = useState('');
+  const [uniGraduationDate, setuniGraduationDate] = useState('');
+  const [mpps, setMpps] = useState('');
+  const [postgrade, setpostgrade] = useState('');
+  const [postgradeUniversity, setpostgradeUniversity] = useState('');
+  const [postgradeGraduationDate, setPostgradeGraduationDate] = useState('');
+  const [postgradeAdmissionDate, setPostgradeAdmissionDate] = useState('');
+  const [additional, setAdditional] = useState('');
+  const [dayService, setDayService] = useState('');
+  const [dayService2, setDayService2] = useState('');
+
   useEffect(() => {
     setFullName(params.fullName);
     setEmail(params.email);
     setPassword(params.password);
   }, [])
   
-
 
   //function for radio buttons
   const onRadioButtons = (radio: string) => {
@@ -88,6 +117,16 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
     setShowTypeDNI(!showTypeDNI);
   }
 
+  const onModalDayservice = (day:string) => {
+    setDayService(day)
+    setShowDayService(!showDayService);
+  }
+
+  const onModalDayservice2 = (day:string) => {
+    setDayService2(day)
+    setShowDayService2(!showDayService2);  
+  }
+
   const onNextStep = () => {
     setNextStep(true);
   }
@@ -113,13 +152,67 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
   //   setNextStep3(false);
   // }
 
-  const handleNext = () => {
-    console.log('next step 4');
+  const handleNext = async () => {
     setShowSpinner(true);
-    setTimeout(() => {
+    const api = await apiConection.post('auth/registerMedic', {
+      fullName: fullName,
+      typeDNISelected: typeDNISelected,
+      dni: dni,
+      email: email,
+      password: password,
+      phone: phone,
+      address: address,
+      speciality: speciality,
+      gender: gender,
+      university: university,
+      uniAdmissionDate: uniAdmissionDate,
+      uniGraduationDate: uniGraduationDate,
+      mpps: mpps,
+      postgrade: postgrade,
+      postgradeUniversity: postgradeUniversity,
+      postgradeGraduationDate: postgradeGraduationDate,
+      postgradeAdmissionDate: postgradeAdmissionDate,
+      additional: additional,
+      dayService: dayService,
+      dayService2:dayService2 
+    }).then((response) => {
+      console.log(response);
+      if (response.data.status) {
+        setTimeout(() => {
+          setShowSpinner(false);
+          navigation.navigate('HomeMedic');
+        }, 3000);
+      }
+    }).catch((error) => {
+      console.log(error);
       setShowSpinner(false);
-      navigation.navigate('HomeMedic');
-    }, 3000);
+    });
+
+
+
+
+
+    
+  }
+
+  const getLatLong = () => {
+    console.log('get lat long');
+    const lat = navigator.geolocation.getCurrentPosition((position) => {
+      console.log(position);
+        return position.coords.latitude;
+      }, (error) => {
+        console.log(error);
+      }
+    );
+
+    const long = navigator.geolocation.getCurrentPosition((position) => {
+      console.log(position);
+        return position.coords.longitude;
+      }, (error) => {
+        console.log(error);
+      }
+    );
+
   }
 
   return (
@@ -152,7 +245,7 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
 
           <View style={{ width: '100%', alignSelf: 'center', marginTop: 15 }}>
               <Text style={{ marginLeft: 20 }}>Nombre completo</Text>
-              <TextInput placeholder="Nombre completo" style={{ ...styles.input, marginLeft: 15 }} value={fullName} />
+              <TextInput style={{ ...styles.input, marginLeft: 15 }} value={fullName} onChangeText={setFullName}/>
           </View>
 
           <View style={{ width: '100%' }}>
@@ -176,12 +269,11 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
                       </View>
                     </View>
                   </Modal>
-
                 )}
               </View>
 
               <View style={{ width: '60%' }}>
-                <TextInput placeholder="" style={{ ...styles.input, width: 230 }} />
+                <TextInput placeholder="" style={{ ...styles.input, width: 230 }} value={dni} onChangeText={setDni}/>
               </View>
             </View>
 
@@ -194,28 +286,30 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
 
           <View style={{ width: '100%', marginTop: 20 }}>
             <Text style={{ marginLeft: 20 }}> Especialidad</Text>
-            <TextInput style={{ ...styles.input, marginLeft: 15 }} />
+            <TextInput style={{ ...styles.input, marginLeft: 15 }} onChangeText={setSpeciality} value={speciality}/>
           </View>
 
           <View style={{ width: '100%', marginTop: 20 }}>
             <Text style={{ marginLeft: 20 }}> Numero Telefonico</Text>
-            <TextInput placeholder="Numero Telefonico" style={{ ...styles.input, marginLeft: 15 }} />
+            <TextInput style={{ ...styles.input, marginLeft: 15 }} onChangeText={setPhone} value={phone}/>
           </View>
 
           <View style={{ width: '100%', marginTop: 20 }}>
             <Text style={{ marginLeft: 20 }}> Correo Electronico</Text>
-            <TextInput style={{ ...styles.input, marginLeft: 15 }} value={email} />
+            <TextInput style={{ ...styles.input, marginLeft: 15 }} value={email} onChangeText={setEmail}/>
           </View>
 
           <View style={{ width: '100%', marginTop: 20 }}>
             <Text style={{ marginLeft: 20 }}> Direccion</Text>
-            <TextInput placeholder="Direccion" style={{ ...styles.input, marginLeft: 15 }} />
+            <TextInput style={{ ...styles.input, marginLeft: 15 }} onChangeText={setAddress} value={address}/>
           </View>
 
           <View style={{ width: '95%', alignSelf: 'center', marginTop: 30 }}>
-            <Text style={{ color: '#0E54BE', fontSize: 11, fontWeight: 'bold', marginHorizontal: 15 }}>Genero</Text>
+            <Text style={{ color: '#000', fontSize: 13, marginHorizontal: 15 }}>Genero</Text>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 15 }}>
-              <Radio.Group name="Genero" defaultValue="1" size={10}>
+              <Radio.Group name="Genero" defaultValue="1" size={10} onChange={valueSelected =>{ 
+                setGender(valueSelected);
+              }} value={gender}>
                 <Stack direction={{ base: 'row', md: 'row' }} alignItems={{ base: 'flex-start', md: 'center' }}
                   space={7} w="85%" maxW="300px">
                   <Radio value="masculino" colorScheme="blue" size="sm" my={1}>
@@ -260,7 +354,7 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
                 <FormControl style={{marginVertical: 5}}>
                   <FormControl.Label style={{marginLeft: 10}}>Universidad</FormControl.Label>
                   <FormControl.ErrorMessage>Este campo es obligatorio</FormControl.ErrorMessage>
-                  <TextInput placeholder="" style={styles.input}/>
+                  <TextInput placeholder="" style={styles.input} value={university} onChangeText={setUniversity}/>
                 </FormControl>
               
                 <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginVertical: 5}}>
@@ -268,14 +362,14 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
                     <FormControl style={{width: '90%'}}>
                       <FormControl.Label style={{marginLeft: 10}}>Fecha de ingreso</FormControl.Label>
                       <FormControl.ErrorMessage>Este campo es obligatorio</FormControl.ErrorMessage>
-                      <TextInput placeholder="" style={styles.input}/>
+                      <TextInput placeholder="" style={styles.input} value={uniAdmissionDate} onChangeText={setuniAdmissionDate}/>
                     </FormControl>
                   </View>
                   <View style={{width: '50%', alignItems: 'center'}}>
                     <FormControl style={{width: '90%'}}>
                       <FormControl.Label style={{marginLeft: 10}}>Fecha de Egreso</FormControl.Label>
                       <FormControl.ErrorMessage>Este campo es obligatorio</FormControl.ErrorMessage>
-                      <TextInput placeholder="" style={styles.input}/>
+                      <TextInput placeholder="" style={styles.input} value={uniGraduationDate} onChangeText={setuniGraduationDate}/>
                     </FormControl>
                   </View>
                 </View>
@@ -283,14 +377,14 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
                 <FormControl style={{marginVertical: 5}}>
                   <FormControl.Label style={{marginLeft: 10}}>MPPS</FormControl.Label>
                   <FormControl.ErrorMessage>Este campo es obligatorio</FormControl.ErrorMessage>
-                  <TextInput placeholder="" style={styles.input}/>
+                  <TextInput placeholder="" style={styles.input} value={mpps} onChangeText={setMpps}/>
                 </FormControl>
 
                 <View style={{width: '95%', alignSelf: 'center', marginTop: 15}}>
                     <Text style={{fontSize: 15, fontWeight: 'bold', marginHorizontal: 15, marginBottom: 10, color: '#677294'
                   }}>Post-grado</Text>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 15}}>
-                        <Radio.Group name="Genero" defaultValue="1" size={10}>
+                        <Radio.Group name="Genero" defaultValue="1" size={10} value={postgrade} onChange={setpostgrade}>
                             <Stack direction={{ base: 'row', md: 'row' }} alignItems={{ base: 'flex-start', md: 'center' }} 
                             space={12} w="85%" maxW="300px">
                                 <Radio value="si" colorScheme="blue" size="sm" my={1}>
@@ -310,7 +404,7 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
                 <FormControl style={{marginVertical: 5}}>
                   <FormControl.Label style={{marginLeft: 10}}>Post-grado Universidad</FormControl.Label>
                   <FormControl.ErrorMessage>Este campo es obligatorio</FormControl.ErrorMessage>
-                  <TextInput placeholder="" style={styles.input}/>
+                  <TextInput placeholder="" style={styles.input} value={postgradeUniversity} onChangeText={setpostgradeUniversity}/>
                 </FormControl>
 
                 <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginVertical: 5}}>
@@ -318,14 +412,14 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
                     <FormControl style={{width: '90%'}}>
                       <FormControl.Label style={{marginLeft: 10}}>Fecha de ingreso</FormControl.Label>
                       <FormControl.ErrorMessage>Este campo es obligatorio</FormControl.ErrorMessage>
-                      <TextInput placeholder="" style={styles.input}/>
+                      <TextInput placeholder="" style={styles.input} value={postgradeAdmissionDate} onChangeText={setPostgradeAdmissionDate}/>
                     </FormControl>
                   </View>
                   <View style={{width: '50%', alignItems: 'center'}}>
                     <FormControl style={{width: '90%'}}>
                       <FormControl.Label style={{marginLeft: 10}}>Fecha de Egreso</FormControl.Label>
                       <FormControl.ErrorMessage>Este campo es obligatorio</FormControl.ErrorMessage>
-                      <TextInput placeholder="" style={styles.input}/>
+                      <TextInput placeholder="" style={styles.input} value={postgradeGraduationDate} onChangeText={setPostgradeGraduationDate}/>
                     </FormControl>
                   </View>
                 </View>
@@ -336,16 +430,46 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
                     <View style={{width: '50%', alignItems: 'center'}}>
                       <FormControl style={{width: '90%'}}>
                         <FormControl.ErrorMessage>Este campo es obligatorio</FormControl.ErrorMessage>
-                        <TextInput placeholder="" style={styles.input}/>
+                        <TouchableOpacity onPress={()=>setShowDayService(true)}>
+                        <TextInput placeholder="" style={styles.input} value={dayService}/>
+                        </TouchableOpacity>
                       </FormControl>
                     </View>
                     <View style={{width: '50%', alignItems: 'center'}}>
                       <FormControl style={{width: '90%'}}>
                         <FormControl.ErrorMessage>Este campo es obligatorio</FormControl.ErrorMessage>
-                        <TextInput placeholder="" style={styles.input}/>
+                        <TouchableOpacity onPress={()=>setShowDayService2(true)}>
+                          <TextInput placeholder="" style={styles.input} value={dayService2}/>
+                        </TouchableOpacity>
                       </FormControl>
                     </View>
                   </View>
+
+                  {
+                    showDayService && ( 
+                      <Modal visible={showDayService} animationType="fade" transparent>
+                    <View style={styles_modal.modalContainer}>
+                      <View style={styles_modal.modalContent}>
+                        <FlatList style={{ flexGrow: 1 }} data={options} renderItem={({ item }) => (<TouchableOpacity style={styles_modal.optionContainer} onPress={() => onModalDayservice(item.value)}><Text style={styles_modal.optionText}>{item.label}</Text></TouchableOpacity>)} keyExtractor={(item) => item.value} />
+                      </View>
+                    </View>
+                  </Modal>
+                    )
+                  }
+                  {
+                    showDayService2 && ( 
+                      <Modal visible={showDayService2} animationType="fade" transparent>
+                        <View style={styles_modal.modalContainer}>
+                          <View style={styles_modal.modalContent}>
+                            <FlatList style={{ flexGrow: 1 }} data={options} renderItem={({ item }) => (
+                            <TouchableOpacity style={styles_modal.optionContainer} onPress={() => onModalDayservice2(item.value)}>
+                              <Text style={styles_modal.optionText}>{item.label}</Text>
+                              </TouchableOpacity>)} keyExtractor={(item) => item.value} />
+                          </View>
+                        </View>
+                      </Modal>
+                    )
+                  }
                 </View>
 
                 <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>
@@ -364,6 +488,8 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
                 numberOfLines={6}
                 maxLength={240}
                 style={{padding: 10, backgroundColor: 'white', borderRadius: 10, width: '90%', borderColor: 'gray', borderWidth: 1, marginHorizontal: 10, marginVertical: 5}}
+                value={additional}
+                onChangeText={setAdditional}
                 />
                 </FormControl>
 
@@ -377,7 +503,7 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
               {/* <DateTimePicker mode="date" value={date}/> */}
             </>
         
-          )
+        )
       }
 
       {

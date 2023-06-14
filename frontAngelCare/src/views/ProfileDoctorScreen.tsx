@@ -21,7 +21,7 @@ interface Option {
 interface Option2 {
     label: string;
     value: string;
-  }
+}
 
 export const ProfileDoctorScreen = ({navigation}: Props) => {
 
@@ -256,7 +256,7 @@ export const ProfileDoctorScreen = ({navigation}: Props) => {
         { label: 'Viernes', value: 'Viernes' },
         { label: 'Sabado', value: 'Sabado' },
         { label: 'Domingo', value: 'Domingo' },
-      ];
+    ];
 
     const options2: Option2[] = [
         { label: 'Lunes', value: 'Lunes' },
@@ -266,7 +266,7 @@ export const ProfileDoctorScreen = ({navigation}: Props) => {
         { label: 'Viernes', value: 'Viernes' },
         { label: 'Sabado', value: 'Sabado' },
         { label: 'Domingo', value: 'Domingo' },
-      ];
+    ];
 
     const handleTextInputPress = () => {
         setSelectActive(true);

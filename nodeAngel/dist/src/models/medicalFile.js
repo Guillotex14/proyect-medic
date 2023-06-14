@@ -5,7 +5,8 @@ const medicalFile = new mongoose_1.Schema({
     disease: String,
     allergy: String,
     condiction: String,
-    additional: String
+    additional: String,
+    id_patient: String
 });
 exports.default = (0, mongoose_1.model)("medicalFile", medicalFile);
 //# sourceMappingURL=medicalFile.js.map

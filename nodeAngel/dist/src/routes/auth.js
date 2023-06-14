@@ -13,16 +13,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+const bcrypt_1 = __importDefault(require("bcrypt"));
 //modelss
 const Users_1 = __importDefault(require("../models/Users"));
+const response_1 = require("../models/response");
+const dataProfessional_1 = __importDefault(require("../models/dataProfessional"));
+const medics_1 = __importDefault(require("../models/medics"));
 const authRouter = (0, express_1.Router)();
 authRouter.post("/loginPatient", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const jsonRes = {
-        code: 0,
-        data: {},
-        message: "",
-        status: false,
-    };
+    const jsonRes = new response_1.RespondesModel();
     const { email, password } = req.body;
     const ress = yield Users_1.default.findOne({ email: email }).then((res) => {
         if (res) {
@@ -52,12 +51,7 @@ authRouter.post("/loginPatient", (req, res) => __awaiter(void 0, void 0, void 0,
     res.json(ress);
 }));
 authRouter.post("/loginMedic", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const jsonRes = {
-        code: 0,
-        data: {},
-        message: "",
-        status: false,
-    };
+    const jsonRes = new response_1.RespondesModel();
     const { email, password } = req.body;
     const ress = yield Users_1.default.findOne({ email: email }).then((res) => {
         if (res) {
@@ -87,14 +81,36 @@ authRouter.post("/loginMedic", (req, res) => __awaiter(void 0, void 0, void 0, f
     console.log(ress);
     res.json(ress);
 }));
-authRouter.get("/registerPatient", (req, res) => {
-    console.log("Register");
-    res.send("Register");
-});
-authRouter.get("/registerMedic", (req, res) => {
-    console.log("Register");
-    res.send("Register");
-});
+authRouter.post("/registerMedic", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const jsonRes = new response_1.RespondesModel();
+    const { fullName, typeDNISelected, dni, email, password, phone, address, speciality, gender, university, uniAdmissionDate, uniGraduationDate, mpps, postgrade, postgradeUniversity, postgradeGraduationDate, postgradeAdmissionDate, additional, dayService, dayService2 } = req.body;
+    const saltRounds = 10;
+    const hash = yield bcrypt_1.default.hash(password, saltRounds);
+    console.log(hash);
+    const newUser = new Users_1.default({ email, password: hash, type_user: "paciente" });
+    const newMedic = new medics_1.default({ fullName, typeDNISelected, dni, phone, address, gender, speciality });
+    const newDataProfessional = new dataProfessional_1.default({ university, uniAdmissionDate, uniGraduationDate, mpps, postgrade, postgradeGraduationDate, postgradeUniversity, postgradeAdmissionDate, additional, dayService, dayService2 });
+    yield newUser.save().then((res) => {
+        newMedic.id_user = JSON.stringify(newUser._id);
+    }).catch((err) => {
+        console.log(err);
+    });
+    yield newMedic.save().then((res) => {
+        newDataProfessional.id_medic = JSON.stringify(newMedic._id);
+    }).catch((err) => {
+        console.log(err);
+    });
+    yield newDataProfessional.save();
+    jsonRes.code = 200;
+    jsonRes.message = "register success";
+    jsonRes.status = true;
+    jsonRes.data = newUser;
+    res.json(jsonRes);
+}));
+// authRouter.get("/registerMedic", (req: Request, res: Response) => {
+//     console.log("Register")
+//     res.send("Register");
+// });
 authRouter.get("/forgotPassword", (req, res) => {
     console.log("forgotPassword");
     res.send("forgotPassword");

@@ -2,16 +2,18 @@ import { Schema, model } from "mongoose";
 
 const dataProfessionalSchema = new Schema({
     university: String,
-    uni_admission_date: String,
-    uni_graduation_date: String,
-    MPPS: String,
+    uniAdmissionDate: String,
+    uniGraduationDate: String,
+    mpps: String,
     postgrade: String,
-    portgrade_university: String,
-    postgrade_admission_date: String,
-    postgrade_graduation_date: String,
-    days_of_service: String,
+    postgradeUniversity: String,
+    postgradeAdmissionDate: String,
+    postgradeGraduationDate: String,
+    dayService: String,
+    dayService2: String,
     files: String,
-    additional: String
+    additional: String,
+    id_medic: String
 });
 
 export default model("dataProfessional", dataProfessionalSchema);
