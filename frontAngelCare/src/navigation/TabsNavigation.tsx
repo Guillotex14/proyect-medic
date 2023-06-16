@@ -7,7 +7,7 @@ import { Images } from '../assets/imgs/imgs';
 import { DateHistorialScreen } from '../views/DateHistorialScreen';
 import { ServicesScreen } from '../views/ServicesScreen';
 import { HomeDoctorScreen } from '../views/HomeDoctorScreen';
-import { StackDatesHistorial, StackProfile, StackServices } from './StackNavigations';
+// import { StackDatesHistorial, StackProfile, StackServices } from './StackNavigations';
 
 
 export const TabsNavigation = () => {
@@ -44,7 +44,7 @@ export const TabsNavigation = () => {
           tabBarShowLabel: false,
         }
       }>
-        <Tabs.Screen name="Home" component={HomeScreen} options={{
+        {/* <Tabs.Screen name="Home" component={HomeScreen} options={{
           // eslint-disable-next-line react/no-unstable-nested-components
           tabBarIcon: () => (
             <Image source={Images.grids} style={{width: 25, height: 25, alignSelf: 'center'}}/>
@@ -69,7 +69,7 @@ export const TabsNavigation = () => {
           tabBarIcon: () => (
             <Image source={Images.profile} style={{width: 25, height: 25, alignSelf: 'center'}}/>
           ),
-        }}/>
+        }}/> */}
 
       </Tabs.Navigator>
     );

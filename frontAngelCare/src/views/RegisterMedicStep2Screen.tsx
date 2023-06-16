@@ -46,7 +46,7 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
     { label: 'Viernes', value: 'Viernes' },
     { label: 'Sabado', value: 'Sabado' },
     { label: 'Domingo', value: 'Domingo' },
-];
+  ];
 
   //states for radio buttons
   const [isRadio, setIsRadio] = useState(false);
@@ -136,10 +136,6 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
     setNextStep2(true);
   }
 
-  // const onNextStep3 = () => {
-  //   setNextStep3(true);
-  // }
-
   const onBackStep = () => {
     setNextStep(false);
   }
@@ -147,10 +143,6 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
   const onBackStep2 = () => {
     setNextStep2(false);
   }
-
-  // const onBackStep3 = () => {
-  //   setNextStep3(false);
-  // }
 
   const handleNext = async () => {
     setShowSpinner(true);
@@ -188,11 +180,6 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
       setShowSpinner(false);
     });
 
-
-
-
-
-    
   }
 
   const getLatLong = () => {
@@ -226,17 +213,9 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
           <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', marginTop: top + 50 }}>
             <View style={{ width: '15%', alignItems: 'center' }}>
 
-              <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+              <TouchableOpacity onPress={() => navigation.pop()}>
                 <ChevronLeftIcon size="6" style={{ color: "#000", marginLeft: 20 }} />
               </TouchableOpacity>
-
-                      {/* {
-              nextStep2 && (
-                <TouchableOpacity onPress={onBackStep2}>
-                  <ChevronLeftIcon size="6" style={{color: "#000", marginLeft: 20}}/>
-                </TouchableOpacity>
-              )
-            } */}
             </View>
             <View style={{ width: '75%' }}>
               <Text style={{ fontSize: 20, textAlign: 'center', color: 'black', fontWeight: 'bold' }}>Datos Personales</Text>

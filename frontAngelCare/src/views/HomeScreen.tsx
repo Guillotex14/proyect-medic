@@ -11,11 +11,19 @@ import { Images } from '../assets/imgs/imgs';
 
 // import Carousel from 'react-native-snap-carousel';
 import {  Card } from 'react-native-paper';
+import FooterNavigation from '../components/Footer';
+import { useFooter } from '../hooks/useFooter';
 
 interface Props extends StackScreenProps<any, any>{}
-export const HomeScreen = ({navigation}: Props) => {
+export const HomeScreen = ({navigation}: Props, showFooter:boolean) => {
 
     const { top } = useSafeAreaInsets();
+
+    const { onShowFooter } = useFooter();
+
+    // useEffect(() => {
+    //     onShowFooter(true);
+    // }, [])
 
     const [isDate, setIsDate] = useState('');
     const [isHour, setIsHour] = useState('');
@@ -100,7 +108,7 @@ export const HomeScreen = ({navigation}: Props) => {
                 </View>
 
             </View>
-
+            {/* <FooterNavigation/> */}
         </ScrollView>
     );
 };

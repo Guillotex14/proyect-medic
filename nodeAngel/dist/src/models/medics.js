@@ -9,7 +9,9 @@ const medicsSchema = new mongoose_1.Schema({
     phone: String,
     address: String,
     gender: String,
-    id_user: String
+    id_user: {
+        type: mongoose_1.Schema.Types.ObjectId
+    }
 });
 exports.default = (0, mongoose_1.model)("medics", medicsSchema);
 //# sourceMappingURL=medics.js.map

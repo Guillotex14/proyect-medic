@@ -5,7 +5,9 @@ const medicalFile = new Schema({
     allergy: String,
     condiction: String,
     additional: String,
-    id_patient: String
+    id_patient: {
+        type: Schema.Types.ObjectId
+    }
 });
 
 export default model("medicalFile", medicalFile);

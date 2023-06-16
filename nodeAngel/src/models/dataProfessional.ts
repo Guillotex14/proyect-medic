@@ -13,7 +13,9 @@ const dataProfessionalSchema = new Schema({
     dayService2: String,
     files: String,
     additional: String,
-    id_medic: String
+    id_medic: {
+        type: Schema.Types.ObjectId
+    }
 });
 
 export default model("dataProfessional", dataProfessionalSchema);

@@ -465,7 +465,7 @@ export const LoginScreen = ({navigation}: Props) => {
                     )}
                 </Actionsheet.Content>
             </Actionsheet>
-
+            
         </View>
     );
 };

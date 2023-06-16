@@ -26,6 +26,7 @@ import { ChatScreen } from '../views/ChatScreen';
 import { ListachatScreen } from '../views/ListachatScreen';
 import { ListDoctorsScreen } from '../views/ListDoctorsScreen';
 import { ChatDateScreen } from '../views/ChatDateScreen';
+import FooterNavigation from '../components/Footer';
 
 
 export type StackParamList = {
@@ -60,9 +61,6 @@ const Stack = createStackNavigator<StackParamList>();
 
 export const StackNavigations = () => {
 
-
-    const [isTypeUser, setIsTypeUser] = useState('');
-
     return (
         <Stack.Navigator screenOptions={{
             headerShown: false,
@@ -70,12 +68,12 @@ export const StackNavigations = () => {
                 backgroundColor: 'white',
             },
         }}>
-            {/* <Stack.Screen name="RegisterMedicStep2" component={RegisterMedicStep2Screen} /> */}
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Register" component={RegisterScreen} />
+            <Stack.Screen name="RegisterMedicStep2" component={RegisterMedicStep2Screen} />
             <Stack.Screen name="RegisterStep2" component={RegisterStep2Screen} />
-            <Stack.Screen name="RegisterStep3" component={RegisterStep3Screen} />
-            <Stack.Screen name="RegisterStep4" component={RegisterStep4Screen} />
+            {/* <Stack.Screen name="RegisterStep3" component={RegisterStep3Screen} />
+            <Stack.Screen name="RegisterStep4" component={RegisterStep4Screen} /> */}
             
             {/* navigation of pactients */}
             <Stack.Screen name="Home" component={HomeScreen} />
@@ -94,9 +92,9 @@ export const StackNavigations = () => {
             {/* navigation of doctors */}
             <Stack.Screen name="HomeMedic" component={HomeDoctorScreen} />
             <Stack.Screen name="ProfileMedic" component={ProfileDoctorScreen} />
-            <Stack.Screen name="RegisterMedicStep2" component={RegisterMedicStep2Screen} />
+            {/* <Stack.Screen name="RegisterMedicStep2" component={RegisterMedicStep2Screen} />
             <Stack.Screen name="RegisterMedicStep3" component={RegisterMedicStep3Screen} />
-            <Stack.Screen name="RegisterMedicStep4" component={RegisterMedicStep4Screen} />
+            <Stack.Screen name="RegisterMedicStep4" component={RegisterMedicStep4Screen} /> */}
             <Stack.Screen name="Vizualise" component={VisualizeScreen} />
             <Stack.Screen name="MedicalRecord" component={MedicalRecordScreen} />
             <Stack.Screen name="MedicalRecordMatch" component={VizualiseMatchScreen} />
@@ -104,54 +102,3 @@ export const StackNavigations = () => {
     );
 };
 
-export const StackProfile = () => {
-    return (
-        <Stack.Navigator screenOptions={{
-            headerShown: false,
-            cardStyle:{
-                backgroundColor: 'white',
-            },
-        }}>
-            <Stack.Screen name="Profile" component={ProfileScreen} />
-        </Stack.Navigator>
-    );
-}
-
-export const StackProfileMedic = () => {
-    return (
-        <Stack.Navigator screenOptions={{
-            headerShown: false,
-            cardStyle:{
-                backgroundColor: 'white',
-            },
-        }}>
-            <Stack.Screen name="Profile" component={ProfileScreen} />
-        </Stack.Navigator>
-    );
-}
-
-export const StackServices = () => {
-    return (
-        <Stack.Navigator screenOptions={{
-            headerShown: false,
-            cardStyle:{
-                backgroundColor: 'white',
-            },
-        }}>
-            <Stack.Screen name="Services" component={ServicesScreen} />
-        </Stack.Navigator>
-    );
-}
-
-export const StackDatesHistorial = () => {
-    return (
-        <Stack.Navigator screenOptions={{
-            headerShown: false,
-            cardStyle:{
-                backgroundColor: 'white',
-            },
-        }}>
-            <Stack.Screen name="DatesHistorial" component={DateHistorialScreen} />
-        </Stack.Navigator>
-    );
-}

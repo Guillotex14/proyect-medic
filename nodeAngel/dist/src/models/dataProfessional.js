@@ -14,7 +14,9 @@ const dataProfessionalSchema = new mongoose_1.Schema({
     dayService2: String,
     files: String,
     additional: String,
-    id_medic: String
+    id_medic: {
+        type: mongoose_1.Schema.Types.ObjectId
+    }
 });
 exports.default = (0, mongoose_1.model)("dataProfessional", dataProfessionalSchema);
 //# sourceMappingURL=dataProfessional.js.map

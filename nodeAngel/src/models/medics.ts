@@ -8,7 +8,9 @@ const medicsSchema = new Schema({
     phone: String,
     address: String,
     gender: String,
-    id_user: String
+    id_user: {
+        type: Schema.Types.ObjectId
+    }
 });
 
 export default model("medics", medicsSchema);
