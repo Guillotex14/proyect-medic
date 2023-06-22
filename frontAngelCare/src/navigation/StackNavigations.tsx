@@ -68,12 +68,12 @@ export const StackNavigations = () => {
                 backgroundColor: 'white',
             },
         }}>
+            <Stack.Screen name="Profile" component={ProfileScreen} />
+
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Register" component={RegisterScreen} />
             <Stack.Screen name="RegisterMedicStep2" component={RegisterMedicStep2Screen} />
             <Stack.Screen name="RegisterStep2" component={RegisterStep2Screen} />
-            {/* <Stack.Screen name="RegisterStep3" component={RegisterStep3Screen} />
-            <Stack.Screen name="RegisterStep4" component={RegisterStep4Screen} /> */}
             
             {/* navigation of pactients */}
             <Stack.Screen name="Home" component={HomeScreen} />
@@ -83,7 +83,7 @@ export const StackNavigations = () => {
             <Stack.Screen name="Clinic" component={ClinicScreen} />
             <Stack.Screen name="Ensurance" component={EnsuranceScreen} />
             <Stack.Screen name="Dates" component={DatesScreen} />
-            <Stack.Screen name="Profile" component={ProfileScreen} />
+            {/* <Stack.Screen name="Profile" component={ProfileScreen} /> */}
             <Stack.Screen name="ChatList" component={ListachatScreen} />
             <Stack.Screen name="Chat" component={ChatScreen} />
             <Stack.Screen name="ChatDate" component={ChatDateScreen} />

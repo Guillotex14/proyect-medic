@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
-import { Text, View, TouchableOpacity, TextInput, Image, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Text, View, TouchableOpacity, TextInput, Image, ScrollView, Platform } from 'react-native';
 import { styles } from '../theme/ThemeApp';
 
 import { StackScreenProps } from '@react-navigation/stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Actionsheet, useDisclose } from 'native-base';
-// import OTPInputView from '@twotalltotems/react-native-otp-input';
+import OTPInputView from '@twotalltotems/react-native-otp-input';
 import { Images } from '../assets/imgs/imgs';
 import { RadioButton } from 'react-native-paper';
 
 import apiConnection from '../api/Concecction';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface Props extends StackScreenProps<any, any>{}
 
@@ -22,12 +23,17 @@ export const LoginScreen = ({navigation}: Props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    //recovery password
+    const [recoveryEmail, setRecoveryEmail] = useState('');
+    const [code, setCode] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [newPassword2, setNewPassword2] = useState('');
+
+
     //states for radioButtons
     const [isRadio, setIsRadio] = useState(false);
     const [isRadio2, setIsRadio2] = useState(false);
 
-
-    //state for actionsheet content
     //open first data actionsheet
     const [isContent, setIsContent] = useState(false);
     //open second actionsheet
@@ -35,6 +41,10 @@ export const LoginScreen = ({navigation}: Props) => {
     //open third actionsheet
     const [isThirdContent, setIsThirdContent] = useState(false);
 
+    //platform 
+    const [isAndroid, setIsAndroid] = useState(false);
+    const [isIos, setIsIos] = useState(false);
+    const [isWeb, setIsWeb] = useState(false);
 
     //state for actionsheet
     const {isOpen, onOpen, onClose} = useDisclose();
@@ -43,11 +53,13 @@ export const LoginScreen = ({navigation}: Props) => {
     const Login = async () => {
         if (isRadio && !isRadio2) {
             
-            const api = await apiConnection.post('/auth/loginPatient', {
+            await apiConnection.post('/auth/loginPatient', {
                 email: email,
                 password: password
             }).then((response) => {
                 if (response.data.status == true) {
+
+                    AsyncStorage.setItem('me', JSON.stringify(response.data.data));
                     navigation.navigate('Home');
                 }
                     
@@ -57,11 +69,12 @@ export const LoginScreen = ({navigation}: Props) => {
         }
 
         if (!isRadio && isRadio2) {
-            const api = await apiConnection.post('/auth/loginMedic', {
+            await apiConnection.post('/auth/loginMedic', {
                 email: email,
                 password: password
             }).then((response) => {
                 if (response.data.status == true) {
+                    AsyncStorage.setItem('me', JSON.stringify(response.data.data));
                     navigation.navigate('HomeMedic');
                 }
                     
@@ -71,6 +84,58 @@ export const LoginScreen = ({navigation}: Props) => {
         }
 
     };
+
+    //functions for recovery password
+    const recoveryPassword = async () => {
+        
+        await apiConnection.post('/auth/forgotPassword', {
+            email: recoveryEmail,
+        }).then((response) => {
+            if (response.data.status == true) {
+                console.log(response.data);
+                opeContent2();
+            }
+        
+        }
+        ).catch((error) => {
+            console.log(error);
+        });
+        
+    };
+
+    const verifyCode = async () => {
+        await apiConnection.post('/auth/verifyCode', {
+            email: recoveryEmail,
+            code: code,
+        }).then((response) => {
+            if (response.data.status == true) {
+                console.log(response.data);
+                opeContent3();
+            }
+        
+        }
+        ).catch((error) => {
+            console.log(error);
+        });
+    };
+
+    const changePassword = async () => {
+        await apiConnection.post('/auth/resetPassword', {
+            email: recoveryEmail,
+            password: newPassword,
+            password2: newPassword2,
+        }).then((response) => {
+            if (response.data.status == true) {
+                console.log(response.data);
+                onClose();
+            }
+        
+        }
+        ).catch((error) => {
+            console.log(error);
+        });
+    };
+
 
     //functions for actionsheet
     const openActionSheet = () => {
@@ -87,6 +152,32 @@ export const LoginScreen = ({navigation}: Props) => {
         setIsThirdContent(true);
         setIsSecondContent(false);
     };
+
+    const platform = () => {
+        if (Platform.OS === 'android') {
+            setIsAndroid(true);
+            setIsIos(false);
+            setIsWeb(false);
+        }
+
+        if (Platform.OS === 'ios') {
+            setIsAndroid(false);
+            setIsIos(true);
+            setIsWeb(false);
+        }
+
+        if (Platform.OS === 'web') {
+            setIsAndroid(false);
+            setIsIos(false);
+            setIsWeb(true);
+        }
+
+    };
+
+    useEffect(() => {
+        platform();
+    }, [])
+    
 
     //function for RadioButtons
     const onRadioButtons = (radio: string) => {
@@ -291,63 +382,57 @@ export const LoginScreen = ({navigation}: Props) => {
                     {
                         isContent && (
                             <>
-                            <View style={
-                                // eslint-disable-next-line react-native/no-inline-styles
-                                {
-                                marginTop: 10,
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                width: '100%',
-                            }}>
-                                <Text style={
+                                <View style={
                                     // eslint-disable-next-line react-native/no-inline-styles
                                     {
-                                        fontSize: 20,
-                                        fontWeight: 'bold',
-                                        color: 'black',
-                                        textAlign: 'center',
-                                        alignSelf: 'center',
-                                    }}>
-                                    Olvide mi contraseña
-                                </Text>
-                                <Text style={
-                                    // eslint-disable-next-line react-native/no-inline-styles
-                                    {
-                                        fontSize: 12,
-                                        fontWeight: '300',
-                                        color: 'black',
-                                        marginTop: 5,
-                                        alignSelf: 'center',
-                                    }}>
-                                    Ingresa tu correo electrónico para el proceso de verificación
-                                </Text>
-                                <Text style={
-                                    // eslint-disable-next-line react-native/no-inline-styles
-                                    {
-                                        fontSize: 12,
-                                        fontWeight: '300',
-                                        color: 'black',
-                                        marginTop: 5,
-                                    }}>
-                                    Le enviaremos un codigo de 4 digitos a su correo electrónico
-                                </Text>
-                                <TextInput
-                                    value={text}
-                                    placeholder="Correo electrónico"
-                                    onChangeText={onChangeText}
-                                    // eslint-disable-next-line react-native/no-inline-styles
-                                    style={{ ...styles.input, alignSelf: 'center', width: '80%' }} />
-                                </View>
-                            <TouchableOpacity
-                                // eslint-disable-next-line react-native/no-inline-styles
-                                style={{ ...styles.button, alignItems: 'center', alignSelf: 'center' }}
-                                onPress={opeContent2}>
+                                    marginTop: 10,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    width: '100%',
+                                }}>
                                     <Text style={
-                                        // eslint-disable-next-line react-native/no-inline-styles
-                                        { color: 'white', fontWeight: 'bold', fontSize: 20 }}>
-                                        Continuar
+                                        {
+                                            fontSize: 20,
+                                            fontWeight: 'bold',
+                                            color: 'black',
+                                            textAlign: 'center',
+                                            alignSelf: 'center',
+                                        }}>
+                                        Olvide mi contraseña
                                     </Text>
-                                </TouchableOpacity></>
+                                    <Text style={
+                                        {
+                                            fontSize: 13,
+                                            fontWeight: '400',
+                                            color: '#B3B8C9',
+                                            marginTop: 5,
+                                            alignSelf: 'center',
+                                        }}>
+                                        Ingresa tu correo electrónico para el proceso de verificación
+                                    </Text>
+                                    <Text style={
+                                        {
+                                            fontSize: 13,
+                                            fontWeight: '400',
+                                            color: '#B3B8C9',
+                                            marginTop: 5,
+                                        }}>
+                                        Le enviaremos un codigo de 4 digitos a su correo electrónico
+                                    </Text>
+                                    <TextInput
+                                        value={recoveryEmail}
+                                        placeholder="Correo electrónico"
+                                        onChangeText={setRecoveryEmail}
+                                        style={{ ...styles.input, alignSelf: 'center', width: '80%' }} />
+                                </View>
+                                <TouchableOpacity
+                                    style={{ ...styles.button, alignItems: 'center', alignSelf: 'center' }}
+                                    onPress={recoveryPassword}>
+                                        <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20 }}>
+                                            Continuar
+                                        </Text>
+                                </TouchableOpacity>
+                            </>
                         )
                     }
 
@@ -365,9 +450,9 @@ export const LoginScreen = ({navigation}: Props) => {
                                 </Text>
                                 <Text style={
                                     {
-                                        fontSize: 11,
-                                        fontWeight: '400',
-                                        color: 'black',
+                                        fontSize: 13,
+                                        fontWeight: '500',
+                                        color: '#B3B8C9',
                                         marginTop: 5,
                                     }}>
                                     Introduce los 4 digitos que te enviamos a tu correo electrónico
@@ -380,26 +465,60 @@ export const LoginScreen = ({navigation}: Props) => {
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                 }}>
-                                {/* <OTPInputView
+
+                                {/* {
+                                    isAndroid && (
+                                    <OTPInputView
                                     pinCount={4}
                                     autoFocusOnLoad
                                     codeInputFieldStyle={styles.underlineStyleBase}
                                     codeInputHighlightStyle={styles.underlineStyleHighLighted}
                                     onCodeFilled={(code => {
-                                        console.log(`Code is ${code}, you are good to go!`);
+                                        setCode(code);
                                     })}
                                     style={{width: '80%', height: 60, marginHorizontal: 15}}
-                                /> */}
-                                <TouchableOpacity
-                                    style={{...styles.button, alignItems: 'center', alignSelf: 'center', width: '80%'}}
-                                    onPress={opeContent3}>
-                                        <Text style={
-                                            {color: 'white', fontWeight: 'bold', fontSize: 20}}>
-                                        Continuar
-                                    </Text>
-                                </TouchableOpacity>
+                                />
+                                    )
+                                }
+
+                                {
+                                    isIos && (
+                                    <OTPInputView
+                                    pinCount={4}
+                                    autoFocusOnLoad
+                                    codeInputFieldStyle={styles.underlineStyleBase}
+                                    codeInputHighlightStyle={styles.underlineStyleHighLighted}
+                                    onCodeFilled={(code => {
+                                        setCode(code);
+                                    })}
+                                    style={{width: '80%', height: 60, marginHorizontal: 15}}
+                                />
+                                    )
+                                } */}
+
+                                {
+                                    isWeb && (
+                                        <TextInput
+                                        value={code}
+                                        placeholder="Correo electrónico"
+                                        onChangeText={setCode}
+                                        style={{ ...styles.input, alignSelf: 'center', width: '90%' }} />
+                                    )
+                                }
+
+
+                                {/*  */}
                             </View>
-                        </>)
+                            <TouchableOpacity
+                                style={{...styles.button, alignItems: 'center', alignSelf: 'center'}}
+                                onPress={verifyCode}>
+                                    <Text style={
+                                        {color: 'white', fontWeight: 'bold', fontSize: 20}}>
+                                    Continuar
+                                </Text>
+                            </TouchableOpacity>
+                        </>
+                        )
                     }
 
                     { isThirdContent && (
@@ -423,9 +542,9 @@ export const LoginScreen = ({navigation}: Props) => {
                                 </Text>
                                 <Text style={
                                     {
-                                        fontSize: 10,
-                                        fontWeight: '300',
-                                        color: 'black',
+                                        fontSize: 13,
+                                        fontWeight: '500',
+                                        color: '#B3B8C9',
                                         marginTop: 5,
                                         textAlign: 'center',
                                         alignSelf: 'center',
@@ -435,26 +554,26 @@ export const LoginScreen = ({navigation}: Props) => {
                                 </Text>
 
                                 <TextInput
-                                    value={text}
+                                    value={newPassword}
                                     placeholder="Nueva contraseña"
-                                    // right={<TextInput.Affix text={text} />}
                                     secureTextEntry={true}
-                                    onChangeText={onChangeText}
+                                    onChangeText={setNewPassword}
                                     style={{...styles.input, alignSelf: 'center'}}
                                 />
 
                                 <TextInput
-                                    value={text}
+                                    value={newPassword2}
                                     placeholder="Repetir nueva contraseña"
-                                    // right={<TextInput.Affix text={text} />}
-                                    onChangeText={onChangeText}
+                                    onChangeText={setNewPassword2}
                                     style={{...styles.input, alignSelf: 'center'}}
                                     secureTextEntry={true}
                                 />
                             </View>
 
                             <TouchableOpacity
-                                style={{...styles.button, alignItems: 'center', alignSelf: 'center'}}>
+                                style={{...styles.button, alignItems: 'center', alignSelf: 'center'}}
+                                onPress={changePassword}
+                                >
                                     <Text style={
                                         {color: 'white',fontWeight: 'bold', fontSize: 20}
                                         }>

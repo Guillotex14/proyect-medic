@@ -57,7 +57,6 @@ export const RegisterStep2Screen = ({navigation, route}:Props) => {
   const [password, setPassword] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
-  const [speciality, setSpeciality] = useState('');
   const [gender, setGender] = useState('');
   const [disease, setDisease] = useState('');
   const [arrayDisease, setArrayDisease] = useState<string[]>([]);

@@ -8,6 +8,8 @@ const patientsSchema = new Schema({
     phone: String,
     address: String,
     gender: String,
+    ensurancePolicy: String,
+    policyNumber: String,
     id_user: {
         type: Schema.Types.ObjectId
     }

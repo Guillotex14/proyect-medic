@@ -1,6 +1,8 @@
 import { Router, Request, Response } from "express";
 import  bcrypt  from "bcrypt";
-import jwt from "jsonwebtoken";
+// import jwt from "jsonwebtoken";
+import nodemailer from "nodemailer";
+
 //modelss
 import Users from "../models/Users";
 import { RespondesModel } from "../models/response";
@@ -8,6 +10,7 @@ import patients from "../models/patients";
 import dataProfessional from "../models/dataProfessional";
 import medics from "../models/medics";
 import medicalFile from "../models/medicalFile";
+import codeVerification from "../models/codeVerification";
 
 const authRouter = Router();
 
@@ -16,16 +19,50 @@ authRouter.post("/loginPatient", async (req: Request, res: Response) => {
     const jsonRes: RespondesModel = new RespondesModel();
 
     const { email, password } = req.body;
-    const ress =  await Users.findOne({email: email}).then((res) => {
+    const ress =  await Users.findOne({email: email}).then(async (res) => {
         
         if (res) {
-            if (res.password == password) {
+
+            const validP = await bcrypt.compare(password, res.password!);
+
+            if (validP) {
                 jsonRes.code = 200;
                 jsonRes.message = "login success";
                 jsonRes.status = true;
-                jsonRes.data = res;
+
+                await patients.findOne({id_user: res._id}).then((res2) => {
+                    if (res2) {
+                        
+                        let patientInfo = {
+                            id: res._id,
+                            email: res.email,
+                            typeUser: res.type_user,
+                            fullName: res2.fullName,
+                            typeDni: res2.typeDni,
+                            dni: res2.dni,
+                            birthdate: res2.birthdate,
+                            phone: res2.phone,
+                            address: res2.address,
+                            id_patient: res2._id,
+                            ensuracePlicy: res2.ensurancePolicy != "" ? res2.ensurancePolicy : "",
+                            policyNumber: res2.policyNumber != "" ? res2.policyNumber : ""
+                        }
+
+                        jsonRes.data = patientInfo;
+                    }else{
+                        jsonRes.code = 400;
+                        jsonRes.message = "no existe";
+                        jsonRes.status = false;
+                        jsonRes.data = res;
+                        return jsonRes;
+                    }   
+                    
+                }).catch((err) => {
+                    console.log(err)
+                });
+
                 return jsonRes;
-            } else if (res.password != password && res.password != null) {
+            } else {
                 jsonRes.code = 400;
                 jsonRes.message = "password incorrecto";
                 jsonRes.status = false;
@@ -48,15 +85,49 @@ authRouter.post("/loginMedic", async (req: Request, res: Response) => {
     const jsonRes: RespondesModel = new RespondesModel();
 
     const { email, password } = req.body;
-    const ress =  await Users.findOne({email: email}).then((res) => {
+
+    const ress =  await Users.findOne({email: email}).then(async (res) => {
         if (res) {
-            if (res.password == password) {
+
+            const validP = await bcrypt.compare(password, res.password!);
+
+            if (validP) {
                 jsonRes.code = 200;
                 jsonRes.message = "login success";
                 jsonRes.status = true;
-                jsonRes.data = res;
+
+                await medics.findOne({id_user: res._id}).then((res2) => {
+                    if (res2) {
+
+                        let me = {
+                            id: res._id,
+                            email: res.email,
+                            typeUser: res.type_user,
+                            fullName: res2.fullName,
+                            typeDni: res2.typeDni,
+                            dni: res2.dni,
+                            birthdate: res2.birthdate,
+                            phone: res2.phone,
+                            address: res2.address,
+                            id_medic: res2._id,
+                            speciality: res2.specialty,
+                        }
+
+                        jsonRes.data = me;
+
+                    }else{
+                        jsonRes.code = 400;
+                        jsonRes.message = "no existe";
+                        jsonRes.status = false;
+                        jsonRes.data = res;
+                        return jsonRes;
+                    }
+                }).catch((err) => {
+                    console.log(err)
+                });
+
                 return jsonRes;
-            } else if (res.password != password && res.password != null) {
+            } else {
                 jsonRes.code = 400;
                 jsonRes.message = "password incorrecto";
                 jsonRes.status = false;
@@ -83,8 +154,6 @@ authRouter.post("/registerMedic", async (req: Request, res: Response) => {
     const saltRounds = 10;
 
     const hash = await bcrypt.hash(password, saltRounds);
-
-    console.log(hash)
     
     const newUser = new Users({email, password: hash, type_user: "doctor"});
     const newMedic = new medics({fullName,typeDNISelected,dni,phone,address,gender,speciality});
@@ -116,12 +185,16 @@ authRouter.post("/registerMedic", async (req: Request, res: Response) => {
     res.json(jsonRes);
 });
 
-authRouter.post("/registerPatient", (req: Request, res: Response) => {
+authRouter.post("/registerPatient", async (req: Request, res: Response) => {
     const jsonRes: RespondesModel = new RespondesModel();
 
     const { fullName,typeDni,dni,email,password,phone,address,gender,diseases,alergies,condition,aditional,birthdate } = req.body;
     
-    const newUser = new Users({email, password, type_user: "paciente"});
+    const saltRounds = 10;
+
+    const hash = await bcrypt.hash(password, saltRounds);
+
+    const newUser = new Users({email, password:hash, type_user: "paciente"});
     const newPatient = new patients({fullName,typeDni,dni,birthdate,phone,address,gender})
 
     let stringDiseases = "";
@@ -143,22 +216,21 @@ authRouter.post("/registerPatient", (req: Request, res: Response) => {
         }
     }
 
+    const filePatient = new medicalFile({disease:stringDiseases,allergy:stringAlergies,condiction:condition,additional:aditional});
 
-    const filePatient = new medicalFile({stringDiseases,stringAlergies,condition,aditional});
-
-    newUser.save().then((res) => {
+    await newUser.save().then((res) => {
         newPatient.id_user = newUser._id;
     }).catch((err) => {
         console.log(err)
     });
 
-    newPatient.save().then((res) => {
+    await newPatient.save().then((res) => {
         filePatient.id_patient = newPatient._id;
     }).catch((err) => {
         console.log(err)
     });
 
-    filePatient.save();
+    await filePatient.save();
 
     jsonRes.code = 200;
     jsonRes.message = "register success";
@@ -168,21 +240,126 @@ authRouter.post("/registerPatient", (req: Request, res: Response) => {
     res.json(jsonRes);
 });
 
-authRouter.get("/forgotPassword", (req: Request, res: Response) => {
-    console.log("forgotPassword")
-    res.send("forgotPassword");
+authRouter.post("/forgotPassword", async (req: Request, res: Response) => {
+    
+    const jsonResp:RespondesModel = new RespondesModel();
+
+    const { email } = req.body;
+
+    const ress = await Users.findOne({email: email}).then(async (res) => {
+        if (res) {
+            jsonResp.code = 200;
+            jsonResp.message = "email exist";
+            jsonResp.status = true;
+
+            const code = Math.floor(Math.random() * (9999 - 1000)) + 1000;
+
+            const newCode = new codeVerification({code: code, email:email});
+            
+            await newCode.save().then((res2) => {
+
+                const transporter = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth: {
+                        user: 'jefersonmujica@gmail.com',
+                        pass: 'qtthfkossxcahyzo',
+                    }
+                });
+                
+                const mailOptions = {
+                    from: 'AngelCare Support ',
+                    to: email,
+                    subject: 'codigo de verificacion',
+                    text: `Tu codigo es ${code}`,
+                };
+
+                transporter.sendMail(mailOptions, function(error, info){
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        // console.log('Email sent: ' + info.response);
+                    };
+                });
+
+            }).catch((err) => {
+                console.log(err)
+            });
+
+            jsonResp.data = {};
+
+            return jsonResp;
+
+        } else if (!res) {
+            jsonResp.code = 400;
+            jsonResp.message = "email not exist";
+            jsonResp.status = false;
+            return jsonResp;
+        }
+    }).catch((err) => {
+        console.log(err)
+    });
+
+    console.log(ress)
+
+    res.json(ress);
+
 });
 
-authRouter.get("/verifyCode", (req: Request, res: Response) => {
-    console.log("verifyCode")
-    res.send("verifyCode");
+authRouter.post("/verifyCode", async (req: Request, res: Response) => {
+    const jsonResp = new RespondesModel();
+
+    const { code, email } = req.body;
+
+    const ress = await codeVerification.findOne({code: code, email: email}).then(async (res) => {
+        if (res) {
+            jsonResp.code = 200;
+            jsonResp.message = "codigo verificado exitosamente";
+            jsonResp.status = true;
+
+            await codeVerification.deleteOne({code: code, email: email}).then((res) => {
+            }).catch((err) => {
+                console.log(err)
+            });
+
+            return jsonResp;
+        } else if (!res) {
+            jsonResp.code = 400;
+            jsonResp.message = "codigo no valido";
+            jsonResp.status = false;
+            return jsonResp;
+        }
+    }
+    ).catch((err) => {
+        console.log(err)
+    });
+    
+    res.json(ress);
+    
 });
 
-authRouter.get("/resetPassword", (req: Request, res: Response) => {
-    console.log("resetPassword")
-    res.send("resetPassword");
+authRouter.post("/resetPassword", async (req: Request, res: Response) => {
+    const jsonResp: RespondesModel = new RespondesModel();
+
+    console.log(req.body)
+
+    const { email, password } = req.body;
+
+    const saltRounds = 10;
+
+    const hash = await bcrypt.hash(password, saltRounds);
+
+    const filter = { email: email };
+
+    const update = { password: hash };
+
+    const ress = await Users.findOneAndUpdate(filter,update)
+    
+    jsonResp.code = 200;
+    jsonResp.message = "password reset";
+    jsonResp.status = true;
+    jsonResp.data = {};
+
+    res.json(ress);
 });
-
-
 
 export default authRouter;
