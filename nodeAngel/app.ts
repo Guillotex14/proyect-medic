@@ -27,7 +27,8 @@ export class App {
     routes() {
         this.app.use("/auth", authRouter );
 
-        this.app.use(Express.static(path.join(__dirname, "public")));
+        this.app.use(Express.static(path.join(__dirname, "src")));
+        this.app.use(Express.static(path.join(__dirname, "dist")));
     }
 
     start(): void {
