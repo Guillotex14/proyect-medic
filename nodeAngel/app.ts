@@ -27,7 +27,7 @@ export class App {
 
     routes() {
         this.app.use("/auth", authRouter );
-
+        this.app.use("/patient", patientRouter);
         this.app.use(Express.static(path.join(__dirname, "src")));
         this.app.use(Express.static(path.join(__dirname, "dist")));
     }
