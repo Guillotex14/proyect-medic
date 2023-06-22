@@ -9,7 +9,7 @@ patientRouter.get("/allMedics", async (req: Request, res: Response) => {
 
     const jsonRes: RespondesModel = new RespondesModel();
 
-    const ress =  await Users.find({rol: "doctor"}).then((res) => {
+    const ress =  await Users.find({type_user: "doctor"}).then((res) => {
         if (res) {
             jsonRes.code = 200;
             jsonRes.message = "lista de medicos";

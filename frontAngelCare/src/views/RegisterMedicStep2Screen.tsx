@@ -427,12 +427,12 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
                   {
                     showDayService && ( 
                       <Modal visible={showDayService} animationType="fade" transparent>
-                    <View style={styles_modal.modalContainer}>
-                      <View style={styles_modal.modalContent}>
-                        <FlatList style={{ flexGrow: 1 }} data={options} renderItem={({ item }) => (<TouchableOpacity style={styles_modal.optionContainer} onPress={() => onModalDayservice(item.value)}><Text style={styles_modal.optionText}>{item.label}</Text></TouchableOpacity>)} keyExtractor={(item) => item.value} />
-                      </View>
-                    </View>
-                  </Modal>
+                        <View style={styles_modal.modalContainer}>
+                          <View style={styles_modal.modalContent}>
+                            <FlatList style={{ flexGrow: 1 }} data={options} renderItem={({ item }) => (<TouchableOpacity style={styles_modal.optionContainer} onPress={() => onModalDayservice(item.value)}><Text style={styles_modal.optionText}>{item.label}</Text></TouchableOpacity>)} keyExtractor={(item) => item.value} />
+                          </View>
+                        </View>
+                      </Modal>
                     )
                   }
                   {
