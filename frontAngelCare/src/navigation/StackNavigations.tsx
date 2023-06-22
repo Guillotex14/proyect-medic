@@ -68,8 +68,8 @@ export const StackNavigations = () => {
                 backgroundColor: 'white',
             },
         }}>
-            <Stack.Screen name="Profile" component={ProfileScreen} />
-
+            {/* <Stack.Screen name="Profile" component={ProfileScreen} /> */}
+            <Stack.Screen name="Dates" component={DatesScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Register" component={RegisterScreen} />
             <Stack.Screen name="RegisterMedicStep2" component={RegisterMedicStep2Screen} />
@@ -82,8 +82,8 @@ export const StackNavigations = () => {
             <Stack.Screen name="Ambulance" component={AmbulanceScreen} />
             <Stack.Screen name="Clinic" component={ClinicScreen} />
             <Stack.Screen name="Ensurance" component={EnsuranceScreen} />
-            <Stack.Screen name="Dates" component={DatesScreen} />
-            {/* <Stack.Screen name="Profile" component={ProfileScreen} /> */}
+            {/* <Stack.Screen name="Dates" component={DatesScreen} /> */}
+            <Stack.Screen name="Profile" component={ProfileScreen} />
             <Stack.Screen name="ChatList" component={ListachatScreen} />
             <Stack.Screen name="Chat" component={ChatScreen} />
             <Stack.Screen name="ChatDate" component={ChatDateScreen} />
@@ -92,12 +92,12 @@ export const StackNavigations = () => {
             {/* navigation of doctors */}
             <Stack.Screen name="HomeMedic" component={HomeDoctorScreen} />
             <Stack.Screen name="ProfileMedic" component={ProfileDoctorScreen} />
-            {/* <Stack.Screen name="RegisterMedicStep2" component={RegisterMedicStep2Screen} />
-            <Stack.Screen name="RegisterMedicStep3" component={RegisterMedicStep3Screen} />
-            <Stack.Screen name="RegisterMedicStep4" component={RegisterMedicStep4Screen} /> */}
             <Stack.Screen name="Vizualise" component={VisualizeScreen} />
             <Stack.Screen name="MedicalRecord" component={MedicalRecordScreen} />
             <Stack.Screen name="MedicalRecordMatch" component={VizualiseMatchScreen} />
+            {/* <Stack.Screen name="RegisterMedicStep2" component={RegisterMedicStep2Screen} /> */}
+            {/*<Stack.Screen name="RegisterMedicStep3" component={RegisterMedicStep3Screen} />
+            <Stack.Screen name="RegisterMedicStep4" component={RegisterMedicStep4Screen} /> */}
         </Stack.Navigator>
     );
 };

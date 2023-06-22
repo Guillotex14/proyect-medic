@@ -29,13 +29,15 @@ authRouter.post("/loginPatient", (req, res) => __awaiter(void 0, void 0, void 0,
     const jsonRes = new response_1.RespondesModel();
     const { email, password } = req.body;
     const ress = yield Users_1.default.findOne({ email: email }).then((res) => __awaiter(void 0, void 0, void 0, function* () {
+        console.log(res);
         if (res) {
             const validP = yield bcrypt_1.default.compare(password, res.password);
             if (validP) {
                 jsonRes.code = 200;
                 jsonRes.message = "login success";
                 jsonRes.status = true;
-                yield patients_1.default.findOne({ id_user: res._id }).then((res2) => {
+                yield patients_1.default.findOne({ id_user: res._id.toString() }).then((res2) => __awaiter(void 0, void 0, void 0, function* () {
+                    console.log(res2);
                     if (res2) {
                         let patientInfo = {
                             id: res._id,
@@ -55,12 +57,12 @@ authRouter.post("/loginPatient", (req, res) => __awaiter(void 0, void 0, void 0,
                     }
                     else {
                         jsonRes.code = 400;
-                        jsonRes.message = "no existe";
+                        jsonRes.message = "no existe 1";
                         jsonRes.status = false;
                         jsonRes.data = res;
                         return jsonRes;
                     }
-                }).catch((err) => {
+                })).catch((err) => {
                     console.log(err);
                 });
                 return jsonRes;

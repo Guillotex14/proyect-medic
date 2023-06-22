@@ -20,7 +20,6 @@ authRouter.post("/loginPatient", async (req: Request, res: Response) => {
 
     const { email, password } = req.body;
     const ress =  await Users.findOne({email: email}).then(async (res) => {
-        
         if (res) {
 
             const validP = await bcrypt.compare(password, res.password!);
@@ -30,7 +29,7 @@ authRouter.post("/loginPatient", async (req: Request, res: Response) => {
                 jsonRes.message = "login success";
                 jsonRes.status = true;
 
-                await patients.findOne({id_user: res._id}).then((res2) => {
+                await patients.findOne({id_user: res._id.toString()}).then(async (res2) => {
                     if (res2) {
                         
                         let patientInfo = {
@@ -44,14 +43,14 @@ authRouter.post("/loginPatient", async (req: Request, res: Response) => {
                             phone: res2.phone,
                             address: res2.address,
                             id_patient: res2._id,
-                            ensuracePlicy: res2.ensurancePolicy != "" ? res2.ensurancePolicy : "",
+                            ensuracePolicy: res2.ensurancePolicy != "" ? res2.ensurancePolicy : "",
                             policyNumber: res2.policyNumber != "" ? res2.policyNumber : ""
                         }
 
                         jsonRes.data = patientInfo;
                     }else{
                         jsonRes.code = 400;
-                        jsonRes.message = "no existe";
+                        jsonRes.message = "no existe 1";
                         jsonRes.status = false;
                         jsonRes.data = res;
                         return jsonRes;

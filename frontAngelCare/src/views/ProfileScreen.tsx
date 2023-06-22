@@ -11,7 +11,7 @@ import DatePicker from '@react-native-community/datetimepicker';
 import Moment from 'moment';
 import apiConnection from '../api/Concecction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Ionicons } from '@expo/vector-icons';
 
 interface Props extends StackScreenProps<any, any>{}
 
@@ -133,7 +133,8 @@ export const ProfileScreen = ({navigation}: Props) => {
                 <View style={{ flexDirection: 'row', height: 150,  alignItems: 'center', alignSelf: 'center', marginTop: -30}}>
                     <View style={{width: '20%', alignItems: 'center'}} >
                         <TouchableOpacity onPress={()=>{navigation.pop()}}>
-                        <ChevronLeftIcon  color="white" size="lg" style={{alignSelf: 'center', marginTop: 15,marginRight: 20}}/>
+                        {/* <ChevronLeftIcon  color="white" size="lg" style={{alignSelf: 'center', marginTop: 15,marginRight: 20}}/> */}
+                        <Ionicons name="chevron-back-outline" size={30} color="white" style={{alignSelf: 'center', marginTop: 25,marginRight: 20}} />
                         </TouchableOpacity>
                     </View>
                     <View style={{width: '70%'}}>

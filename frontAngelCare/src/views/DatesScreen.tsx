@@ -1,20 +1,24 @@
-import { Text, TextInput, TouchableOpacity, View, Image } from 'react-native';
+import { Text, TextInput, TouchableOpacity, View, Image, FlatList, Modal} from 'react-native';
 import React, { useState } from 'react';
 import { styles } from '../theme/ThemeApp';
-import { AddIcon, ChevronLeftIcon, Modal } from 'native-base';
+import { AddIcon, ChevronLeftIcon,  } from 'native-base';
 import { StackScreenProps } from '@react-navigation/stack';
 import { Images } from '../assets/imgs/imgs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Avatar, Card, Button } from 'react-native-paper';
+import { Ionicons } from '@expo/vector-icons';
+import { styles_modal } from '../theme/Modal_Profile_Doctor';
 
 interface Props extends StackScreenProps<any, any> {}
 
 export const DatesScreen = ({navigation}:Props) => {
 
+  const [reason, setReason] = useState('');
+  const [symptoms, setSymptoms] = useState('');
+  const [arraySymptoms, setArraySymptoms] = useState<String[]>([]);
+
   const [isOpen, setIsOpen ] = useState(false);
-
   const [isSend, setIsSend ] = useState(false);
-
   const [isSeach, setIsSeach ] = useState(false);
 
   const { top, bottom } = useSafeAreaInsets();
@@ -27,9 +31,34 @@ export const DatesScreen = ({navigation}:Props) => {
   const sendDates = () => {
     setIsSend(true);
     setIsSeach(false);
+    setIsOpen(false);
     setTimeout(() => {
       searchDoctor();
     }, 2000);
+  }
+
+  const addSymptoms = () => {
+    let exist = false;
+    if (symptoms !== ''){
+      const exist1 = arraySymptoms.find((item) => item === symptoms);
+      if (exist1){
+        exist = true;
+      }
+
+      if (exist){
+        alert('Ya existe este sintoma');
+      }else{
+        setArraySymptoms([...arraySymptoms, symptoms]);
+        setSymptoms('');
+      }
+  
+    }
+  }
+
+  const deleteSymptoms = (symp: any) => {
+    console.log(symp)
+    const newArray = arraySymptoms.filter((item) => item !== symp);
+    setArraySymptoms(newArray);
   }
 
   if (isSend && !isSeach){
@@ -99,7 +128,7 @@ export const DatesScreen = ({navigation}:Props) => {
             <View style={{width: 70}}>
               <TouchableOpacity onPress={()=>{ navigation.pop;}}
               style={{marginLeft: 25}}>
-                <ChevronLeftIcon size={6} color={'black'} />
+                <Ionicons name='chevron-back' size={40} color={"#000"}/>
               </TouchableOpacity>
             </View>
             <View style={{width: 300}}>
@@ -109,53 +138,125 @@ export const DatesScreen = ({navigation}:Props) => {
             </View>
           </View>
 
-          {/* nombre completo */}
+          {/* sintomas*/}
           <View style={{width: '100%', alignContent: 'center', marginHorizontal: 20, alignSelf: 'center', marginTop: 50, alignItems: 'center'}}>
-            <Text style={{fontSize: 15, color: 'black', fontWeight: '300', alignSelf:'flex-start', marginLeft: 20}}>
+            <Text style={{fontSize: 17, color: 'black', fontWeight: '300', alignSelf:'flex-start', marginLeft: 20}}>
               Razón por la cual acude a la consulta
             </Text>
-            <TextInput style={{...styles.input}} />
+            <TextInput
+              editable
+              multiline
+              numberOfLines={6}
+              maxLength={240}
+              style={{padding: 10, backgroundColor: 'white', borderRadius: 10, width: '90%', borderColor: 'gray', borderWidth: 1, marginHorizontal: 10, marginVertical: 5}}
+              value={reason}
+              onChangeText={setReason}
+            />
           </View>
 
-            {/* direccion */}
-          <View style={{width: '100%', alignContent: 'center', marginHorizontal: 20, alignSelf: 'center', marginTop: 10, alignItems: 'center'}}>
-            <Text style={{fontSize: 15, marginHorizontal: 10, color: 'black', fontWeight: '300', alignSelf:'flex-start', marginLeft: 20}}>
-              Sintomas
-            </Text>
-            <TextInput style={{...styles.input}} />
+
+
+            {/* sintoma */}
+          <View style={{flexDirection: 'row'}}>
+
+            <View style={{alignContent: 'center', marginHorizontal: 10, alignSelf: 'center', marginTop: 10, alignItems: 'center',width: "72%" }}>
+              <Text style={{fontSize: 17, marginHorizontal: 10, color: 'black', fontWeight: '300', alignSelf:'flex-start', marginLeft: 20}}>
+                Sintomas
+              </Text>
+              <TextInput style={{...styles.input}} value={symptoms} onChangeText={setSymptoms}/>
+            </View>
+            <View style={{alignContent: 'center', alignSelf: 'center', marginTop: 10,width: "20%" }}>
+              <TouchableOpacity style={{...styles.button, marginTop: 30, width: 45, height:45}} onPress={()=>addSymptoms()}>
+                <Ionicons name='add' size={35} color={"#fff"} style={{alignContent: 'center', alignSelf: 'center',}}/>
+              </TouchableOpacity>
+            </View>
           </View>
 
-          {/* condicion */}
-          <View style={{width: '100%', alignContent: 'center', marginHorizontal: 20, alignSelf: 'center', marginTop: 10, alignItems: 'center'}}>
-            <Text style={{fontSize: 15,marginHorizontal: 10, color: 'black', fontWeight: '300', alignSelf:'flex-start', marginLeft: 20}}>
-              Sintomas
-            </Text>
-            <TextInput style={{...styles.input}} />
-          </View>
+          {
+            arraySymptoms.length > 0 && (
+              <>
+                <View style={{ marginHorizontal: 25, marginTop: 15}}>
+                      <FlatList data={arraySymptoms} 
+                      renderItem={({item}) => (
+                        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginVertical: 5,alignSelf: 'center', alignContent: 'center', width: "100%"}}>
+                          <View style={{width: "70%"}}>
+                            <Text style={{fontSize: 20, marginHorizontal: 15, color: '#737373', fontWeight: 'bold'}}>{item}</Text>
+                          </View>
+                          <View style={{width: "20%"}}>
+                            <TouchableOpacity style={{...styles.button, marginRight: 50, width: 40, height: 40}} onPress={()=>deleteSymptoms(item)}>
+                              <Ionicons size={35} style={{color: "#fff",alignSelf: 'center'}} name='close'/>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                      )} 
+                      keyExtractor={(item) => item}/>
+                    </View>
+              </>
+            )
+          }
 
-          {/* enfermedad */}
-          <View style={{width: '100%', alignContent: 'center', marginHorizontal: 20, alignSelf: 'center', marginTop: 10, alignItems: 'center'}}>
-            <Text style={{fontSize: 15,marginHorizontal: 10, color: 'black', fontWeight: '300',alignSelf:'flex-start', marginLeft: 20}}>
-              Sintomas
-            </Text>
-            <TextInput style={{...styles.input}} />
-          </View>
-
-          {/* enfermedad */}
-          <View style={{width: '100%', alignContent: 'center', marginHorizontal: 20, alignSelf: 'center', marginTop: 10, alignItems: 'center'}}>
-            <Text style={{fontSize: 15,marginHorizontal: 10, color: 'black', fontWeight: '300',alignSelf:'flex-start', marginLeft: 20}}>
-              Sintomas
-            </Text>
-            <TextInput style={{...styles.input}} />
-          </View>
 
           <View style={{width: '100%', alignContent: 'center', marginHorizontal: 20, alignSelf: 'center', marginVertical: 40, alignItems: 'center'}}>
-            <TouchableOpacity style={{...styles.button, width: '80%', alignSelf: 'center', marginVertical: 20}} onPress={sendDates}>
+            <TouchableOpacity style={{...styles.button, width: '80%', alignSelf: 'center', marginVertical: 20}} onPress={()=>{setIsOpen(true)}}>
               <Text style={{color: 'white', fontSize: 15, fontWeight: 'bold'}}>Guardar</Text>
             </TouchableOpacity>
           </View>
 
-          <Modal isOpen={isOpen} onClose={!isOpen}>
+          {
+            isOpen && (
+              <Modal visible={isOpen} animationType="fade" transparent>
+                <View style={styles_modal.modalContainer}>
+                  <View style={styles_modal.modalContent}>
+                    <View style={{width: '100%', alignContent: 'center', marginHorizontal: 20, alignSelf: 'center', marginVertical: 20, alignItems: 'center'}}>
+                      <Text style={{fontSize:17, color:"#000", fontWeight:"500", textAlign: 'center'}}>
+                        ¿Esta seguro que la informacion suministrada es la correcta para ser enviada al medico?
+                      </Text>
+                    </View>
+                    <View style={{width: '100%', alignContent: 'center', marginHorizontal: 20, alignSelf: 'center', marginVertical: 20, alignItems: 'center'}}>
+                      <Text style={{fontSize: 17, color: "#000", textAlign: 'center'}}>
+                        Antes de enviar la informacion, por favor verifique que la informacion suministrada es la correcta.
+                      </Text>
+                    </View>
+                    <View style={{flexDirection: 'row',alignItems: 'center', justifyContent: 'space-between', alignContent: 'center' }}>
+                      <TouchableOpacity style={{
+                        width: "40%",
+                        backgroundColor: '#0E54BE',
+                        borderRadius: 10,
+                        height: 50,
+                        marginTop: 10,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginHorizontal: 5,
+                        }}
+                        onPress={()=>{setIsOpen(false)}}>
+                        <Text style={{fontSize: 17, color: "#fff", textAlign: 'center', fontWeight: 'bold'}}>
+                          Cancelar
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity style={{
+                        width: '40%',
+                        backgroundColor: '#0E54BE',
+                        borderRadius: 10,
+                        height: 50,
+                        marginTop: 10,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginHorizontal: 5,
+                        }}
+                        onPress={sendDates}
+                        >
+                        <Text style={{fontSize: 17, color: "#fff", textAlign: 'center', fontWeight: 'bold'}}>
+                          Aceptar
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </View>
+              </Modal>
+            )
+          }
+
+          {/* <Modal isOpen={isOpen} onClose={!isOpen}>
             <Modal.Content width="350">
               <View style={{width: '100%', alignContent: 'center', marginHorizontal: 20, alignSelf: 'center', marginVertical: 20, alignItems: 'center'}}>
                 <Image source={Images.thumbUp} style={{width: 150, height: 150}}/>
@@ -171,7 +272,7 @@ export const DatesScreen = ({navigation}:Props) => {
               </View>
 
             </Modal.Content>
-          </Modal>
+          </Modal> */}
         </View>
     );
 
