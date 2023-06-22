@@ -9,7 +9,6 @@ import { Images } from '../assets/imgs/imgs';
 import { Avatar } from 'react-native-paper';
 import DatePicker from '@react-native-community/datetimepicker';
 import Moment from 'moment';
-// import Ionicons from 'react-native-vector-icons/Ionicons';
 
 interface Props extends StackScreenProps<any, any>{}
 
@@ -116,47 +115,47 @@ export const ProfileDoctorScreen = ({navigation}: Props) => {
     const handleFocus = () => {
         setIsFocused(true);
         setShowPicker(true);
-      };
+    };
 
-      const handleFocus2 = () => {
-        setIsFocused2(true);
-        setShowPicker2(true);
-      };
+    const handleFocus2 = () => {
+    setIsFocused2(true);
+    setShowPicker2(true);
+    };
 
-      const handleFocus3 = () => {
-        setIsFocused3(true);
-        setShowPicker3(true);
-      };
+    const handleFocus3 = () => {
+    setIsFocused3(true);
+    setShowPicker3(true);
+    };
 
-      const handleFocus4 = () => {
-        setIsFocused4(true);
-        setShowPicker4(true);
-      };
+    const handleFocus4 = () => {
+    setIsFocused4(true);
+    setShowPicker4(true);
+    };
 
-      const handleFocus5 = () => {
-        setIsFocused5(true);
-        setShowPicker5(true);
-      };
-    
-      const handleBlur = () => {
-        setIsFocused(false);
-      };
+    const handleFocus5 = () => {
+    setIsFocused5(true);
+    setShowPicker5(true);
+    };
 
-      const handleBlur2 = () => {
-        setIsFocused2(false);
-      };
+    const handleBlur = () => {
+    setIsFocused(false);
+    };
 
-      const handleBlur3 = () => {
-        setIsFocused3(false);
-      };
+    const handleBlur2 = () => {
+    setIsFocused2(false);
+    };
 
-      const handleBlur4 = () => {
-        setIsFocused4(false);
-      };
+    const handleBlur3 = () => {
+    setIsFocused3(false);
+    };
 
-      const handleBlur5 = () => {
-        setIsFocused5(false);
-      };
+    const handleBlur4 = () => {
+    setIsFocused4(false);
+    };
+
+    const handleBlur5 = () => {
+    setIsFocused5(false);
+    };
 
     const onChange1 = (event: any, selectedDate?: Date | undefined) => {
         setShowPicker(false);
@@ -288,7 +287,7 @@ export const ProfileDoctorScreen = ({navigation}: Props) => {
 
     /*const renderOption = ({ item }: { item: Option }) => (
         <TouchableOpacity onPress={() => handleOptionPress(item.value)}>
-          <Text>{item.label}</Text>
+            <Text>{item.label}</Text>
         </TouchableOpacity>
     );*/
 

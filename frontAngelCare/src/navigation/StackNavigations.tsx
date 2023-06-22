@@ -69,7 +69,7 @@ export const StackNavigations = () => {
             },
         }}>
             {/* <Stack.Screen name="Profile" component={ProfileScreen} /> */}
-            <Stack.Screen name="Dates" component={DatesScreen} />
+            {/* <Stack.Screen name="Dates" component={DatesScreen} /> */}
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Register" component={RegisterScreen} />
             <Stack.Screen name="RegisterMedicStep2" component={RegisterMedicStep2Screen} />
@@ -82,7 +82,7 @@ export const StackNavigations = () => {
             <Stack.Screen name="Ambulance" component={AmbulanceScreen} />
             <Stack.Screen name="Clinic" component={ClinicScreen} />
             <Stack.Screen name="Ensurance" component={EnsuranceScreen} />
-            {/* <Stack.Screen name="Dates" component={DatesScreen} /> */}
+            <Stack.Screen name="Dates" component={DatesScreen} />
             <Stack.Screen name="Profile" component={ProfileScreen} />
             <Stack.Screen name="ChatList" component={ListachatScreen} />
             <Stack.Screen name="Chat" component={ChatScreen} />

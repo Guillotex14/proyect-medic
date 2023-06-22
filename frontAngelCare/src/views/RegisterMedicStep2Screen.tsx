@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, TextInput, Text, TouchableOpacity, Modal, FlatList, Image } from 'react-native';
+import { View, TextInput, Text, TouchableOpacity, Modal, FlatList, Image, Platform, Pressable } from 'react-native';
 import { styles } from '../theme/ThemeApp';
 import { ChevronLeftIcon, FormControl,Stack, Spinner,Radio } from 'native-base';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -8,7 +8,8 @@ import { TypeDni } from '../interfaces/registerModels';
 import { styles_modal } from '../theme/Modal_Profile_Doctor';
 import { Images } from '../assets/imgs/imgs';
 import apiConection from '../api/Concecction';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DatePicker from '@react-native-community/datetimepicker';
+import Moment from 'moment';
 
 interface Props extends StackScreenProps<any, any>{};
 
@@ -59,7 +60,8 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
   const [nextStep, setNextStep] = useState(false);
   const [nextStep2, setNextStep2] = useState(false);
   const [nextStep3, setNextStep3] = useState(false);
-  
+  const [showPicker, setShowPicker] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   
   const [fullName, setFullName] = useState('');
   const [typeDNISelected, setTypeDNISelected] = useState('');
@@ -84,13 +86,20 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
   const [dayService, setDayService] = useState('');
   const [dayService2, setDayService2] = useState('');
 
+  
+const [birthDate, setBirthDate] = useState('');
+  const [date1, setDate1] = useState(new Date());
+
+
   useEffect(() => {
     setFullName(params.fullName);
     setEmail(params.email);
     setPassword(params.password);
   }, [])
   
-
+  const toggleDatepicker = () => {
+    setShowPicker(!showPicker);
+  };
   //function for radio buttons
   const onRadioButtons = (radio: string) => {
       if(radio == 'masculino'){
@@ -202,6 +211,34 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
 
   }
 
+  const handleFocus = () => {
+    setIsFocused(true);
+    setShowPicker(true);
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
+  };
+
+  const onChange1 = (event: any, selectedDate?: Date | undefined) => {
+    setShowPicker(false);
+    if (event.type === "set" && selectedDate){
+    const currentDate = Moment(selectedDate).toDate();
+    setDate1(currentDate);
+
+        if (Platform.OS === 'android') {
+            toggleDatepicker();
+            setBirthDate(Moment(currentDate).format('DD/MM/YYYY'));
+        }
+
+    } else {
+
+    toggleDatepicker();
+
+    }
+};
+
+
   return (
 
     <View style={{...styles.container}}>
@@ -258,10 +295,13 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
 
           </View>
 
-          <View style={{ width: '100%', marginTop: 20 }}>
-            <Text style={{ marginLeft: 20 }}> Fecha de nacimiento</Text>
-            <TextInput style={{ ...styles.input, marginLeft: 15 }} />
-          </View>
+          <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>
+              <Text style={{color: '#0E54BE', fontSize: 15, fontWeight: 'bold', marginHorizontal: 15}}>Fecha de nacimiento</Text>
+              <Pressable onPress={toggleDatepicker}>
+              <TextInput placeholder="Fecha de nacimiento" style={{...styles.input, backgroundColor: 'white'}} value={birthDate} onChangeText={setBirthDate} onFocus={handleFocus} onBlur={handleBlur}/>
+              </Pressable>
+              {showPicker && isFocused && (<DatePicker mode="date" display="calendar" value={date1} onChange={onChange1}/>)}
+            </View>
 
           <View style={{ width: '100%', marginTop: 20 }}>
             <Text style={{ marginLeft: 20 }}> Especialidad</Text>

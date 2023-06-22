@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { AddIcon, ChevronLeftIcon, CloseIcon, FormControl,Radio, Stack, Spinner } from 'native-base';
-import { View, TextInput, Text, TouchableOpacity, Modal, FlatList,Image } from 'react-native';
+import { View, TextInput, Text, TouchableOpacity, Modal, FlatList,Image, Pressable, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { styles_modal } from '../theme/Modal_Profile_Doctor';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -8,8 +8,9 @@ import { TypeDni } from '../interfaces/registerModels';
 import apiConnection from '../api/Concecction';
 import { Images } from '../assets/imgs/imgs';
 import { styles } from '../theme/ThemeApp';
+import DatePicker from '@react-native-community/datetimepicker';
+import Moment from 'moment';
 
-// eslint-disable-next-line no-extra-semi
 interface Props extends StackScreenProps<any, any>{};
 
 interface Option {
@@ -48,7 +49,8 @@ export const RegisterStep2Screen = ({navigation, route}:Props) => {
   const [nextStep, setNextStep] = useState(false);
   const [nextStep2, setNextStep2] = useState(false);
   const [nextStep3, setNextStep3] = useState(false);
-  
+  const [showPicker, setShowPicker] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   
   const [fullName, setFullName] = useState('');
   const [typeDNISelected, setTypeDNISelected] = useState('');
@@ -59,11 +61,15 @@ export const RegisterStep2Screen = ({navigation, route}:Props) => {
   const [address, setAddress] = useState('');
   const [gender, setGender] = useState('');
   const [disease, setDisease] = useState('');
+  const [birthDate, setBirthDate] = useState('');
   const [arrayDisease, setArrayDisease] = useState<string[]>([]);
   const [alergy, setAlergy] = useState('');
   const [arrayAlergies, setArrayAlergies] = useState<string[]>([]);
   const [condition, setCondition] = useState('');
   const [aditional, setAditional] = useState('');
+
+  const [date1, setDate1] = useState(new Date());
+
 
   const onPressModal = (typedni:string) => {
     setTypeDNISelected(typedni)
@@ -75,6 +81,10 @@ export const RegisterStep2Screen = ({navigation, route}:Props) => {
     setEmail(params.email);
     setPassword(params.password);
   }, [])
+
+  const toggleDatepicker = () => {
+    setShowPicker(!showPicker);
+  };
 
   const onNextStep = () => {
     setNextStep(true);
@@ -167,6 +177,33 @@ export const RegisterStep2Screen = ({navigation, route}:Props) => {
     setArrayAlergies(array);
   }
 
+  const handleFocus = () => {
+    setIsFocused(true);
+    setShowPicker(true);
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
+  };
+
+  const onChange1 = (event: any, selectedDate?: Date | undefined) => {
+    setShowPicker(false);
+    if (event.type === "set" && selectedDate){
+    const currentDate = Moment(selectedDate).toDate();
+    setDate1(currentDate);
+
+        if (Platform.OS === 'android') {
+            toggleDatepicker();
+            setBirthDate(Moment(currentDate).format('DD/MM/YYYY'));
+        }
+
+    } else {
+
+    toggleDatepicker();
+
+    }
+};
+
   return (
 
     <View style={{...styles.container}}>
@@ -221,9 +258,17 @@ export const RegisterStep2Screen = ({navigation, route}:Props) => {
 
             </View>
 
-            <View style={{ width: '100%', marginTop: 20 }}>
+            {/* <View style={{ width: '100%', marginTop: 20 }}>
               <Text style={{ marginLeft: 20 }}> Fecha de nacimiento</Text>
               <TextInput style={{ ...styles.input, marginLeft: 15 }} />
+            </View> */}
+
+            <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>
+              <Text style={{color: '#0E54BE', fontSize: 15, fontWeight: 'bold', marginHorizontal: 15}}>Fecha de nacimiento</Text>
+              <Pressable onPress={toggleDatepicker}>
+              <TextInput placeholder="Fecha de nacimiento" style={{...styles.input, backgroundColor: 'white'}} value={birthDate} onChangeText={setBirthDate} onFocus={handleFocus} onBlur={handleBlur}/>
+              </Pressable>
+              {showPicker && isFocused && (<DatePicker mode="date" display="calendar" value={date1} onChange={onChange1}/>)}
             </View>
             
             <View style={{ width: '100%', marginTop: 20 }}>
