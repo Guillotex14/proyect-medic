@@ -211,184 +211,324 @@ export const LoginScreen = ({navigation}: Props) => {
     const onChangeText = (data: string) => setText(data);
 
     return (
+        <ScrollView >
+            <View style={styles.container}>
 
-        <View style={styles.container}>
-
-            <View style={
-                {
-                marginTop: top + 50,
-                alignItems: 'center',
-                justifyContent: 'center',
-            }}>
-                <Image source={Images.logo_blue} style={{width: 250, height:50, marginVertical: 20}}/>
-            </View>
-
-            <View style={
-                {marginTop: 35,
-                alignItems: 'center',
-                justifyContent: 'center'}
-
-            }>
-
-                <Text style={
+                <View style={
                     {
-                    fontSize: 25,
-                    fontWeight: 'bold',
-                    color: 'black',
-                }}>Bienvenido de nuevo</Text>
-            </View>
-
-            <View style={
-                {marginTop: 10,
-                alignItems: 'center',
-                justifyContent: 'center'}
-            }>
-                <Text style={
-                    {
-                    fontSize: 13,
-                    fontWeight: '300',
-                    color: 'black',
-                }}>Inicia sesión para comenzar con la aventura</Text>
-            </View>
-
-            <View style={
-                {
-                    marginTop: 35,
+                    marginTop: top + 50,
                     alignItems: 'center',
                     justifyContent: 'center',
-                    flexDirection: 'row',
-                }
-            }>
-                <TouchableOpacity style={styles.buttonGoogleLogin}
-                onPress={() => console.log('Hola')}>
-
-                    <View style={{flexDirection: 'row'}}>
-                        <Image source={Images.logogoogle} style={{width:20, height:20}}/>
-                        <Text style={{...styles.buttonGoogleText, marginHorizontal: 10, fontSize: 13}}>Google</Text>
-                    </View>
-
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonGoogleLogin}
-                onPress={() => console.log('Hola')}>
-
-                    <View style={{flexDirection: 'row'}}>
-                        <Image source={Images.logofb} style={{width:20, height:20}}/>
-                        <Text style={{...styles.buttonFBText,  marginHorizontal: 10, fontSize: 13}}>Facebook </Text>
-                    </View>
-                </TouchableOpacity>
-
-            </View>
-
-            <View style={
-                {
-                    marginTop: 35,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexDirection: 'row',
-                }
-            }>
-                <View style={{width: '50%', alignContent: 'center', alignItems: 'center', alignSelf: 'center'}}>
-                    <RadioButton.Item
-                        label="Patiente"
-                        value="paciente"
-                        status={ isRadio ? 'checked' : 'unchecked' }
-                        onPress={(e) => onRadioButtons('paciente')}
-                    />
+                }}>
+                    <Image source={Images.logo_blue} style={{width: 250, height:50, marginVertical: 20}}/>
                 </View>
 
-                <View style={{width: '50%', alignContent: 'center', alignItems: 'center', alignSelf: 'center'}}>
-                    <RadioButton.Item
-                        label="Medico"
-                        value="medico"
-                        status={ isRadio2 ? 'checked' : 'unchecked' }
-                        onPress={(e) => onRadioButtons('medico')}
-                    />
-                </View>
-            </View>
-
-            <View style={
-                {
-                    marginTop: 10,
+                <View style={
+                    {marginTop: 35,
                     alignItems: 'center',
-                    justifyContent: 'center',
-                }
-            }>
-                <TextInput style={styles.input}
-                    placeholder="Correo electrónico"
-                    placeholderTextColor="#aaaaaa"
-                    onChangeText={(text) => setEmail(text)}
-                />
+                    justifyContent: 'center'}
 
-                <TextInput style={styles.input}
-                    placeholder="Contraseña"
-                    placeholderTextColor="#aaaaaa"
-                    secureTextEntry={true}
-                    onChangeText={(text) => setPassword(text)}
-                />
-            </View>
+                }>
 
-            <View style={
-                {
-                    marginTop: 35,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}>
-                <TouchableOpacity style={styles.button}
-                onPress={() => {
-                    Login();
-                }}>
-                    <Text style={styles.buttonLoginText}>Iniciar sesión</Text>
-                </TouchableOpacity>
-            </View>
-
-            <View style={
-                {
-                    marginTop: 35,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}>
-                <Text style={
-                    {
-                        fontSize: 14,
-                        fontWeight: '400',
-                        color: '#0E54BE',
-                    }}
-                    onPress={openActionSheet}
-                    >
-                        ¿Olvidaste tu contraseña?
-                </Text>
-
-                <Text style={
-                    {
-                        fontSize: 14,
-                        fontWeight: '400',
-                        color: '#0E54BE',
-                        marginTop: 15,
-                        marginBottom: 35,
-                    }}>
-                    ¿No tienes una cuenta?
-                    &nbsp;
                     <Text style={
-                            {
-                            fontWeight: 'bold',
-                        }} onPress={()=> navigation.navigate('Register')}>
-                        Unete a nosotros
-                    </Text>
-                </Text>
-            </View>
+                        {
+                        fontSize: 25,
+                        fontWeight: 'bold',
+                        color: 'black',
+                    }}>Bienvenido de nuevo</Text>
+                </View>
 
-            <Actionsheet isOpen={isOpen} onClose={onClose}>
-                <Actionsheet.Content>
+                <View style={
+                    {marginTop: 10,
+                    alignItems: 'center',
+                    justifyContent: 'center'}
+                }>
+                    <Text style={
+                        {
+                        fontSize: 13,
+                        fontWeight: '300',
+                        color: 'black',
+                    }}>Inicia sesión para comenzar con la aventura</Text>
+                </View>
+
+                <View style={
                     {
-                        isContent && (
+                        marginTop: 35,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexDirection: 'row',
+                    }
+                }>
+                    <TouchableOpacity style={styles.buttonGoogleLogin}
+                    onPress={() => console.log('Hola')}>
+
+                        <View style={{flexDirection: 'row'}}>
+                            <Image source={Images.logogoogle} style={{width:20, height:20}}/>
+                            <Text style={{...styles.buttonGoogleText, marginHorizontal: 10, fontSize: 13}}>Google</Text>
+                        </View>
+
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.buttonGoogleLogin}
+                    onPress={() => console.log('Hola')}>
+
+                        <View style={{flexDirection: 'row'}}>
+                            <Image source={Images.logofb} style={{width:20, height:20}}/>
+                            <Text style={{...styles.buttonFBText,  marginHorizontal: 10, fontSize: 13}}>Facebook </Text>
+                        </View>
+                    </TouchableOpacity>
+
+                </View>
+
+                <View style={
+                    {
+                        marginTop: 35,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexDirection: 'row',
+                    }
+                }>
+                    <View style={{width: '50%', alignContent: 'center', alignItems: 'center', alignSelf: 'center'}}>
+                        <RadioButton.Item
+                            label="Patiente"
+                            value="paciente"
+                            status={ isRadio ? 'checked' : 'unchecked' }
+                            onPress={(e) => onRadioButtons('paciente')}
+                        />
+                    </View>
+
+                    <View style={{width: '50%', alignContent: 'center', alignItems: 'center', alignSelf: 'center'}}>
+                        <RadioButton.Item
+                            label="Medico"
+                            value="medico"
+                            status={ isRadio2 ? 'checked' : 'unchecked' }
+                            onPress={(e) => onRadioButtons('medico')}
+                        />
+                    </View>
+                </View>
+
+                <View style={
+                    {
+                        marginTop: 10,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }
+                }>
+                    <TextInput style={styles.input}
+                        placeholder="Correo electrónico"
+                        placeholderTextColor="#aaaaaa"
+                        onChangeText={(text) => setEmail(text)}
+                    />
+
+                    <TextInput style={styles.input}
+                        placeholder="Contraseña"
+                        placeholderTextColor="#aaaaaa"
+                        secureTextEntry={true}
+                        onChangeText={(text) => setPassword(text)}
+                    />
+                </View>
+
+                <View style={
+                    {
+                        marginTop: 35,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}>
+                    <TouchableOpacity style={styles.button}
+                    onPress={() => {
+                        Login();
+                    }}>
+                        <Text style={styles.buttonLoginText}>Iniciar sesión</Text>
+                    </TouchableOpacity>
+                </View>
+
+                <View style={
+                    {
+                        marginTop: 35,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}>
+                    <Text style={
+                        {
+                            fontSize: 14,
+                            fontWeight: '400',
+                            color: '#0E54BE',
+                        }}
+                        onPress={openActionSheet}
+                        >
+                            ¿Olvidaste tu contraseña?
+                    </Text>
+
+                    <Text style={
+                        {
+                            fontSize: 14,
+                            fontWeight: '400',
+                            color: '#0E54BE',
+                            marginTop: 15,
+                            marginBottom: 35,
+                        }}>
+                        ¿No tienes una cuenta?
+                        &nbsp;
+                        <Text style={
+                                {
+                                fontWeight: 'bold',
+                            }} onPress={()=> navigation.navigate('Register')}>
+                            Unete a nosotros
+                        </Text>
+                    </Text>
+                </View>
+
+                <Actionsheet isOpen={isOpen} onClose={onClose}>
+                    <Actionsheet.Content>
+                        {
+                            isContent && (
+                                <>
+                                    <View style={
+                                        // eslint-disable-next-line react-native/no-inline-styles
+                                        {
+                                        marginTop: 10,
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        width: '100%',
+                                    }}>
+                                        <Text style={
+                                            {
+                                                fontSize: 20,
+                                                fontWeight: 'bold',
+                                                color: 'black',
+                                                textAlign: 'center',
+                                                alignSelf: 'center',
+                                            }}>
+                                            Olvide mi contraseña
+                                        </Text>
+                                        <Text style={
+                                            {
+                                                fontSize: 13,
+                                                fontWeight: '400',
+                                                color: '#B3B8C9',
+                                                marginTop: 5,
+                                                alignSelf: 'center',
+                                            }}>
+                                            Ingresa tu correo electrónico para el proceso de verificación
+                                        </Text>
+                                        <Text style={
+                                            {
+                                                fontSize: 13,
+                                                fontWeight: '400',
+                                                color: '#B3B8C9',
+                                                marginTop: 5,
+                                            }}>
+                                            Le enviaremos un codigo de 4 digitos a su correo electrónico
+                                        </Text>
+                                        <TextInput
+                                            value={recoveryEmail}
+                                            placeholder="Correo electrónico"
+                                            onChangeText={setRecoveryEmail}
+                                            style={{ ...styles.input, alignSelf: 'center', width: '80%' }} />
+                                    </View>
+                                    <TouchableOpacity
+                                        style={{ ...styles.button, alignItems: 'center', alignSelf: 'center' }}
+                                        onPress={recoveryPassword}>
+                                            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20 }}>
+                                                Continuar
+                                            </Text>
+                                    </TouchableOpacity>
+                                </>
+                            )
+                        }
+
+                        { isSecondContent && (
+                            <>
+                                <View>
+                                    <Text style={
+                                        {
+                                            fontSize: 16,
+                                            fontWeight: 'bold',
+                                            color: 'black',
+                                            textAlign: 'center',
+                                        }}>
+                                        Introduzca el código de 4 digitos
+                                    </Text>
+                                    <Text style={
+                                        {
+                                            fontSize: 13,
+                                            fontWeight: '500',
+                                            color: '#B3B8C9',
+                                            marginTop: 5,
+                                        }}>
+                                        Introduce los 4 digitos que te enviamos a tu correo electrónico
+                                    </Text>
+                                </View>
+
+                                <View style={
+                                    {
+                                        marginTop: 30,
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                    }}>
+
+                                    {/* {
+                                        isAndroid && (
+                                        <OTPInputView
+                                        pinCount={4}
+                                        autoFocusOnLoad
+                                        codeInputFieldStyle={styles.underlineStyleBase}
+                                        codeInputHighlightStyle={styles.underlineStyleHighLighted}
+                                        onCodeFilled={(code => {
+                                            setCode(code)
+                                        })}
+                                        style={{width: '80%', height: 60, marginHorizontal: 15}}
+                                    />
+                                        )
+                                    }
+                                    
+                                    {
+                                        isIos && (
+                                        <OTPInputView
+                                        pinCount={4}
+                                        autoFocusOnLoad
+                                        codeInputFieldStyle={styles.underlineStyleBase}
+                                        codeInputHighlightStyle={styles.underlineStyleHighLighted}
+                                        onCodeFilled={(code => {
+                                            setCode(code)
+                                        })}
+                                        style={{width: '80%', height: 60, marginHorizontal: 15}}
+                                    />
+                                        )
+                                    } */}
+
+                                    {
+                                        isWeb && (
+                                            <TextInput
+                                            value={code}
+                                            placeholder="Correo electrónico"
+                                            onChangeText={setCode}
+                                            style={{ ...styles.input, alignSelf: 'center', width: '90%' }} />
+                                        )
+                                    }
+
+
+                                    {/*  */}
+                                </View>
+                                <TouchableOpacity
+                                    style={{...styles.button, alignItems: 'center', alignSelf: 'center'}}
+                                    onPress={verifyCode}>
+                                        <Text style={
+                                            {color: 'white', fontWeight: 'bold', fontSize: 20}}>
+                                        Continuar
+                                    </Text>
+                                </TouchableOpacity>
+                            </>
+                            )
+                        }
+
+                        { isThirdContent && (
                             <>
                                 <View style={
-                                    // eslint-disable-next-line react-native/no-inline-styles
                                     {
+                                    width: '100%',
                                     marginTop: 10,
                                     alignItems: 'center',
                                     justifyContent: 'center',
-                                    width: '100%',
                                 }}>
                                     <Text style={
                                         {
@@ -398,194 +538,55 @@ export const LoginScreen = ({navigation}: Props) => {
                                             textAlign: 'center',
                                             alignSelf: 'center',
                                         }}>
-                                        Olvide mi contraseña
+                                        Nueva contraseña
                                     </Text>
                                     <Text style={
                                         {
                                             fontSize: 13,
-                                            fontWeight: '400',
+                                            fontWeight: '500',
                                             color: '#B3B8C9',
                                             marginTop: 5,
+                                            textAlign: 'center',
                                             alignSelf: 'center',
-                                        }}>
-                                        Ingresa tu correo electrónico para el proceso de verificación
+                                        }
+                                    }>
+                                        Establezca la nueva contraseña para su cuenta para poder iniciar sesión
                                     </Text>
-                                    <Text style={
-                                        {
-                                            fontSize: 13,
-                                            fontWeight: '400',
-                                            color: '#B3B8C9',
-                                            marginTop: 5,
-                                        }}>
-                                        Le enviaremos un codigo de 4 digitos a su correo electrónico
-                                    </Text>
+
                                     <TextInput
-                                        value={recoveryEmail}
-                                        placeholder="Correo electrónico"
-                                        onChangeText={setRecoveryEmail}
-                                        style={{ ...styles.input, alignSelf: 'center', width: '80%' }} />
+                                        value={newPassword}
+                                        placeholder="Nueva contraseña"
+                                        secureTextEntry={true}
+                                        onChangeText={setNewPassword}
+                                        style={{...styles.input, alignSelf: 'center'}}
+                                    />
+
+                                    <TextInput
+                                        value={newPassword2}
+                                        placeholder="Repetir nueva contraseña"
+                                        onChangeText={setNewPassword2}
+                                        style={{...styles.input, alignSelf: 'center'}}
+                                        secureTextEntry={true}
+                                    />
                                 </View>
+
                                 <TouchableOpacity
-                                    style={{ ...styles.button, alignItems: 'center', alignSelf: 'center' }}
-                                    onPress={recoveryPassword}>
-                                        <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20 }}>
-                                            Continuar
+                                    style={{...styles.button, alignItems: 'center', alignSelf: 'center'}}
+                                    onPress={changePassword}
+                                    >
+                                        <Text style={
+                                            {color: 'white',fontWeight: 'bold', fontSize: 20}
+                                            }>
+                                            Cambiar
                                         </Text>
                                 </TouchableOpacity>
                             </>
-                        )
-                    }
-
-                    { isSecondContent && (
-                        <>
-                            <View>
-                                <Text style={
-                                    {
-                                        fontSize: 16,
-                                        fontWeight: 'bold',
-                                        color: 'black',
-                                        textAlign: 'center',
-                                    }}>
-                                    Introduzca el código de 4 digitos
-                                </Text>
-                                <Text style={
-                                    {
-                                        fontSize: 13,
-                                        fontWeight: '500',
-                                        color: '#B3B8C9',
-                                        marginTop: 5,
-                                    }}>
-                                    Introduce los 4 digitos que te enviamos a tu correo electrónico
-                                </Text>
-                            </View>
-
-                            <View style={
-                                {
-                                    marginTop: 30,
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                }}>
-
-                                {/* {
-                                    isAndroid && (
-                                    <OTPInputView
-                                    pinCount={4}
-                                    autoFocusOnLoad
-                                    codeInputFieldStyle={styles.underlineStyleBase}
-                                    codeInputHighlightStyle={styles.underlineStyleHighLighted}
-                                    onCodeFilled={(code => {
-                                        setCode(code);
-                                    })}
-                                    style={{width: '80%', height: 60, marginHorizontal: 15}}
-                                />
-                                    )
-                                }
-
-                                {
-                                    isIos && (
-                                    <OTPInputView
-                                    pinCount={4}
-                                    autoFocusOnLoad
-                                    codeInputFieldStyle={styles.underlineStyleBase}
-                                    codeInputHighlightStyle={styles.underlineStyleHighLighted}
-                                    onCodeFilled={(code => {
-                                        setCode(code);
-                                    })}
-                                    style={{width: '80%', height: 60, marginHorizontal: 15}}
-                                />
-                                    )
-                                } */}
-
-                                {
-                                    isWeb && (
-                                        <TextInput
-                                        value={code}
-                                        placeholder="Correo electrónico"
-                                        onChangeText={setCode}
-                                        style={{ ...styles.input, alignSelf: 'center', width: '90%' }} />
-                                    )
-                                }
-
-
-                                {/*  */}
-                            </View>
-                            <TouchableOpacity
-                                style={{...styles.button, alignItems: 'center', alignSelf: 'center'}}
-                                onPress={verifyCode}>
-                                    <Text style={
-                                        {color: 'white', fontWeight: 'bold', fontSize: 20}}>
-                                    Continuar
-                                </Text>
-                            </TouchableOpacity>
-                        </>
-                        )
-                    }
-
-                    { isThirdContent && (
-                        <>
-                            <View style={
-                                {
-                                width: '100%',
-                                marginTop: 10,
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                            }}>
-                                <Text style={
-                                    {
-                                        fontSize: 20,
-                                        fontWeight: 'bold',
-                                        color: 'black',
-                                        textAlign: 'center',
-                                        alignSelf: 'center',
-                                    }}>
-                                    Nueva contraseña
-                                </Text>
-                                <Text style={
-                                    {
-                                        fontSize: 13,
-                                        fontWeight: '500',
-                                        color: '#B3B8C9',
-                                        marginTop: 5,
-                                        textAlign: 'center',
-                                        alignSelf: 'center',
-                                    }
-                                }>
-                                    Establezca la nueva contraseña para su cuenta para poder iniciar sesión
-                                </Text>
-
-                                <TextInput
-                                    value={newPassword}
-                                    placeholder="Nueva contraseña"
-                                    secureTextEntry={true}
-                                    onChangeText={setNewPassword}
-                                    style={{...styles.input, alignSelf: 'center'}}
-                                />
-
-                                <TextInput
-                                    value={newPassword2}
-                                    placeholder="Repetir nueva contraseña"
-                                    onChangeText={setNewPassword2}
-                                    style={{...styles.input, alignSelf: 'center'}}
-                                    secureTextEntry={true}
-                                />
-                            </View>
-
-                            <TouchableOpacity
-                                style={{...styles.button, alignItems: 'center', alignSelf: 'center'}}
-                                onPress={changePassword}
-                                >
-                                    <Text style={
-                                        {color: 'white',fontWeight: 'bold', fontSize: 20}
-                                        }>
-                                        Cambiar
-                                    </Text>
-                            </TouchableOpacity>
-                        </>
-                    )}
-                </Actionsheet.Content>
-            </Actionsheet>
-            
-        </View>
+                        )}
+                    </Actionsheet.Content>
+                </Actionsheet>
+                
+            </View>
+        </ScrollView>
     );
 };
 
