@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { Text, View, TouchableOpacity, TextInput, Image } from 'react-native';
+import { Text, View, TouchableOpacity, TextInput, Image, ScrollView } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { styles } from '../theme/ThemeApp';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -56,6 +57,7 @@ export const RegisterScreen = ({navigation}:Props) => {
     }
 
     return (
+        <ScrollView style={{backgroundColor: '#E6F1FF'}}>
         <View style={styles.container}>
             <View style={
                 {
@@ -97,7 +99,7 @@ export const RegisterScreen = ({navigation}:Props) => {
                     }}>Inicia sesión para comenzar con la aventura</Text>
             </View>
 
-            <View style={
+            {/*<View style={
                 {
                     marginTop: 35,
                     alignItems: 'center',
@@ -123,7 +125,7 @@ export const RegisterScreen = ({navigation}:Props) => {
                         </View>
                     </TouchableOpacity>
 
-            </View>
+        </View>*/}
 
             <View style={
                 {
@@ -135,7 +137,7 @@ export const RegisterScreen = ({navigation}:Props) => {
             }>
                 <View style={{width: '50%', alignContent: 'center', alignItems: 'center', alignSelf: 'center'}}>
                     <RadioButton.Item
-                        label="Patiente"
+                        label="Paciente"
                         value="paciente"
                         status={ isRadio ? 'checked' : 'unchecked' }
                         onPress={() => onRadioButtons('paciente')}
@@ -159,19 +161,23 @@ export const RegisterScreen = ({navigation}:Props) => {
                     justifyContent: 'center',
                 }
             }>
+                <KeyboardAwareScrollView style={{ width: '90%' }}>
                 <TextInput style={styles.input}
                     placeholder="Nombre completo"
                     placeholderTextColor="#aaaaaa"
                     value={fullName}
                     onChangeText={setFullName}
                 />
+                </KeyboardAwareScrollView>
+                <KeyboardAwareScrollView style={{ width: '90%' }}>
                 <TextInput style={styles.input}
                     placeholder="Correo electrónico"
                     placeholderTextColor="#aaaaaa"
                     value={email}
                     onChangeText={setEmail}
                 />
-
+                </KeyboardAwareScrollView>
+                <KeyboardAwareScrollView style={{ width: '90%' }}>
                 <TextInput style={styles.input}
                     placeholder="Contraseña"
                     placeholderTextColor="#aaaaaa"
@@ -179,6 +185,7 @@ export const RegisterScreen = ({navigation}:Props) => {
                     value={password}
                     onChangeText={setPassword}
                 />
+                </KeyboardAwareScrollView>
             </View>
 
             <View style={
@@ -219,5 +226,6 @@ export const RegisterScreen = ({navigation}:Props) => {
                 </Text>
             </View>
         </View>
+        </ScrollView>
         );
     };

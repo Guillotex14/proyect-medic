@@ -3,6 +3,7 @@ import { port } from "./config";
 import cors from "cors";
 import authRouter from "./src/routes/auth";
 import path from "path"
+import patientRouter from "./src/routes/patient";
 
 export class App {
     app: Express.Application;
@@ -26,8 +27,9 @@ export class App {
 
     routes() {
         this.app.use("/auth", authRouter );
-
-        this.app.use(Express.static(path.join(__dirname, "public")));
+        this.app.use("/patient", patientRouter);
+        this.app.use(Express.static(path.join(__dirname, "src")));
+        this.app.use(Express.static(path.join(__dirname, "dist")));
     }
 
     start(): void {

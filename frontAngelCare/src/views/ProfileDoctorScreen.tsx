@@ -9,7 +9,6 @@ import { Images } from '../assets/imgs/imgs';
 import { Avatar } from 'react-native-paper';
 import DatePicker from '@react-native-community/datetimepicker';
 import Moment from 'moment';
-// import Ionicons from 'react-native-vector-icons/Ionicons';
 
 interface Props extends StackScreenProps<any, any>{}
 
@@ -116,47 +115,47 @@ export const ProfileDoctorScreen = ({navigation}: Props) => {
     const handleFocus = () => {
         setIsFocused(true);
         setShowPicker(true);
-      };
+    };
 
-      const handleFocus2 = () => {
-        setIsFocused2(true);
-        setShowPicker2(true);
-      };
+    const handleFocus2 = () => {
+    setIsFocused2(true);
+    setShowPicker2(true);
+    };
 
-      const handleFocus3 = () => {
-        setIsFocused3(true);
-        setShowPicker3(true);
-      };
+    const handleFocus3 = () => {
+    setIsFocused3(true);
+    setShowPicker3(true);
+    };
 
-      const handleFocus4 = () => {
-        setIsFocused4(true);
-        setShowPicker4(true);
-      };
+    const handleFocus4 = () => {
+    setIsFocused4(true);
+    setShowPicker4(true);
+    };
 
-      const handleFocus5 = () => {
-        setIsFocused5(true);
-        setShowPicker5(true);
-      };
-    
-      const handleBlur = () => {
-        setIsFocused(false);
-      };
+    const handleFocus5 = () => {
+    setIsFocused5(true);
+    setShowPicker5(true);
+    };
 
-      const handleBlur2 = () => {
-        setIsFocused2(false);
-      };
+    const handleBlur = () => {
+    setIsFocused(false);
+    };
 
-      const handleBlur3 = () => {
-        setIsFocused3(false);
-      };
+    const handleBlur2 = () => {
+    setIsFocused2(false);
+    };
 
-      const handleBlur4 = () => {
-        setIsFocused4(false);
-      };
+    const handleBlur3 = () => {
+    setIsFocused3(false);
+    };
 
-      const handleBlur5 = () => {
-        setIsFocused5(false);
-      };
+    const handleBlur4 = () => {
+    setIsFocused4(false);
+    };
+
+    const handleBlur5 = () => {
+    setIsFocused5(false);
+    };
 
     const onChange1 = (event: any, selectedDate?: Date | undefined) => {
         setShowPicker(false);
@@ -288,7 +287,7 @@ export const ProfileDoctorScreen = ({navigation}: Props) => {
 
     /*const renderOption = ({ item }: { item: Option }) => (
         <TouchableOpacity onPress={() => handleOptionPress(item.value)}>
-          <Text>{item.label}</Text>
+            <Text>{item.label}</Text>
         </TouchableOpacity>
     );*/
 
@@ -319,45 +318,45 @@ export const ProfileDoctorScreen = ({navigation}: Props) => {
 
                     <View style={{width: '95%', alignSelf: 'center', marginTop: 50}}>
                         <Text style={{color: '#0E54BE', fontSize: 15, fontWeight: 'bold', marginHorizontal: 15}}>Nombre completo</Text>
-                        <TextInput placeholder="Nombre completo" style={{...styles.input, backgroundColor: 'white'}} editable={isEdit} />
+                        <TextInput placeholder="Nombre completo" style={{...styles.input, backgroundColor: 'white'}}  />
                     </View>
 
                     <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>
                         <Text style={{color: '#0E54BE', fontSize: 15, fontWeight: 'bold', marginHorizontal: 15}}>Cedula</Text>
-                        <TextInput placeholder="Cedula" style={{...styles.input, backgroundColor: 'white'}} editable={isEdit}/>
+                        <TextInput placeholder="Cedula" style={{...styles.input, backgroundColor: 'white'}} />
                     </View>
 
                     <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>
                         <Text style={{color: '#0E54BE', fontSize: 15, fontWeight: 'bold', marginHorizontal: 15}}>Fecha de nacimiento</Text>
                         <Pressable onPress={toggleDatepicker}>
-                        <TextInput placeholder="Fecha de nacimiento" style={{...styles.input, backgroundColor: 'white'}} value={dateOfBirth} onChangeText={setDateOfBirth} onFocus={handleFocus} onBlur={handleBlur} editable={isEdit}/>
+                        <TextInput placeholder="Fecha de nacimiento" style={{...styles.input, backgroundColor: 'white'}} value={dateOfBirth} onChangeText={setDateOfBirth} onFocus={handleFocus} onBlur={handleBlur} />
                         </Pressable>
                         {showPicker && isFocused && (<DatePicker mode="date" display="calendar" value={date1} onChange={onChange1}/>)}
                     </View>
                     
                     <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>
                         <Text style={{color: '#0E54BE', fontSize: 15, fontWeight: 'bold', marginHorizontal: 15}}>MPPS</Text>
-                        <TextInput placeholder="MPPS" style={{...styles.input, backgroundColor: 'white'}} editable={isEdit}/>
+                        <TextInput placeholder="MPPS" style={{...styles.input, backgroundColor: 'white'}} />
                     </View>
 
                     <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>
                         <Text style={{color: '#0E54BE', fontSize: 15, fontWeight: 'bold', marginHorizontal: 15}}>Especialidad</Text>
-                        <TextInput placeholder="Especialidad" style={{...styles.input, backgroundColor: 'white'}} editable={isEdit}/>
+                        <TextInput placeholder="Especialidad" style={{...styles.input, backgroundColor: 'white'}} />
                     </View>
 
                     <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>
                         <Text style={{color: '#0E54BE', fontSize: 15, fontWeight: 'bold', marginHorizontal: 15}}>Dirección</Text>
-                        <TextInput placeholder="Dirección" style={{...styles.input, backgroundColor: 'white'}} editable={isEdit}/>
+                        <TextInput placeholder="Dirección" style={{...styles.input, backgroundColor: 'white'}} />
                     </View>
 
                     <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>
                         <Text style={{color: '#0E54BE', fontSize: 15, fontWeight: 'bold', marginHorizontal: 15}}>Correo electronico</Text>
-                        <TextInput placeholder="Correo electronico" style={{...styles.input, backgroundColor: 'white'}} editable={isEdit}/>
+                        <TextInput placeholder="Correo electronico" style={{...styles.input, backgroundColor: 'white'}} />
                     </View>
 
                     <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>
                         <Text style={{color: '#0E54BE', fontSize: 15, fontWeight: 'bold', marginHorizontal: 15}}>Telefono</Text>
-                        <TextInput placeholder="Telefono" style={{...styles.input, backgroundColor: 'white'}} editable={isEdit}/>
+                        <TextInput placeholder="Telefono" style={{...styles.input, backgroundColor: 'white'}} />
                     </View>
 
                     <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>
@@ -366,13 +365,13 @@ export const ProfileDoctorScreen = ({navigation}: Props) => {
                             <Radio.Group name="Genero" defaultValue="1">
                                 <Stack direction={{ base: 'row', md: 'row' }} alignItems={{ base: 'flex-start', md: 'center' }} 
                                 space={2} w="75%" maxW="300px">
-                                    <Radio value="1" colorScheme="blue" size="sm" my={1} isDisabled={!isEdit}>
+                                    <Radio value="1" colorScheme="blue" size="sm" my={1} >
                                         Masculino
                                     </Radio>
-                                    <Radio value="2" colorScheme="blue" size="sm" my={1} isDisabled={!isEdit}>
+                                    <Radio value="2" colorScheme="blue" size="sm" my={1} >
                                         Femenino
                                     </Radio>
-                                    <Radio value="3" colorScheme="blue" size="sm" my={1} isDisabled={!isEdit}>
+                                    <Radio value="3" colorScheme="blue" size="sm" my={1} >
                                         Otro
                                     </Radio>
                                 </Stack>
@@ -382,7 +381,7 @@ export const ProfileDoctorScreen = ({navigation}: Props) => {
 
                     <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>
                         <Text style={{color: '#0E54BE', fontSize: 15, fontWeight: 'bold', marginHorizontal: 15}}>Universidad</Text>
-                        <TextInput placeholder="Universidad" style={{...styles.input, backgroundColor: 'white'}} editable={isEdit}/>
+                        <TextInput placeholder="Universidad" style={{...styles.input, backgroundColor: 'white'}} />
                     </View>
 
                     <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginVertical: 5}}>
@@ -391,7 +390,7 @@ export const ProfileDoctorScreen = ({navigation}: Props) => {
                             <FormControl.Label style={{marginLeft: 10}}>Fecha de inicio</FormControl.Label>
                             <FormControl.ErrorMessage>Este campo es obligatorio</FormControl.ErrorMessage>
                             <Pressable onPress={toggleDatepicker2}>
-                            <TextInput placeholder="" style={styles.input} value={dateOfBirth2} onChangeText={setDateOfBirth2} onFocus={handleFocus2} onBlur={handleBlur2} editable={isEdit}/>
+                            <TextInput placeholder="" style={styles.input} value={dateOfBirth2} onChangeText={setDateOfBirth2} onFocus={handleFocus2} onBlur={handleBlur2} />
                             </Pressable>
                             {showPicker2 && isFocused2 && (<DatePicker mode="date" display="calendar" value={date2} onChange={onChange2}/>)}
                             </FormControl>
@@ -401,7 +400,7 @@ export const ProfileDoctorScreen = ({navigation}: Props) => {
                             <FormControl.Label style={{marginLeft: 10}}>Fecha de finalización</FormControl.Label>
                             <FormControl.ErrorMessage>Este campo es obligatorio</FormControl.ErrorMessage>
                             <Pressable onPress={toggleDatepicker3}>
-                            <TextInput placeholder="" style={styles.input} value={dateOfBirth3} onChangeText={setDateOfBirth3} onFocus={handleFocus3} onBlur={handleBlur3} editable={isEdit}/>
+                            <TextInput placeholder="" style={styles.input} value={dateOfBirth3} onChangeText={setDateOfBirth3} onFocus={handleFocus3} onBlur={handleBlur3} />
                             </Pressable>
                             {showPicker3 && isFocused3 && (<DatePicker mode="date" display="calendar" value={date3} onChange={onChange3}/>)}
                             </FormControl>
@@ -431,7 +430,7 @@ export const ProfileDoctorScreen = ({navigation}: Props) => {
 
                     <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>
                         <Text style={{color: '#0E54BE', fontSize: 15, fontWeight: 'bold', marginHorizontal: 15}}>Post-Grado Universidad</Text>
-                        <TextInput placeholder="Universidad Post-Grado" style={{...styles.input, backgroundColor: 'white'}} editable={isEdit}/>
+                        <TextInput placeholder="Universidad Post-Grado" style={{...styles.input, backgroundColor: 'white'}} />
                     </View>
 
                     <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginVertical: 5}}>
@@ -440,7 +439,7 @@ export const ProfileDoctorScreen = ({navigation}: Props) => {
                             <FormControl.Label style={{marginLeft: 10}}>Fecha de inicio</FormControl.Label>
                             <FormControl.ErrorMessage>Este campo es obligatorio</FormControl.ErrorMessage>
                             <Pressable onPress={toggleDatepicker4}>
-                            <TextInput placeholder="" style={styles.input} value={dateOfBirth4} onChangeText={setDateOfBirth4} onFocus={handleFocus4} onBlur={handleBlur4} editable={isEdit}/>
+                            <TextInput placeholder="" style={styles.input} value={dateOfBirth4} onChangeText={setDateOfBirth4} onFocus={handleFocus4} onBlur={handleBlur4} />
                             </Pressable>
                             {showPicker4 && isFocused4 && (<DatePicker mode="date" display="calendar" value={date4} onChange={onChange4}/>)}
                             </FormControl>
@@ -450,7 +449,7 @@ export const ProfileDoctorScreen = ({navigation}: Props) => {
                             <FormControl.Label style={{marginLeft: 10}}>Fecha de finalización</FormControl.Label>
                             <FormControl.ErrorMessage>Este campo es obligatorio</FormControl.ErrorMessage>
                             <Pressable onPress={toggleDatepicker5}>
-                            <TextInput placeholder="" style={styles.input} value={dateOfBirth5} onChangeText={setDateOfBirth5} onFocus={handleFocus5} onBlur={handleBlur5} editable={isEdit}/>
+                            <TextInput placeholder="" style={styles.input} value={dateOfBirth5} onChangeText={setDateOfBirth5} onFocus={handleFocus5} onBlur={handleBlur5} />
                             </Pressable>
                             {showPicker5 && isFocused5 && (<DatePicker mode="date" display="calendar" value={date5} onChange={onChange5}/>)}
                             </FormControl>
@@ -521,22 +520,10 @@ export const ProfileDoctorScreen = ({navigation}: Props) => {
                             width: '100%',
                         }}>
 
-                        {
-                            !isEdit &&
-                                <TouchableOpacity style={{...styles.button, width: 260}}
-                                onPress={editProfile}>
-                                    <Text style={styles.buttonLoginText}>Editar</Text>
-                                </TouchableOpacity>
-                                
-                        }
-
-                        {
-                            isEdit &&
                             <TouchableOpacity style={{...styles.button, width: 260}}
                             onPress={openActionsheet}>
                                 <Text style={styles.buttonLoginText}>Guardar</Text>
                             </TouchableOpacity>
-                        }
 
                     </View>
                 </View>

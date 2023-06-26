@@ -12,14 +12,36 @@ import { CardDateHome } from '../components/CardDateHome';
 
 // import Carousel from 'react-native-snap-carousel';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { FooterNavigation } from '../components/Footer';
+//import { useFooter } from '../hooks/useFooter';
+import { useRoute, useNavigation } from '@react-navigation/native';
+import { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 interface Props extends StackScreenProps<any, any>{}
 export const HomeDoctorScreen = ({navigation}: Props) => {
 
+    const route = useRoute();
+    const currentRouteName = route.name;
+
+    const scrollY = useSharedValue(0);
+    const opacity = useSharedValue(1);
+
+    const animatedStyle = useAnimatedStyle(() => {
+        return {
+          opacity: opacity.value,
+          transform: [{ translateY: withTiming(scrollY.value, { duration: 250 }) }],
+        };
+      });
+
     const { top } = useSafeAreaInsets();
 
     return (
-        <ScrollView>
+        <>
+        <ScrollView onScroll={(event) => {
+            const scrollY = event.nativeEvent.contentOffset.y;
+            const shouldHideFooter = scrollY > 0;
+              opacity.value = withTiming(shouldHideFooter ? 0 : 1, { duration: 500 });
+          }}>
             <View style={{...styles.container, backgroundColor: '#0E54BE'}}>
 
                 {/* Header */}
@@ -76,5 +98,7 @@ export const HomeDoctorScreen = ({navigation}: Props) => {
             </View>
 
         </ScrollView>
+        <FooterNavigation currentRouteName={currentRouteName} animatedStyle={animatedStyle} navigation={navigation} />
+        </>
     );
 };

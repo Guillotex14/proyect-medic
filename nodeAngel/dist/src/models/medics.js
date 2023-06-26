@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const medicsSchema = new mongoose_1.Schema({
     fullName: String,
+    typeDni: String,
     dni: String,
     birthdate: String,
     specialty: String,

@@ -26,8 +26,6 @@ import { ChatScreen } from '../views/ChatScreen';
 import { ListachatScreen } from '../views/ListachatScreen';
 import { ListDoctorsScreen } from '../views/ListDoctorsScreen';
 import { ChatDateScreen } from '../views/ChatDateScreen';
-import FooterNavigation from '../components/Footer';
-
 
 export type StackParamList = {
     Login: undefined;
@@ -62,18 +60,21 @@ const Stack = createStackNavigator<StackParamList>();
 export const StackNavigations = () => {
 
     return (
+
+        <>
+        
         <Stack.Navigator screenOptions={{
             headerShown: false,
             cardStyle:{
                 backgroundColor: 'white',
             },
         }}>
+            {/* <Stack.Screen name="Profile" component={ProfileScreen} /> */}
+            {/* <Stack.Screen name="Dates" component={DatesScreen} /> */}
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Register" component={RegisterScreen} />
             <Stack.Screen name="RegisterMedicStep2" component={RegisterMedicStep2Screen} />
             <Stack.Screen name="RegisterStep2" component={RegisterStep2Screen} />
-            {/* <Stack.Screen name="RegisterStep3" component={RegisterStep3Screen} />
-            <Stack.Screen name="RegisterStep4" component={RegisterStep4Screen} /> */}
             
             {/* navigation of pactients */}
             <Stack.Screen name="Home" component={HomeScreen} />
@@ -92,13 +93,15 @@ export const StackNavigations = () => {
             {/* navigation of doctors */}
             <Stack.Screen name="HomeMedic" component={HomeDoctorScreen} />
             <Stack.Screen name="ProfileMedic" component={ProfileDoctorScreen} />
-            {/* <Stack.Screen name="RegisterMedicStep2" component={RegisterMedicStep2Screen} />
-            <Stack.Screen name="RegisterMedicStep3" component={RegisterMedicStep3Screen} />
-            <Stack.Screen name="RegisterMedicStep4" component={RegisterMedicStep4Screen} /> */}
             <Stack.Screen name="Vizualise" component={VisualizeScreen} />
             <Stack.Screen name="MedicalRecord" component={MedicalRecordScreen} />
             <Stack.Screen name="MedicalRecordMatch" component={VizualiseMatchScreen} />
+            {/* <Stack.Screen name="RegisterMedicStep2" component={RegisterMedicStep2Screen} /> */}
+            {/*<Stack.Screen name="RegisterMedicStep3" component={RegisterMedicStep3Screen} />
+            <Stack.Screen name="RegisterMedicStep4" component={RegisterMedicStep4Screen} /> */}
         </Stack.Navigator>
+
+        </>
+        
     );
 };
-
