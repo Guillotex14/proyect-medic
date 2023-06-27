@@ -781,21 +781,21 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
                       <Text>Dias de Servicio</Text>
                     </View>
 
-                    <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginVertical: 5}}>
+                    <View style={{ width: '100%',flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginVertical: 5}}>
                       <View style={{width: '50%', alignItems: 'center', marginLeft: -15}}>
-                        <FormControl style={{width: '90%'}}>
-                          <Button onPress={()=>{setShowDayService(true)}}>
+                        {/* <FormControl style={{width: '100%'}}> */}
+                          <TouchableOpacity onPress={()=>{setShowDayService(true)}}>
                           <TextInput placeholder="" style={{...styles.input, borderColor: validDayService ? 'red' : '#aaaaaa',fontWeight: "500"}} value={dayService}/>
-                          </Button>
-                        </FormControl>
+                          </TouchableOpacity>
+                        {/* </FormControl> */}
                       </View>
                       <View style={{width: '50%', alignItems: 'center'}}>
-                        <FormControl style={{width: '90%'}}>
-                          <Button onPress={()=>{setShowDayService2(true)}}>
+                        {/* <FormControl style={{width: '90%'}}> */}
+                          <TouchableOpacity onPress={()=>{setShowDayService2(true)}}>
                             <TextInput placeholder="" style={{...styles.input, borderColor: validDayService2 ? 'red' : '#aaaaaa',fontWeight: "500"}} value={dayService2}/>
-                          </Button>
+                          </TouchableOpacity>
                           
-                        </FormControl>
+                        {/* </FormControl> */}
                       </View>
                     </View>
 
