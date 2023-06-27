@@ -787,7 +787,7 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
                       </View>
                       <View style={{width: '50%', alignItems: 'center'}}>
                         <FormControl style={{width: '90%'}}>
-                          <TouchableOpacity onPress={showModalService2}>
+                          <TouchableOpacity onPress={()=>{showModalService2()}}>
                             <TextInput placeholder="" style={{...styles.input, borderColor: validDayService2 ? 'red' : '#aaaaaa',fontWeight: "500"}} value={dayService2}/>
                           </TouchableOpacity>
                         </FormControl>
@@ -795,7 +795,7 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
                     </View>
 
                     {
-                      showDayService && ( 
+                      // showDayService && ( 
                         <Modal visible={showDayService} animationType="fade" transparent>
                           <View style={styles_modal.modalContainer}>
                             <View style={styles_modal.modalContent}>
@@ -803,10 +803,10 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
                             </View>
                           </View>
                         </Modal>
-                      )
+                      // )
                     }
                     {
-                      showDayService2 && ( 
+                      // showDayService2 && ( 
                         <Modal visible={showDayService2} animationType="fade" transparent>
                           <View style={styles_modal.modalContainer}>
                             <View style={styles_modal.modalContent}>
@@ -817,7 +817,7 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
                             </View>
                           </View>
                         </Modal>
-                      )
+                      // )
                     }
                   </View>
 
