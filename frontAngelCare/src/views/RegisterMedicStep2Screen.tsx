@@ -168,6 +168,14 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
     setShowDayService2(!showDayService2);  
   }
 
+  const showModalService = () => {
+    setShowDayService(!showDayService);
+  }
+
+  const showModalService2 = () => {
+    setShowDayService2(!showDayService2);
+  }
+
   const onNextStep = () => {
 
     if(fullName === ''){
@@ -317,13 +325,21 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
       setValidPostgradeGraduationDate(false);
     }
 
-    // if (additional === '') {
-    //   presentToast('el campo informacion adicional es requerido');
-    //   setValidAdditional(true);
-    //   return;
-    // }else{
-    //   setValidAdditional(false);
-    // }
+    if(dayService === ''){
+      presentToast('el campo dia de consulta es requerido');
+      setValidDayService(true);
+      return;
+    }else{
+      setValidDayService(false);
+    }
+
+    if(dayService2 === ''){
+      presentToast('el campo dia de consulta es requerido');
+      setValidDayService2(true);
+      return;
+    }else{
+      setValidDayService2(false);
+    }
     
     setNextStep(false);
     setNextStep2(true);
@@ -764,16 +780,16 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
                       <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginVertical: 5}}>
                       <View style={{width: '50%', alignItems: 'center', marginLeft: -15}}>
                         <FormControl style={{width: '90%'}}>
-                          <Pressable onPress={()=>setShowDayService(true)}>
+                          <TouchableOpacity onPress={showModalService}>
                           <TextInput placeholder="" style={{...styles.input, borderColor: validDayService ? 'red' : '#aaaaaa',fontWeight: "500"}} value={dayService}/>
-                          </Pressable>
+                          </TouchableOpacity>
                         </FormControl>
                       </View>
                       <View style={{width: '50%', alignItems: 'center'}}>
                         <FormControl style={{width: '90%'}}>
-                          <Pressable onPress={()=>setShowDayService2(true)}>
+                          <TouchableOpacity onPress={showModalService2}>
                             <TextInput placeholder="" style={{...styles.input, borderColor: validDayService2 ? 'red' : '#aaaaaa',fontWeight: "500"}} value={dayService2}/>
-                          </Pressable>
+                          </TouchableOpacity>
                         </FormControl>
                       </View>
                     </View>
@@ -815,7 +831,6 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
                   <FormControl style={{marginVertical: 5, marginLeft: 15}}>
                     <FormControl.Label style={{marginLeft: 10}}>Adicional</FormControl.Label>
                     <TextInput
-                  editable
                   multiline
                   numberOfLines={6}
                   maxLength={240}
