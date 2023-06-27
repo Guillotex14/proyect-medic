@@ -576,7 +576,7 @@ export const LoginScreen = ({navigation}: Props) => {
                                         justifyContent: 'center',
                                     }}>
 
-                                     {/* {
+                                    {
                                         isAndroid && (
                                         <OTPInputView
                                         pinCount={4}
@@ -600,7 +600,7 @@ export const LoginScreen = ({navigation}: Props) => {
                                         style={{width: '80%', height: 60, marginHorizontal: 15}}
                                     />
                                         )
-                                    }  */}
+                                    } 
 
                                     {
                                         isWeb && (
