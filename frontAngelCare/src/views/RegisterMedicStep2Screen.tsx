@@ -169,11 +169,11 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
   }
 
   const showModalService = () => {
-    setShowDayService(true);
+    setShowDayService(!showDayService);
   }
 
   const showModalService2 = () => {
-    setShowDayService2(true);
+    setShowDayService2(!showDayService2);
   }
 
   const onNextStep = () => {
@@ -710,7 +710,7 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
                     <View style={{width: '50%', alignItems: 'center', }}>
                       <FormControl style={{width: '90%'}}>
                         <FormControl.Label style={{marginLeft: 10}}>Fecha de Egreso</FormControl.Label>
-
+                        {/* <TextInput placeholder="" style={{...styles.input, borderColor: validUniGraduationDate ? 'red' : '#aaaaaa',fontWeight: "500"}} value={uniGraduationDate} onChangeText={setuniGraduationDate}/> */}
                         <Pressable onPress={toggleDatepicker3}>
                         <TextInput placeholder="" style={{...styles.input, borderColor: validUniGraduationDate ? 'red' : '#aaaaaa',fontWeight: "500"}} value={uniGraduationDate} onChangeText={setuniGraduationDate} onFocus={handleFocus3} onBlur={handleBlur3}/>
                         </Pressable>
@@ -754,7 +754,7 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
                     <View style={{width: '50%', alignItems: 'center', marginLeft: -15}}>
                       <FormControl style={{width: '90%'}}>
                         <FormControl.Label style={{marginLeft: 10}}>Fecha de ingreso</FormControl.Label>
-                        
+                        {/* <TextInput placeholder="" style={{...styles.input, borderColor: validePostgradeDateAdmission ? 'red' : '#aaaaaa',fontWeight: "500"}} value={postgradeAdmissionDate} onChangeText={setPostgradeAdmissionDate}/> */}
                         <Pressable onPress={toggleDatepicker4}>
                         <TextInput placeholder="" style={{...styles.input, borderColor: validePostgradeDateAdmission ? 'red' : '#aaaaaa',fontWeight: "500"}} value={postgradeAdmissionDate} onChangeText={setPostgradeAdmissionDate} onFocus={handleFocus4} onBlur={handleBlur4}/>
                         </Pressable>
@@ -765,6 +765,8 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
                       <FormControl style={{width: '90%'}}>
                         <FormControl.Label style={{marginLeft: 10}}>Fecha de Egreso</FormControl.Label>
       
+                        {/* <TextInput placeholder="" style={{...styles.input, borderColor: validePostgradeDateGraduation ? 'red' : '#aaaaaa',fontWeight: "500"}} value={postgradeGraduationDate} onChangeText={setPostgradeGraduationDate}/> */}
+
                         <Pressable onPress={toggleDatepicker5}>
                         <TextInput placeholder="" style={{...styles.input, borderColor: validePostgradeDateGraduation ? 'red' : '#aaaaaa',fontWeight: "500"}} value={postgradeGraduationDate} onChangeText={setPostgradeGraduationDate} onFocus={handleFocus5} onBlur={handleBlur5}/>
                         </Pressable>
@@ -778,14 +780,14 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
                       <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginVertical: 5}}>
                       <View style={{width: '50%', alignItems: 'center', marginLeft: -15}}>
                         <FormControl style={{width: '90%'}}>
-                          <TouchableOpacity onPress={()=>{showModalService()}}>
+                          <TouchableOpacity onPress={showModalService}>
                           <TextInput placeholder="" style={{...styles.input, borderColor: validDayService ? 'red' : '#aaaaaa',fontWeight: "500"}} value={dayService}/>
                           </TouchableOpacity>
                         </FormControl>
                       </View>
                       <View style={{width: '50%', alignItems: 'center'}}>
                         <FormControl style={{width: '90%'}}>
-                          <TouchableOpacity onPress={()=>{showModalService2()}}>
+                          <TouchableOpacity onPress={showModalService2}>
                             <TextInput placeholder="" style={{...styles.input, borderColor: validDayService2 ? 'red' : '#aaaaaa',fontWeight: "500"}} value={dayService2}/>
                           </TouchableOpacity>
                         </FormControl>
@@ -793,7 +795,7 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
                     </View>
 
                     {
-                      // showDayService && ( 
+                      showDayService && ( 
                         <Modal visible={showDayService} animationType="fade" transparent>
                           <View style={styles_modal.modalContainer}>
                             <View style={styles_modal.modalContent}>
@@ -801,10 +803,10 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
                             </View>
                           </View>
                         </Modal>
-                      // )
+                      )
                     }
                     {
-                      // showDayService2 && ( 
+                      showDayService2 && ( 
                         <Modal visible={showDayService2} animationType="fade" transparent>
                           <View style={styles_modal.modalContainer}>
                             <View style={styles_modal.modalContent}>
@@ -815,7 +817,7 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
                             </View>
                           </View>
                         </Modal>
-                      // )
+                      )
                     }
                   </View>
 
