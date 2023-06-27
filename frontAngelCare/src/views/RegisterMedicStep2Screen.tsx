@@ -790,7 +790,6 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
                           <TouchableOpacity onPress={()=>{setShowDayService(true)}}>
                             <TextInput placeholder="" style={{...styles.input, borderColor: validDayService2 ? 'red' : '#aaaaaa',fontWeight: "500"}} value={dayService2}/>
                           </TouchableOpacity>
-<<<<<<< HEAD
                           
                         </FormControl>
                       </View>
@@ -846,38 +845,8 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
                             </FormControl>
                             </View>
                         </View>
-=======
-                        </FormControl>
-                      </View>
-                    </View>
-
-                    {
-                      // showDayService && ( 
-                        <Modal visible={showDayService} animationType="fade" transparent>
-                          <View style={styles_modal.modalContainer}>
-                            <View style={styles_modal.modalContent}>
-                              <FlatList style={{ flexGrow: 1 }} data={options} renderItem={({ item }) => (<TouchableOpacity style={styles_modal.optionContainer} onPress={() => onModalDayservice(item.value)}><Text style={styles_modal.optionText}>{item.label}</Text></TouchableOpacity>)} keyExtractor={(item) => item.value} />
-                            </View>
-                          </View>
-                        </Modal>
-                      // )
-                    }
-                    {
-                      // showDayService2 && ( 
-                        <Modal visible={showDayService2} animationType="fade" transparent>
-                          <View style={styles_modal.modalContainer}>
-                            <View style={styles_modal.modalContent}>
-                              <FlatList style={{ flexGrow: 1 }} data={options} renderItem={({ item }) => (
-                              <TouchableOpacity style={styles_modal.optionContainer} onPress={() => onModalDayservice2(item.value)}>
-                                <Text style={styles_modal.optionText}>{item.label}</Text>
-                                </TouchableOpacity>)} keyExtractor={(item) => item.value} />
-                            </View>
-                          </View>
-                        </Modal>
-                      // )
-                    }
->>>>>>> b99399e7f0a18461333b58cbb60560ff7cf7f1d7
                   </View>
+                  {/* asdasd */}
 
                   {/* <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>
                     <Text style={{fontSize: 15, fontWeight: 'bold', marginHorizontal: 15, color: '#677294'}}>Adjuntar Archivo</Text>
