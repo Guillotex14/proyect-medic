@@ -130,57 +130,59 @@ export const ProfileScreen = ({navigation}: Props) => {
             <View style={{...styles.container, backgroundColor: '#0E54BE'}}>
 
                 {/* Header */}
-                <View style={{ flexDirection: 'row', height: 150,  alignItems: 'center', alignSelf: 'center', marginTop: -30}}>
-                    <View style={{width: '20%', alignItems: 'center'}} >
+                <View style={{ width: '100%', flexDirection: 'row', height: 150,  alignItems: 'center', alignSelf: 'center', marginTop: -30, justifyContent: 'center'}}>
+                    <View style={{width: '15%', alignItems: 'center'}} >
                         <TouchableOpacity onPress={()=>{navigation.pop()}}>
                         {/* <ChevronLeftIcon  color="white" size="lg" style={{alignSelf: 'center', marginTop: 15,marginRight: 20}}/> */}
-                        <Ionicons name="chevron-back-outline" size={30} color="white" style={{alignSelf: 'center', marginTop: 25,marginRight: 20}} />
+                        <Ionicons name="chevron-back-outline" size={30} color="white" style={{alignSelf: 'center', marginTop: 25, marginLeft: 25}} />
                         </TouchableOpacity>
                     </View>
-                    <View style={{width: '70%'}}>
-                        <Text style={{...styles.title, color: 'white', fontSize: 18, marginLeft: 10,}}>Perfil</Text>
+                    <View style={{width: '75%'}}>
+                        <Text style={{...styles.title, color: 'white', fontSize: 18}}>Perfil</Text>
+                    </View>
+                    <View style={{width: '15%', alignItems: 'center' }}>
                     </View>
 
                 </View>
 
                 {/* Card Fecha */}
                 <View style={{borderRadius: 10, position: 'absolute', alignSelf: 'center', zIndex: 1, marginVertical: top+100, alignContent: 'center', alignItems: 'center', width: '95%'}}>
-                    <Avatar.Image size={85} source={Images.doctor} style={{backgroundColor: 'white', marginHorizontal: 10}}/>
+                    <Avatar.Image size={85} source={Images.doctor} style={{backgroundColor: 'white', marginHorizontal: 10, marginTop: -25}}/>
                 </View>
 
                 <View style={{...styles.container, backgroundColor: '#F8F8F8', borderTopLeftRadius: 30, borderTopRightRadius: 30, marginTop: 20}}>
 
                     <View style={{width: '95%', alignSelf: 'center', marginTop: 50}}>
                         <Text style={{color: '#0E54BE', fontSize: 15, fontWeight: 'bold', marginHorizontal: 15}}>Nombre completo</Text>
-                        <TextInput placeholder="" style={{...styles.input, backgroundColor: 'white'}} editable={isEdit} value={fullName} onChangeText={setFullName}/>
+                        <TextInput placeholder="" style={{...styles.input, backgroundColor: 'white'}} value={fullName} onChangeText={setFullName}/>
                     </View>
 
                     <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>
                         <Text style={{color: '#0E54BE', fontSize: 15, fontWeight: 'bold', marginHorizontal: 15}}>Cedula</Text>
-                        <TextInput placeholder="" style={{...styles.input, backgroundColor: 'white'}} editable={isEdit} value={dni} onChangeText={setDni}/>
+                        <TextInput placeholder="" style={{...styles.input, backgroundColor: 'white'}} value={dni} onChangeText={setDni}/>
                     </View>
 
                     <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>
                         <Text style={{color: '#0E54BE', fontSize: 15, fontWeight: 'bold', marginHorizontal: 15}}>Fecha de nacimiento</Text>
                         <Pressable onPress={toggleDatepicker}>
-                            <TextInput style={{...styles.input, backgroundColor: 'white'}} value={dateOfBirth} onChangeText={setDateOfBirth} onFocus={handleFocus} onBlur={handleBlur} editable={isEdit}/>
+                            <TextInput style={{...styles.input, backgroundColor: 'white'}} value={dateOfBirth} onChangeText={setDateOfBirth} onFocus={handleFocus} onBlur={handleBlur}/>
                         </Pressable>
                         {showPicker && isFocused && (<DatePicker mode="date" display="calendar" value={date} onChange={onChange}/>)}
                     </View>
 
                     <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>
                         <Text style={{color: '#0E54BE', fontSize: 15, fontWeight: 'bold', marginHorizontal: 15}}>Dirección</Text>
-                        <TextInput style={{...styles.input, backgroundColor: 'white'}} editable={isEdit} value={address} onChangeText={setAddress}/>
+                        <TextInput style={{...styles.input, backgroundColor: 'white'}} value={address} onChangeText={setAddress}/>
                     </View>
 
                     <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>
                         <Text style={{color: '#0E54BE', fontSize: 15, fontWeight: 'bold', marginHorizontal: 15}}>Correo electronico</Text>
-                        <TextInput style={{...styles.input, backgroundColor: 'white'}} editable={isEdit} value={email} onChangeText={setEmail}/>
+                        <TextInput style={{...styles.input, backgroundColor: 'white'}} value={email} onChangeText={setEmail}/>
                     </View>
 
                     <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>
                         <Text style={{color: '#0E54BE', fontSize: 15, fontWeight: 'bold', marginHorizontal: 15}}>Telefono</Text>
-                        <TextInput style={{...styles.input, backgroundColor: 'white'}} editable={isEdit} value={phone} onChangeText={setPhone}/>
+                        <TextInput style={{...styles.input, backgroundColor: 'white'}} value={phone} onChangeText={setPhone}/>
                     </View>
 
                     <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>
@@ -191,13 +193,13 @@ export const ProfileScreen = ({navigation}: Props) => {
                             }}>
                                 <Stack direction={{ base: 'row', md: 'row' }} alignItems={{ base: 'flex-start', md: 'center' }} 
                                 space={2} w="75%" maxW="300px">
-                                    <Radio value="masculino" colorScheme="blue" size="sm" my={1} isDisabled={!isEdit}>
+                                    <Radio value="masculino" colorScheme="blue" size="sm" my={1}>
                                         Masculino
                                     </Radio>
-                                    <Radio value="femenino" colorScheme="blue" size="sm" my={1} isDisabled={!isEdit}>
+                                    <Radio value="femenino" colorScheme="blue" size="sm" my={1}>
                                         Femenino
                                     </Radio>
-                                    <Radio value="otro" colorScheme="blue" size="sm" my={1} isDisabled={!isEdit}>
+                                    <Radio value="otro" colorScheme="blue" size="sm" my={1}>
                                         Otro
                                     </Radio>
                                 </Stack>
@@ -207,12 +209,12 @@ export const ProfileScreen = ({navigation}: Props) => {
 
                     <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>
                         <Text style={{color: '#0E54BE', fontSize: 15, fontWeight: 'bold', marginHorizontal: 15}}>Póliza de Seguro</Text>
-                        <TextInput style={{...styles.input, backgroundColor: 'white'}} editable={isEdit} value={ensurancePolicy} onChangeText={setEnsurancePolicy}/>
+                        <TextInput style={{...styles.input, backgroundColor: 'white'}} value={ensurancePolicy} onChangeText={setEnsurancePolicy}/>
                     </View>
 
                     <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>
                         <Text style={{color: '#0E54BE', fontSize: 15, fontWeight: 'bold', marginHorizontal: 15}}>Número de póliza</Text>
-                        <TextInput style={{...styles.input, backgroundColor: 'white'}} editable={isEdit} value={policyNumber} onChangeText={setPolicyNumber}/>
+                        <TextInput style={{...styles.input, backgroundColor: 'white'}} value={policyNumber} onChangeText={setPolicyNumber}/>
                     </View>
 
                     <View style={
@@ -223,23 +225,10 @@ export const ProfileScreen = ({navigation}: Props) => {
                             justifyContent: 'center',
                             width: '95%',
                         }}>
-
-                        {
-                            !isEdit &&
-                                <TouchableOpacity style={{...styles.button, width: 260}}
-                                onPress={editProfile}>
-                                    <Text style={styles.buttonLoginText}>Editar</Text>
-                                </TouchableOpacity>
-                                
-                        }
-
-                        {
-                            isEdit &&
                             <TouchableOpacity style={{...styles.button, width: 260}}
                             onPress={openActionsheet}>
                                 <Text style={styles.buttonLoginText}>Guardar</Text>
                             </TouchableOpacity>
-                        }
 
                     </View>
 

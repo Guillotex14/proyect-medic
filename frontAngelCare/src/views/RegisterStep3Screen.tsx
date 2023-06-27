@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, TextInput } from 'react-native';
+import { View, Text, TextInput, ScrollView } from 'react-native';
 import { styles } from '../theme/ThemeApp';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ChevronLeftIcon, FormControl, ScrollView } from 'native-base';
+import { ChevronLeftIcon, FormControl } from 'native-base';
 import { StackScreenProps } from '@react-navigation/stack';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 // import { Images } from '../assets/imgs/imgs';

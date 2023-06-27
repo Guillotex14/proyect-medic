@@ -1,23 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, TouchableOpacity, TextInput, Image, ScrollView, Platform } from 'react-native';
+import { Text, View, TouchableOpacity, TextInput, Image, ScrollView, Platform, Keyboard, ToastAndroid } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useKeyboard } from '@react-native-community/hooks';
 import { styles } from '../theme/ThemeApp';
 
 import { StackScreenProps } from '@react-navigation/stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Actionsheet, useDisclose } from 'native-base';
+import { Actionsheet, useDisclose,useToast } from 'native-base';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
+import Clipboard from '@react-native-community/clipboard';
 import { Images } from '../assets/imgs/imgs';
 import { RadioButton } from 'react-native-paper';
 
 import apiConnection from '../api/Concecction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { color, set } from 'react-native-reanimated';
 
 interface Props extends StackScreenProps<any, any>{}
 
 export const LoginScreen = ({navigation}: Props) => {
 
+    const [keyboardHeight, setKeyboardHeight] = useState(0);
+    const keyboard = useKeyboard();
     //state of window for margins
     const { top } = useSafeAreaInsets();
+
+    const toast = useToast();
 
     //state for login;
     const [email, setEmail] = useState('');
@@ -29,6 +37,12 @@ export const LoginScreen = ({navigation}: Props) => {
     const [newPassword, setNewPassword] = useState('');
     const [newPassword2, setNewPassword2] = useState('');
 
+    //mensajes de validacion
+    const [validEmail, setValidEmail] = useState(false);
+    const [validPassword, setValidPassword] = useState(false);
+    const [validTypeUser, setValidTypeUser] = useState(false);
+
+    const [msgValidTypeUser, setMsgValidTypeUser] = useState('');
 
     //states for radioButtons
     const [isRadio, setIsRadio] = useState(false);
@@ -49,8 +63,59 @@ export const LoginScreen = ({navigation}: Props) => {
     //state for actionsheet
     const {isOpen, onOpen, onClose} = useDisclose();
 
+    useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', (e) => {
+            setKeyboardHeight(e.endCoordinates.height);
+        });
+
+        const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+            setKeyboardHeight(0);
+        });
+
+        return () => {
+            keyboardDidShowListener.remove();
+            keyboardDidHideListener.remove();
+        };
+
+    }, []);
+
     //functions for login
     const Login = async () => {
+
+        if (email === '') {
+            setValidEmail(true);
+            presentToast('El campo email es obligatorio');
+            return;
+        }
+
+        if (password === '') {
+            setValidPassword(true);
+            presentToast('El campo contraseña es obligatorio');
+            return;
+        }
+
+        if (email !== '') {
+            if (!setEmailValid(email)){
+                setValidEmail(true);
+                presentToast('El email no es valido');
+                console.log(setEmailValid(email))
+                return;
+            }else{
+                setValidEmail(false);
+            }
+        }
+
+        if (password !== '') {
+            setValidPassword(false);
+        }
+
+        if (!isRadio && !isRadio2) {
+            setValidTypeUser(true);
+            presentToast('Seleccione un tipo de usuario');
+            return;
+        }
+
+
         if (isRadio && !isRadio2) {
             
             await apiConnection.post('/auth/loginPatient', {
@@ -61,6 +126,9 @@ export const LoginScreen = ({navigation}: Props) => {
 
                     AsyncStorage.setItem('me', JSON.stringify(response.data.data));
                     navigation.navigate('Home');
+                }else{
+                    presentToast2(response.data.message);
+                    return;
                 }
                     
             }).catch((error) => {
@@ -76,13 +144,14 @@ export const LoginScreen = ({navigation}: Props) => {
                 if (response.data.status == true) {
                     AsyncStorage.setItem('me', JSON.stringify(response.data.data));
                     navigation.navigate('HomeMedic');
+                }else{
+                    presentToast2(response.data.message);
+                    return;
                 }
-                    
             }).catch((error) => {
                 console.log(error);
             });
         }
-
     };
 
     //functions for recovery password
@@ -136,7 +205,6 @@ export const LoginScreen = ({navigation}: Props) => {
         });
     };
 
-
     //functions for actionsheet
     const openActionSheet = () => {
         onOpen();
@@ -185,15 +253,34 @@ export const LoginScreen = ({navigation}: Props) => {
         if (radio === 'paciente') {
             setIsRadio(true);
             setIsRadio2(false);
+            setValidTypeUser(false);
+            setMsgValidTypeUser('');
         }
         
         if (radio === 'medico') {
             setIsRadio(false);
             setIsRadio2(true);
+            setValidTypeUser(false);
+            setMsgValidTypeUser('');
         }
 
     };
 
+    const setEmailValid = (dataEmail:string) => {
+
+        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+
+        if (reg.test(dataEmail) === false) {
+            // setValidEmail(true);
+            // presentToast('El email no es válido');
+            return false;
+        }else{
+            // setValidEmail(false);
+            // setMsgValidEmail('');
+            // setEmail(dataEmail);
+            return true;
+        }
+    }
 
     if (isOpen==false)   {
         if (isSecondContent){
@@ -204,14 +291,34 @@ export const LoginScreen = ({navigation}: Props) => {
         }
     }
 
-    //inputText
-    const [text, setText] = useState('');
+    const presentToast = (message: string) => {
 
-    //setText
-    const onChangeText = (data: string) => setText(data);
+        toast.show({
+            render: () => (
+                <View style={{backgroundColor: '#ea868f', padding: 15, borderRadius: 50}}>
+                    <Text style={{color: 'white', fontSize: 20}}>{message}</Text>
+                </View>
+            ),
+            placement: 'top',
+            duration: 2000,
+        });
+
+    };
+
+    const presentToast2 = (message: string) => {
+        toast.show({
+            render: () => (
+                <View style={{backgroundColor: '#ffe69c', padding: 15, borderRadius: 50}}>
+                    <Text style={{color: 'white', fontSize: 20}}>{message}</Text>
+                </View>
+            ),
+            placement: 'top',
+            duration: 2000,
+        });
+    }
 
     return (
-        <ScrollView >
+        <ScrollView style={{backgroundColor: '#E6F1FF'}}>
             <View style={styles.container}>
 
                 <View style={
@@ -251,7 +358,7 @@ export const LoginScreen = ({navigation}: Props) => {
                     }}>Inicia sesión para comenzar con la aventura</Text>
                 </View>
 
-                <View style={
+                {/*<View style={
                     {
                         marginTop: 35,
                         alignItems: 'center',
@@ -277,7 +384,7 @@ export const LoginScreen = ({navigation}: Props) => {
                         </View>
                     </TouchableOpacity>
 
-                </View>
+                </View>*/}
 
                 <View style={
                     {
@@ -289,7 +396,7 @@ export const LoginScreen = ({navigation}: Props) => {
                 }>
                     <View style={{width: '50%', alignContent: 'center', alignItems: 'center', alignSelf: 'center'}}>
                         <RadioButton.Item
-                            label="Patiente"
+                            label="Paciente"
                             value="paciente"
                             status={ isRadio ? 'checked' : 'unchecked' }
                             onPress={(e) => onRadioButtons('paciente')}
@@ -313,18 +420,21 @@ export const LoginScreen = ({navigation}: Props) => {
                         justifyContent: 'center',
                     }
                 }>
-                    <TextInput style={styles.input}
+                <KeyboardAwareScrollView style={{ width: '90%' }}>
+                    <TextInput style={{...styles.input, borderColor: !validEmail ? '#aaaaaa' : '#dc3545'}}
                         placeholder="Correo electrónico"
                         placeholderTextColor="#aaaaaa"
                         onChangeText={(text) => setEmail(text)}
                     />
-
-                    <TextInput style={styles.input}
+                </KeyboardAwareScrollView>
+                <KeyboardAwareScrollView style={{ width: '90%' }}>
+                    <TextInput style={{...styles.input, borderColor: !validPassword ? '#aaaaaa' : '#dc3545'}}
                         placeholder="Contraseña"
                         placeholderTextColor="#aaaaaa"
                         secureTextEntry={true}
                         onChangeText={(text) => setPassword(text)}
                     />
+                </KeyboardAwareScrollView>
                 </View>
 
                 <View style={
@@ -377,7 +487,7 @@ export const LoginScreen = ({navigation}: Props) => {
                     </Text>
                 </View>
 
-                <Actionsheet isOpen={isOpen} onClose={onClose}>
+                <Actionsheet isOpen={isOpen} onClose={onClose} style={keyboardHeight > 0 ? { bottom: keyboardHeight } : null}>
                     <Actionsheet.Content>
                         {
                             isContent && (
@@ -466,16 +576,14 @@ export const LoginScreen = ({navigation}: Props) => {
                                         justifyContent: 'center',
                                     }}>
 
-                                    {/* {
+                                     {/* {
                                         isAndroid && (
                                         <OTPInputView
                                         pinCount={4}
                                         autoFocusOnLoad
                                         codeInputFieldStyle={styles.underlineStyleBase}
                                         codeInputHighlightStyle={styles.underlineStyleHighLighted}
-                                        onCodeFilled={(code => {
-                                            setCode(code)
-                                        })}
+                                        onCodeFilled={(code: string) => setCode(code)}
                                         style={{width: '80%', height: 60, marginHorizontal: 15}}
                                     />
                                         )
@@ -488,13 +596,11 @@ export const LoginScreen = ({navigation}: Props) => {
                                         autoFocusOnLoad
                                         codeInputFieldStyle={styles.underlineStyleBase}
                                         codeInputHighlightStyle={styles.underlineStyleHighLighted}
-                                        onCodeFilled={(code => {
-                                            setCode(code)
-                                        })}
+                                        onCodeFilled={(code: string) => setCode(code)}
                                         style={{width: '80%', height: 60, marginHorizontal: 15}}
                                     />
                                         )
-                                    } */}
+                                    }  */}
 
                                     {
                                         isWeb && (
@@ -584,7 +690,6 @@ export const LoginScreen = ({navigation}: Props) => {
                         )}
                     </Actionsheet.Content>
                 </Actionsheet>
-                
             </View>
         </ScrollView>
     );

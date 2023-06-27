@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { View, Text, ScrollView, Image,TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { styles } from '../theme/ThemeApp';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CardHome } from '../components/CardHome';
@@ -11,15 +11,30 @@ import { Images } from '../assets/imgs/imgs';
 
 // import Carousel from 'react-native-snap-carousel';
 import {  Card } from 'react-native-paper';
-import FooterNavigation from '../components/Footer';
-import { useFooter } from '../hooks/useFooter';
+import { FooterNavigation } from '../components/Footer';
+//import { useFooter } from '../hooks/useFooter';
+import { useRoute, useNavigation } from '@react-navigation/native';
+import { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 interface Props extends StackScreenProps<any, any>{}
-export const HomeScreen = ({navigation}: Props, showFooter:boolean) => {
+export const HomeScreen = ({navigation}:Props) => {
+
+    const route = useRoute();
+    const currentRouteName = route.name;
+
+    const scrollY = useSharedValue(0);
+    const opacity = useSharedValue(1);
+
+    const animatedStyle = useAnimatedStyle(() => {
+        return {
+          opacity: opacity.value,
+          transform: [{ translateY: withTiming(scrollY.value, { duration: 250 }) }],
+        };
+      });
 
     const { top } = useSafeAreaInsets();
 
-    const { onShowFooter } = useFooter();
+   //const { onShowFooter } = useFooter();
 
     // useEffect(() => {
     //     onShowFooter(true);
@@ -43,9 +58,13 @@ export const HomeScreen = ({navigation}: Props, showFooter:boolean) => {
     }, []);
 
     return (
-        <ScrollView>
+        <>
+        <ScrollView onScroll={(event) => {
+          const scrollY = event.nativeEvent.contentOffset.y;
+          const shouldHideFooter = scrollY > 0;
+            opacity.value = withTiming(shouldHideFooter ? 0 : 1, { duration: 500 });
+        }}>
             <View style={{...styles.container, backgroundColor: '#0E54BE'}}>
-
                 {/* Header */}
                 <View style={{ flexDirection: 'row', height: 150}}>
 
@@ -108,7 +127,8 @@ export const HomeScreen = ({navigation}: Props, showFooter:boolean) => {
                 </View>
 
             </View>
-            {/* <FooterNavigation/> */}
         </ScrollView>
+        <FooterNavigation currentRouteName={currentRouteName} animatedStyle={animatedStyle} navigation={navigation} />
+        </>
     );
 };

@@ -19,7 +19,7 @@ const patients_1 = __importDefault(require("../models/patients"));
 const patientRouter = (0, express_1.Router)();
 patientRouter.get("/allMedics", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const jsonRes = new response_1.RespondesModel();
-    const ress = yield Users_1.default.find({ rol: "doctor" }).then((res) => {
+    const ress = yield Users_1.default.find({ type_user: "doctor" }).then((res) => {
         if (res) {
             jsonRes.code = 200;
             jsonRes.message = "lista de medicos";

@@ -347,18 +347,62 @@ authRouter.post("/resetPassword", async (req: Request, res: Response) => {
 
     const hash = await bcrypt.hash(password, saltRounds);
 
+    console.log(hash);
+    
     const filter = { email: email };
 
     const update = { password: hash };
 
-    const ress = await Users.findOneAndUpdate(filter,update)
-    
-    jsonResp.code = 200;
-    jsonResp.message = "password reset";
-    jsonResp.status = true;
-    jsonResp.data = {};
+    const ress = await Users.findOneAndUpdate(filter,update).then((res) => {
+        console.log(res);
+        if (res) {
+            jsonResp.code = 200;
+            jsonResp.message = "password reset";
+            jsonResp.status = true;
+            jsonResp.data = {};
+        } else if (!res) {
+            jsonResp.code = 400;
+            jsonResp.message = "password not reset";
+            jsonResp.status = false;
+            jsonResp.data = {};
+        }
+
+        return jsonResp;
+    }).catch((err) => {
+        console.log(err)
+    });
 
     res.json(ress);
+});
+
+authRouter.post("/emailExist", async (req: Request, res: Response) => {
+    const jsonResp: RespondesModel = new RespondesModel();
+
+    const { email } = req.body;
+
+    const ress = await Users.findOne({email: email}).then((res) => {
+        console.log(res);
+        if (res) {
+            jsonResp.code = 200;
+            jsonResp.message = "email exist";
+            jsonResp.status = true;
+            jsonResp.data = {};
+
+            return jsonResp;
+        } else if (!res) {
+            jsonResp.code = 400;
+            jsonResp.message = "email not exist";
+            jsonResp.status = false;
+            jsonResp.data = {};
+
+            return jsonResp;
+        }
+    }).catch((err) => {
+        console.log(err)
+    });
+    
+    res.json(ress);
+
 });
 
 export default authRouter;

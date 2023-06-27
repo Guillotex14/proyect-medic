@@ -183,7 +183,7 @@ export const CardHomeMedic = () => {
                             <Text style={{color: '#fff',fontSize: 13, fontWeight: 'bold' }}>Enero</Text>
                         </View>
                         <View style={{width: '70%', alignSelf: 'center'}}>
-                            <Text style={{color: '##545454', fontSize: 18, fontWeight: 'bold', marginTop: 5}}>
+                            <Text style={{color: '#545454', fontSize: 18, fontWeight: 'bold', marginTop: 5}}>
                                 Solicitud de Consulta
                             </Text>
                             <Text style={{color: '#545454', fontSize: 15, fontWeight: '400', marginTop: 5}}>

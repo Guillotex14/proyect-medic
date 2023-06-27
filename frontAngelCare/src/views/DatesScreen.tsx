@@ -124,17 +124,19 @@ export const DatesScreen = ({navigation}:Props) => {
           <View style={{...styles.container, flex: 1}}>
 
           {/* header */}
-          <View style={{width: '100%', marginHorizontal: 40, alignSelf: 'center', marginTop: 70, flexDirection: 'row', alignContent: 'center', alignItems: 'center' }}>
-            <View style={{width: 70}}>
-              <TouchableOpacity onPress={()=>{ navigation.pop;}}
+          <View style={{width: '100%', marginHorizontal: 40, alignSelf: 'center', marginTop: 70, flexDirection: 'row', alignContent: 'center', alignItems: 'center', justifyContent: 'center' }}>
+            <View style={{width: '15%'}}>
+              <TouchableOpacity onPress={()=>{navigation.pop()}}
               style={{marginLeft: 25}}>
                 <Ionicons name='chevron-back' size={40} color={"#000"}/>
               </TouchableOpacity>
             </View>
-            <View style={{width: 300}}>
+            <View style={{width: '75%'}}>
               <Text style={{fontSize: 17, marginHorizontal: 10, color: 'black', fontWeight: 'bold', textAlign: 'center'}}>
                 Completar Formulario
               </Text>
+            </View>
+            <View style={{width: '15%'}}>
             </View>
           </View>
 
@@ -189,7 +191,7 @@ export const DatesScreen = ({navigation}:Props) => {
                           </View>
                         </View>
                       )} 
-                      keyExtractor={(item) => item}/>
+                      keyExtractor={(item, index) => index.toString()}/>
                     </View>
               </>
             )

@@ -28,7 +28,8 @@ class App {
     routes() {
         this.app.use("/auth", auth_1.default);
         this.app.use("/patient", patient_1.default);
-        this.app.use(express_1.default.static(path_1.default.join(__dirname, "public")));
+        this.app.use(express_1.default.static(path_1.default.join(__dirname, "src")));
+        this.app.use(express_1.default.static(path_1.default.join(__dirname, "dist")));
     }
     start() {
         this.app.listen(config_1.port, () => {

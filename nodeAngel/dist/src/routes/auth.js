@@ -29,7 +29,6 @@ authRouter.post("/loginPatient", (req, res) => __awaiter(void 0, void 0, void 0,
     const jsonRes = new response_1.RespondesModel();
     const { email, password } = req.body;
     const ress = yield Users_1.default.findOne({ email: email }).then((res) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log(res);
         if (res) {
             const validP = yield bcrypt_1.default.compare(password, res.password);
             if (validP) {
@@ -37,7 +36,6 @@ authRouter.post("/loginPatient", (req, res) => __awaiter(void 0, void 0, void 0,
                 jsonRes.message = "login success";
                 jsonRes.status = true;
                 yield patients_1.default.findOne({ id_user: res._id.toString() }).then((res2) => __awaiter(void 0, void 0, void 0, function* () {
-                    console.log(res2);
                     if (res2) {
                         let patientInfo = {
                             id: res._id,
@@ -50,7 +48,7 @@ authRouter.post("/loginPatient", (req, res) => __awaiter(void 0, void 0, void 0,
                             phone: res2.phone,
                             address: res2.address,
                             id_patient: res2._id,
-                            ensuracePlicy: res2.ensurancePolicy != "" ? res2.ensurancePolicy : "",
+                            ensuracePolicy: res2.ensurancePolicy != "" ? res2.ensurancePolicy : "",
                             policyNumber: res2.policyNumber != "" ? res2.policyNumber : ""
                         };
                         jsonRes.data = patientInfo;
@@ -293,13 +291,51 @@ authRouter.post("/resetPassword", (req, res) => __awaiter(void 0, void 0, void 0
     const { email, password } = req.body;
     const saltRounds = 10;
     const hash = yield bcrypt_1.default.hash(password, saltRounds);
+    console.log(hash);
     const filter = { email: email };
     const update = { password: hash };
-    const ress = yield Users_1.default.findOneAndUpdate(filter, update);
-    jsonResp.code = 200;
-    jsonResp.message = "password reset";
-    jsonResp.status = true;
-    jsonResp.data = {};
+    const ress = yield Users_1.default.findOneAndUpdate(filter, update).then((res) => {
+        console.log(res);
+        if (res) {
+            jsonResp.code = 200;
+            jsonResp.message = "password reset";
+            jsonResp.status = true;
+            jsonResp.data = {};
+        }
+        else if (!res) {
+            jsonResp.code = 400;
+            jsonResp.message = "password not reset";
+            jsonResp.status = false;
+            jsonResp.data = {};
+        }
+        return jsonResp;
+    }).catch((err) => {
+        console.log(err);
+    });
+    res.json(ress);
+}));
+authRouter.post("/emailExist", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const jsonResp = new response_1.RespondesModel();
+    const { email } = req.body;
+    const ress = yield Users_1.default.findOne({ email: email }).then((res) => {
+        console.log(res);
+        if (res) {
+            jsonResp.code = 200;
+            jsonResp.message = "email exist";
+            jsonResp.status = true;
+            jsonResp.data = {};
+            return jsonResp;
+        }
+        else if (!res) {
+            jsonResp.code = 400;
+            jsonResp.message = "email not exist";
+            jsonResp.status = false;
+            jsonResp.data = {};
+            return jsonResp;
+        }
+    }).catch((err) => {
+        console.log(err);
+    });
     res.json(ress);
 }));
 exports.default = authRouter;
