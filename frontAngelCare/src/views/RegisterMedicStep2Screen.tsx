@@ -495,7 +495,7 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
       setDate1(currentDate);
       if (Platform.OS === 'android') {
         toggleDatepicker4();
-        setuniGraduationDate(Moment(currentDate).format('DD/MM/YYYY'));
+        setPostgradeAdmissionDate(Moment(currentDate).format('DD/MM/YYYY'));
       }
     }else{
       toggleDatepicker4();
@@ -509,7 +509,7 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
       setDate1(currentDate);
       if (Platform.OS === 'android') {
         toggleDatepicker5();
-        setuniGraduationDate(Moment(currentDate).format('DD/MM/YYYY'));
+        setPostgradeGraduationDate(Moment(currentDate).format('DD/MM/YYYY'));
       }
     }else{
       toggleDatepicker5();
@@ -764,18 +764,16 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
                       <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginVertical: 5}}>
                       <View style={{width: '50%', alignItems: 'center', marginLeft: -15}}>
                         <FormControl style={{width: '90%'}}>
-                          <FormControl.ErrorMessage>Este campo es obligatorio</FormControl.ErrorMessage>
-                          <TouchableOpacity onPress={()=>setShowDayService(true)}>
+                          <Pressable onPress={()=>setShowDayService(true)}>
                           <TextInput placeholder="" style={{...styles.input, borderColor: validDayService ? 'red' : '#aaaaaa',fontWeight: "500"}} value={dayService}/>
-                          </TouchableOpacity>
+                          </Pressable>
                         </FormControl>
                       </View>
                       <View style={{width: '50%', alignItems: 'center'}}>
                         <FormControl style={{width: '90%'}}>
-                          <FormControl.ErrorMessage>Este campo es obligatorio</FormControl.ErrorMessage>
-                          <TouchableOpacity onPress={()=>setShowDayService2(true)}>
+                          <Pressable onPress={()=>setShowDayService2(true)}>
                             <TextInput placeholder="" style={{...styles.input, borderColor: validDayService2 ? 'red' : '#aaaaaa',fontWeight: "500"}} value={dayService2}/>
-                          </TouchableOpacity>
+                          </Pressable>
                         </FormControl>
                       </View>
                     </View>

@@ -308,8 +308,8 @@ export const LoginScreen = ({navigation}: Props) => {
     const presentToast2 = (message: string) => {
         toast.show({
             render: () => (
-                <View style={{backgroundColor: '#ffe69c', padding: 15, borderRadius: 50}}>
-                    <Text style={{color: 'white', fontSize: 20}}>{message}</Text>
+                <View style={{backgroundColor: '#0d6efd', padding: 15, borderRadius: 50}}>
+                    <Text style={{color: '#000', fontSize: 20}}>{message}</Text>
                 </View>
             ),
             placement: 'top',
@@ -576,7 +576,7 @@ export const LoginScreen = ({navigation}: Props) => {
                                         justifyContent: 'center',
                                     }}>
 
-                                    {
+                                     {/* {
                                         isAndroid && (
                                         <OTPInputView
                                         pinCount={4}
@@ -600,7 +600,7 @@ export const LoginScreen = ({navigation}: Props) => {
                                         style={{width: '80%', height: 60, marginHorizontal: 15}}
                                     />
                                         )
-                                    } 
+                                    }  */}
 
                                     {
                                         isWeb && (

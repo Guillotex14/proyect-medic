@@ -463,7 +463,7 @@ export const ProfileDoctorScreen = ({navigation}: Props) => {
                             <FormControl style={{width: '90%'}}>
                                 <FormControl.ErrorMessage>Este campo es obligatorio</FormControl.ErrorMessage>
                                 <TouchableOpacity onPress={handleTextInputPress}>
-                                <TextInput value={selectedValue} placeholder="Seleccionar día" style={styles.input} editable={false}/>
+                                <TextInput value={selectedValue} placeholder="Seleccionar día" style={styles.input}/>
                                 </TouchableOpacity>
                                 <Modal visible={isSelectActive} animationType="fade" transparent>
                                     <View style={styles_modal.modalContainer}>
@@ -478,7 +478,7 @@ export const ProfileDoctorScreen = ({navigation}: Props) => {
                             <FormControl style={{width: '90%'}}>
                                 <FormControl.ErrorMessage>Este campo es obligatorio</FormControl.ErrorMessage>
                                 <TouchableOpacity onPress={handleTextInputPress2}>
-                                <TextInput value={selectedValue2} placeholder="Seleccionar día" style={styles.input} editable={false}/>
+                                <TextInput value={selectedValue2} placeholder="Seleccionar día" style={styles.input}/>
                                 </TouchableOpacity>
                                 <Modal visible={isSelectActive2} animationType="fade" transparent>
                                     <View style={styles_modal.modalContainer}>
@@ -503,7 +503,7 @@ export const ProfileDoctorScreen = ({navigation}: Props) => {
                         <FormControl.Label style={{marginLeft: 10}}>Adicional</FormControl.Label>
                         <FormControl.ErrorMessage>Este campo es obligatorio</FormControl.ErrorMessage>
                         <TextInput
-                        editable
+                        
                         multiline
                         numberOfLines={6}
                         maxLength={240}
