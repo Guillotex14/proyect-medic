@@ -476,7 +476,6 @@ export const ProfileDoctorScreen = ({navigation}: Props) => {
                             </View>
                             <View style={{width: '50%', alignItems: 'center'}}>
                             <FormControl style={{width: '90%'}}>
-                                <FormControl.ErrorMessage>Este campo es obligatorio</FormControl.ErrorMessage>
                                 <TouchableOpacity onPress={handleTextInputPress2}>
                                 <TextInput value={selectedValue2} placeholder="Seleccionar día" style={styles.input}/>
                                 </TouchableOpacity>
