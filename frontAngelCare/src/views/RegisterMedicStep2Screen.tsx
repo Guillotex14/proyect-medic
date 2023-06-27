@@ -781,31 +781,24 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
                           <TouchableOpacity onPress={()=>{showModalService()}}>
                           <TextInput placeholder="" style={{...styles.input, borderColor: validDayService ? 'red' : '#aaaaaa',fontWeight: "500"}} value={dayService}/>
                           </TouchableOpacity>
-                        </FormControl>
-                      </View>
-                      <View style={{width: '50%', alignItems: 'center'}}>
-                        <FormControl style={{width: '90%'}}>
-                          <TouchableOpacity onPress={()=>{showModalService2()}}>
-                            <TextInput placeholder="" style={{...styles.input, borderColor: validDayService2 ? 'red' : '#aaaaaa',fontWeight: "500"}} value={dayService2}/>
-                          </TouchableOpacity>
-                        </FormControl>
-                      </View>
-                    </View>
-
-                    {
-                      // showDayService && ( 
-                        <Modal visible={showDayService} animationType="fade" transparent>
+                          <Modal visible={showDayService} animationType="fade" transparent>
                           <View style={styles_modal.modalContainer}>
                             <View style={styles_modal.modalContent}>
                               <FlatList style={{ flexGrow: 1 }} data={options} renderItem={({ item }) => (<TouchableOpacity style={styles_modal.optionContainer} onPress={() => onModalDayservice(item.value)}><Text style={styles_modal.optionText}>{item.label}</Text></TouchableOpacity>)} keyExtractor={(item) => item.value} />
                             </View>
                           </View>
                         </Modal>
-                      // )
-                    }
-                    {
-                      // showDayService2 && ( 
-                        <Modal visible={showDayService2} animationType="fade" transparent>
+                        </FormControl>
+                        
+
+
+                      </View>
+                      <View style={{width: '50%', alignItems: 'center'}}>
+                        <FormControl style={{width: '90%'}}>
+                          <TouchableOpacity onPress={()=>{showModalService2()}}>
+                            <TextInput placeholder="" style={{...styles.input, borderColor: validDayService2 ? 'red' : '#aaaaaa',fontWeight: "500"}} value={dayService2}/>
+                          </TouchableOpacity>
+                          <Modal visible={showDayService2} animationType="fade" transparent>
                           <View style={styles_modal.modalContainer}>
                             <View style={styles_modal.modalContent}>
                               <FlatList style={{ flexGrow: 1 }} data={options} renderItem={({ item }) => (
@@ -815,6 +808,18 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
                             </View>
                           </View>
                         </Modal>
+                        </FormControl>
+                      </View>
+                    </View>
+
+                    {
+                      // showDayService && ( 
+                        
+                      // )
+                    }
+                    {
+                      // showDayService2 && ( 
+                        
                       // )
                     }
                   </View>
