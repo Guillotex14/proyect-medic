@@ -11,6 +11,7 @@ import { Ionicons } from '@expo/vector-icons';
 import apiConection from '../api/Concecction';
 import DatePicker from '@react-native-community/datetimepicker';
 import Moment from 'moment';
+import { Button } from 'react-native-paper';
 
 interface Props extends StackScreenProps<any, any>{};
 
@@ -169,11 +170,11 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
   }
 
   const showModalService = () => {
-    setShowDayService(!showDayService);
+    setShowDayService(true);
   }
 
   const showModalService2 = () => {
-    setShowDayService2(!showDayService2);
+    setShowDayService2(true);
   }
 
   const onNextStep = () => {
@@ -561,7 +562,7 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
     <ScrollView>
       <View style={{...styles.container}}>
 
-        {
+        {/* {
           !nextStep && !nextStep2 && (
             
             <>
@@ -670,10 +671,10 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
               </TouchableOpacity>
             </>
           )
-        }
+        } */}
 
-        {
-          nextStep && (
+        {/* {
+          nextStep && ( */}
             
               <>
                 <View style={{flexDirection: 'row', alignItems: 'center', marginTop: top+50}}>
@@ -710,7 +711,7 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
                     <View style={{width: '50%', alignItems: 'center', }}>
                       <FormControl style={{width: '90%'}}>
                         <FormControl.Label style={{marginLeft: 10}}>Fecha de Egreso</FormControl.Label>
-                        {/* <TextInput placeholder="" style={{...styles.input, borderColor: validUniGraduationDate ? 'red' : '#aaaaaa',fontWeight: "500"}} value={uniGraduationDate} onChangeText={setuniGraduationDate}/> */}
+
                         <Pressable onPress={toggleDatepicker3}>
                         <TextInput placeholder="" style={{...styles.input, borderColor: validUniGraduationDate ? 'red' : '#aaaaaa',fontWeight: "500"}} value={uniGraduationDate} onChangeText={setuniGraduationDate} onFocus={handleFocus3} onBlur={handleBlur3}/>
                         </Pressable>
@@ -754,7 +755,7 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
                     <View style={{width: '50%', alignItems: 'center', marginLeft: -15}}>
                       <FormControl style={{width: '90%'}}>
                         <FormControl.Label style={{marginLeft: 10}}>Fecha de ingreso</FormControl.Label>
-                        {/* <TextInput placeholder="" style={{...styles.input, borderColor: validePostgradeDateAdmission ? 'red' : '#aaaaaa',fontWeight: "500"}} value={postgradeAdmissionDate} onChangeText={setPostgradeAdmissionDate}/> */}
+                        
                         <Pressable onPress={toggleDatepicker4}>
                         <TextInput placeholder="" style={{...styles.input, borderColor: validePostgradeDateAdmission ? 'red' : '#aaaaaa',fontWeight: "500"}} value={postgradeAdmissionDate} onChangeText={setPostgradeAdmissionDate} onFocus={handleFocus4} onBlur={handleBlur4}/>
                         </Pressable>
@@ -765,8 +766,6 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
                       <FormControl style={{width: '90%'}}>
                         <FormControl.Label style={{marginLeft: 10}}>Fecha de Egreso</FormControl.Label>
       
-                        {/* <TextInput placeholder="" style={{...styles.input, borderColor: validePostgradeDateGraduation ? 'red' : '#aaaaaa',fontWeight: "500"}} value={postgradeGraduationDate} onChangeText={setPostgradeGraduationDate}/> */}
-
                         <Pressable onPress={toggleDatepicker5}>
                         <TextInput placeholder="" style={{...styles.input, borderColor: validePostgradeDateGraduation ? 'red' : '#aaaaaa',fontWeight: "500"}} value={postgradeGraduationDate} onChangeText={setPostgradeGraduationDate} onFocus={handleFocus5} onBlur={handleBlur5}/>
                         </Pressable>
@@ -775,78 +774,52 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
                     </View>
                   </View>
 
-                  {/* <View >
+                  <View >
                     <Text style={{fontSize: 15, marginHorizontal: 15, color: '#677294'}}>Dias de Servicio</Text>
-                    <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginVertical: 5}}>
-                      <View style={{width: '50%', alignItems: 'center', marginLeft: -15}}>
-                        <FormControl style={{width: '90%'}}>
-                          <TouchableOpacity onPress={showModalService}>
-                          <TextInput placeholder="" style={{...styles.input, borderColor: validDayService ? 'red' : '#aaaaaa',fontWeight: "500"}} value={dayService}/>
-                          </TouchableOpacity>
-                        </FormControl>
-                      </View>
-                      <View style={{width: '50%', alignItems: 'center'}}>
-                        <FormControl style={{width: '90%'}}>
-                          <TouchableOpacity onPress={()=>{setShowDayService(true)}}>
-                            <TextInput placeholder="" style={{...styles.input, borderColor: validDayService2 ? 'red' : '#aaaaaa',fontWeight: "500"}} value={dayService2}/>
-                          </TouchableOpacity>
-                          
-                        </FormControl>
-                      </View>
+                      <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginVertical: 5}}>
+                        <View style={{width: '50%', alignItems: 'center', marginLeft: -15}}>
+                          <FormControl style={{width: '90%'}}>
+                            <Button onPress={()=>{setShowDayService(true)}}>
+                            <TextInput placeholder="" style={{...styles.input, borderColor: validDayService ? 'red' : '#aaaaaa',fontWeight: "500"}} value={dayService}/>
+                            </Button>
+                          </FormControl>
+                        </View>
+                        <View style={{width: '50%', alignItems: 'center'}}>
+                          <FormControl style={{width: '90%'}}>
+                            <Button onPress={()=>{setShowDayService2(true)}}>
+                              <TextInput placeholder="" style={{...styles.input, borderColor: validDayService2 ? 'red' : '#aaaaaa',fontWeight: "500"}} value={dayService2}/>
+                            </Button>
+                            
+                          </FormControl>
+                        </View>
                     </View>
-                    <Modal visible={showDayService} animationType="fade" transparent>
-                      <View style={styles_modal.modalContainer}>
-                        <View style={styles_modal.modalContent}>
-                          <FlatList style={{ flexGrow: 1 }} data={options} renderItem={({ item }) => (<TouchableOpacity style={styles_modal.optionContainer} onPress={() => onModalDayservice(item.value)}><Text style={styles_modal.optionText}>{item.label}</Text></TouchableOpacity>)} keyExtractor={(item) => item.value} />
-                        </View>
-                      </View>
-                    </Modal>
-                    <Modal visible={showDayService2} animationType="fade" transparent>
-                      <View style={styles_modal.modalContainer}>
-                        <View style={styles_modal.modalContent}>
-                          <FlatList style={{ flexGrow: 1 }} data={options} renderItem={({ item }) => (
-                          <TouchableOpacity style={styles_modal.optionContainer} onPress={() => onModalDayservice2(item.value)}>
-                            <Text style={styles_modal.optionText}>{item.label}</Text>
-                            </TouchableOpacity>)} keyExtractor={(item) => item.value} />
-                        </View>
-                      </View>
-                    </Modal>
-                  </View> */}
 
-                  <View>
-                        <Text style={{fontSize: 15, fontWeight: 'bold', marginHorizontal: 15, color: '#677294'}}>Dias de Servicio</Text>
-                            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginVertical: 5}}>
-                            <View style={{width: '50%', alignItems: 'center'}}>
-                            <FormControl style={{width: '90%'}}>
-                                <TouchableOpacity onPress={()=>setShowDayService(true)}>
-                                <TextInput value={dayService} placeholder="Seleccionar día" style={styles.input}/>
-                                </TouchableOpacity>
-                                <Modal visible={showDayService} animationType="fade" transparent>
-                                    <View style={styles_modal.modalContainer}>
-                                        <View style={styles_modal.modalContent}>
-                                            <FlatList style={{flexGrow: 1}} data={options} renderItem={({ item }) => (<TouchableOpacity style={styles_modal.optionContainer} onPress={() => onModalDayservice(item.value)}><Text style={styles_modal.optionText}>{item.label}</Text></TouchableOpacity>)} keyExtractor={(item) => item.value}/>
-                                        </View>
-                                    </View>
-                                </Modal>
-                            </FormControl>
+                    {
+                      showDayService && ( 
+                        <Modal visible={showDayService} animationType="fade" transparent>
+                          <View style={styles_modal.modalContainer}>
+                            <View style={styles_modal.modalContent}>
+                              <FlatList style={{ flexGrow: 1 }} data={options} renderItem={({ item }) => (<TouchableOpacity style={styles_modal.optionContainer} onPress={() => onModalDayservice(item.value)}><Text style={styles_modal.optionText}>{item.label}</Text></TouchableOpacity>)} keyExtractor={(item) => item.value} />
                             </View>
-                            <View style={{width: '50%', alignItems: 'center'}}>
-                            <FormControl style={{width: '90%'}}>
-                                <TouchableOpacity onPress={()=>setShowDayService2(true)}>
-                                <TextInput value={dayService2} placeholder="Seleccionar día" style={styles.input}/>
-                                </TouchableOpacity>
-                                <Modal visible={showDayService2} animationType="fade" transparent>
-                                    <View style={styles_modal.modalContainer}>
-                                        <View style={styles_modal.modalContent}>
-                                            <FlatList style={{flexGrow: 1}} data={options} renderItem={({ item }) => (<TouchableOpacity style={styles_modal.optionContainer} onPress={() => onModalDayservice(item.value)}><Text style={styles_modal.optionText}>{item.label}</Text></TouchableOpacity>)} keyExtractor={(item) => item.value}/>
-                                        </View>
-                                    </View>
-                                </Modal>
-                            </FormControl>
-                            </View>
-                        </View>
+                          </View>
+                        </Modal>
+                      )
+                    }
+                    {
+                      showDayService2 && ( 
+                        <Modal visible={showDayService2} animationType="fade" transparent>
+                              <View style={styles_modal.modalContainer}>
+                                <View style={styles_modal.modalContent}>
+                                  <FlatList style={{ flexGrow: 1 }} data={options} renderItem={({ item }) => (
+                                  <TouchableOpacity style={styles_modal.optionContainer} onPress={() => onModalDayservice2(item.value)}>
+                                    <Text style={styles_modal.optionText}>{item.label}</Text>
+                                    </TouchableOpacity>)} keyExtractor={(item) => item.value} />
+                                </View>
+                              </View>
+                            </Modal>
+                      )
+                    }
                   </View>
-                  {/* asdasd */}
 
                   {/* <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>
                     <Text style={{fontSize: 15, fontWeight: 'bold', marginHorizontal: 15, color: '#677294'}}>Adjuntar Archivo</Text>
@@ -875,9 +848,10 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
                   </TouchableOpacity>
                 </View>
               </>
-          
-          )
-        } 
+          {/* 
+        //   )
+        // } 
+           */}
 
         {
           nextStep2 && (
