@@ -775,7 +775,7 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
                     </View>
                   </View>
 
-                  <View style={{ marginLeft: 15}}>
+                  <View >
                     <Text style={{fontSize: 15, marginHorizontal: 15, color: '#677294'}}>Dias de Servicio</Text>
                       <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginVertical: 5}}>
                       <View style={{width: '50%', alignItems: 'center', marginLeft: -15}}>
