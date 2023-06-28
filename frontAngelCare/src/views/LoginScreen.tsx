@@ -576,7 +576,7 @@ export const LoginScreen = ({navigation}: Props) => {
                                         justifyContent: 'center',
                                     }}>
 
-                                     {/* {
+                                    {/* {
                                         isAndroid && (
                                         <OTPInputView
                                         pinCount={4}

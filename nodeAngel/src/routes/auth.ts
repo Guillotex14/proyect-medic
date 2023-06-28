@@ -161,7 +161,6 @@ authRouter.post("/registerMedic", async (req: Request, res: Response) => {
     
     await newUser.save().then((res) => {
         newMedic.id_user = newUser._id;
-        
     }).catch((err) => {
         console.log(err)
     });
@@ -171,14 +170,38 @@ authRouter.post("/registerMedic", async (req: Request, res: Response) => {
     }).catch((err) => {
         console.log(err)
     });
-    
 
     await newDataProfessional.save();
+
+    let userMedic = {
+        id: newUser._id,
+        id_medic: newMedic._id,
+        email: newUser.email,
+        typeUser: newUser.type_user,
+        fullName: newMedic.fullName,
+        typeDni: newMedic.typeDni,
+        dni: newMedic.dni,
+        birthdate: newMedic.birthdate,
+        phone: newMedic.phone,
+        address: newMedic.address,
+        speciality: newMedic.specialty,
+        university: newDataProfessional.university,
+        uniAdmissionDate: newDataProfessional.uniAdmissionDate,
+        uniGraduationDate: newDataProfessional.uniGraduationDate,
+        mpps: newDataProfessional.mpps,
+        postgrade: newDataProfessional.postgrade,
+        postgradeUniversity: newDataProfessional.postgradeUniversity,
+        postgradeGraduationDate: newDataProfessional.postgradeGraduationDate,
+        postgradeAdmissionDate: newDataProfessional.postgradeAdmissionDate,
+        additional: newDataProfessional.additional,
+        dayService: newDataProfessional.dayService,
+        dayService2: newDataProfessional.dayService2,
+    }
 
     jsonRes.code = 200;
     jsonRes.message = "register success";
     jsonRes.status = true;
-    jsonRes.data = newUser;
+    jsonRes.data = userMedic;
 
 
     res.json(jsonRes);
@@ -231,10 +254,28 @@ authRouter.post("/registerPatient", async (req: Request, res: Response) => {
 
     await filePatient.save();
 
+    let userPatient = {
+        id: newUser._id,
+        id_patient: newPatient._id,
+        fullName: newPatient.fullName,
+        typeDni: newPatient.typeDni,
+        dni: newPatient.dni,
+        email: newUser.email,
+        password: newUser.password,
+        phone: newPatient.phone,
+        address: newPatient.address,
+        gender: newPatient.gender,
+        diseases: diseases,
+        alergies: alergies,
+        condition: filePatient.condiction,
+        aditional: filePatient.additional,
+        birthdate: newPatient.birthdate,
+    }
+
     jsonRes.code = 200;
     jsonRes.message = "register success";
     jsonRes.status = true;
-    jsonRes.data = {};
+    jsonRes.data = userPatient;
 
     res.json(jsonRes);
 });
