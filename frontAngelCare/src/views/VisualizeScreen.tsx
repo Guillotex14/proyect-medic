@@ -9,6 +9,8 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
 import { styles_modal } from '../theme/Modal_Profile_Doctor';
 import { TypeDni } from '../interfaces/registerModels';
+import apiConnection from '../api/Concecction';
+
 
 interface Props extends StackScreenProps<any, any>{};
 
@@ -23,6 +25,7 @@ export const VisualizeScreen = ({navigation}:Props) => {
     
     const [dni, setDni] = useState('');
     const [typeDNISelected, setTypeDNISelected] = useState('V');
+    const [dataPatient, setDataPatient] = useState<any>({});
 
     const typeDNI: TypeDni[] = [
     {
@@ -39,7 +42,7 @@ export const VisualizeScreen = ({navigation}:Props) => {
     }
     ];
 
-    const onSearch = () => {
+    const onSearch = async () => {
         if (dni === '') {
             presentToast('Debe ingresar un número de cédula');
             setValidDNI(true);
@@ -56,7 +59,22 @@ export const VisualizeScreen = ({navigation}:Props) => {
             setValidTypeDni(false);
         }
         
-        setSearch(true);
+        await apiConnection.post('/doctor/getPatientByDni', {
+            typeDni: typeDNISelected,
+            dni: dni
+
+        }).then((response) => {
+            console.log(response.data);
+            if (response.data.status) {
+                setDataPatient(response.data.data);
+                setSearch(true);
+            }
+        }).catch((error) => {
+            console.log(error);
+        });
+
+
+
     }
 
     const onPressModal = (value: string) => {
@@ -151,14 +169,14 @@ export const VisualizeScreen = ({navigation}:Props) => {
                             </View>
                             <View style={{width: '65%', alignItems: 'center', alignSelf: 'center', alignContent: 'center'}}>
                                 <Text style={{color: '#677294', fontSize: 15, fontWeight: 'bold', textAlign: 'center', marginLeft: 20}}>Nombre completo: </Text>
-                                <Text style={{color: '#545454', fontSize: 20, fontWeight: 'bold', textAlign: 'center', marginLeft: 20}}>John Doe</Text>
+                                <Text style={{color: '#545454', fontSize: 20, fontWeight: 'bold', textAlign: 'center', marginLeft: 20}}>{dataPatient.fullName}</Text>
                             </View>
                         </View>
     
                         <View style={{flexDirection: 'row', alignSelf: 'center' ,width: '100%', marginLeft: 25}}>
                             <View style={{width: '50%', marginVertical: 10, alignSelf: 'center'}}>
                                 <Text style={{color: '#677294', fontSize: 15, fontWeight: 'bold'}}>Cedula </Text>
-                                <Text style={{color: '#545454', fontSize: 15, fontWeight: 'bold'}}>123456</Text>
+                                <Text style={{color: '#545454', fontSize: 15, fontWeight: 'bold'}}>{dataPatient.typeDni+"-"+dataPatient.dni}</Text>
                             </View>
                             <View style={{width: '50%', marginVertical: 10, alignSelf: 'center'}}>
                                 <Text style={{color: '#677294', fontSize: 15, fontWeight: 'bold'}}>Telefono </Text>
@@ -168,38 +186,40 @@ export const VisualizeScreen = ({navigation}:Props) => {
                         
                         <View style={{alignSelf: 'center' ,width: '100%', marginVertical: 5, marginLeft: 25}}>
                             <Text style={{color: '#677294', fontSize: 15, fontWeight: 'bold'}}>Direccion </Text>
-                            <Text style={{color: '#545454', fontSize: 15, fontWeight: 'bold'}}>Calle 123</Text>
+                            <Text style={{color: '#545454', fontSize: 15, fontWeight: 'bold'}}>{dataPatient.address}</Text>
                         </View>
                         
                         <View style={{alignSelf: 'center' ,width: '100%', marginVertical: 5, marginLeft: 25}}>
                             <Text style={{color: '#677294', fontSize: 15, fontWeight: 'bold'}}>Correo Electronico </Text>
                             <Text style={{color: '#545454', fontSize: 15, fontWeight: 'bold'}}>
-                                Johndoe@johndoe.com
+                                {dataPatient.email}
                             </Text>
                         </View>
     
                         <View style={{flexDirection: 'row', alignSelf: 'center' ,width: '100%', marginLeft: 25}}>
                             <View style={{width: '50%', alignSelf: 'center', marginTop: 10}}>
                                 <Text style={{color: '#677294', fontSize: 15, fontWeight: 'bold'}}>Fecha de nacimiento </Text>
-                                <Text style={{color: '#545454', fontSize: 15, fontWeight: 'bold'}}>20-20-2020</Text>
+                                <Text style={{color: '#545454', fontSize: 15, fontWeight: 'bold'}}>{dataPatient.birthdate}</Text>
                             </View>
                             <View style={{width: '50%', alignSelf: 'center', marginTop: 10}}>
                                 <Text style={{color: '#677294', fontSize: 15, fontWeight: 'bold'}}>Sexo </Text>
-                                <Text style={{color: '#545454', fontSize: 15, fontWeight: 'bold'}}>Masculino</Text>
+                                <Text style={{color: '#545454', fontSize: 15, fontWeight: 'bold'}}>{dataPatient.gender}</Text>
                             </View>
                         </View>
     
                         <View style={{alignSelf: 'center' ,width: '100%',marginVertical: 10, marginLeft: 25}}>
                             <Text style={{color: '#677294', fontSize: 15, fontWeight: 'bold'}}>Poliza de seguro </Text>
-                            <Text style={{color: '#545454', fontSize: 15, fontWeight: 'bold'}}>Poliza</Text>
+                            <Text style={{color: '#545454', fontSize: 15, fontWeight: 'bold'}}>{dataPatient.ensurancePolicy}</Text>
                         </View>
                         
                         <View style={{alignSelf: 'center' ,width: '100%',marginVertical: 10, marginLeft: 25}}>
                             <Text style={{color: '#677294', fontSize: 15, fontWeight: 'bold'}}>Numero de poliza </Text>
-                            <Text style={{color: '#545454', fontSize: 15, fontWeight: 'bold'}}>123456</Text>
+                            <Text style={{color: '#545454', fontSize: 15, fontWeight: 'bold'}}>{dataPatient.policyNumber}</Text>
                         </View>
     
-                        <TouchableOpacity style={{ alignSelf: 'center', marginVertical: 20}} onPress={()=>{navigation.navigate('MedicalRecord')}}>
+                        <TouchableOpacity style={{ alignSelf: 'center', marginVertical: 20}} onPress={()=>{navigation.navigate('MedicalRecord',{
+                            id_patient: dataPatient.id_patient
+                        })}}>
                             <Text style={{color: '#0E54BE', fontSize: 20, fontWeight: 'bold'}}>Ver ficha medica</Text>
                         </TouchableOpacity>
     

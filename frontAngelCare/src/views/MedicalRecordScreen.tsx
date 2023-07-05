@@ -1,12 +1,43 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native';
 import { styles } from '../theme/ThemeApp';
 import { StackScreenProps } from '@react-navigation/stack';
 import { ChevronLeftIcon } from 'native-base';
+import apiConnection from '../api/Concecction';
+
 
 interface Props extends StackScreenProps<any, any>{}
 
-export const MedicalRecordScreen = ({navigation}:Props) => {
+export const MedicalRecordScreen = ({navigation, route}:Props) => {
+    
+    const params = route.params;
+    // console.log(id_patient)
+    const [diseases, setDiseases] = useState('');
+    const [allergies, setAllergies] = useState('');
+    const [condition, setCondition] = useState('');
+    const [additional, setAdditional] = useState('');
+    
+
+    const getMedicalFile = async () => {
+
+        await apiConnection.post('/doctor/getMedicalFile', {id_patient: params!.id_patient}).
+        then((response) => {
+            console.log(response.data);
+            setDiseases(response.data.data.disease);
+            setAllergies(response.data.data.allergy);
+            setCondition(response.data.data.condiction);
+            setAdditional(response.data.data.additional);
+        }).catch((error) => {
+            console.log(error);
+        });
+
+    }
+
+    useEffect(() => {
+        getMedicalFile();
+    }, [])
+    
+
     return (
         <View style={{...styles.container}}>
 
@@ -29,7 +60,7 @@ export const MedicalRecordScreen = ({navigation}:Props) => {
                     Enfermedades
                 </Text>
                 <Text style={{fontSize: 17, marginHorizontal: 10,  marginVertical: 5}}>
-                    Hipertensión
+                    {diseases}
                 </Text>
             </View>
 
@@ -38,7 +69,7 @@ export const MedicalRecordScreen = ({navigation}:Props) => {
                     Alergias
                 </Text>
                 <Text style={{fontSize: 17, marginHorizontal: 10,  marginVertical: 5}}>
-                    Ninguna
+                    {allergies}
                 </Text>
             </View>
 
@@ -47,7 +78,7 @@ export const MedicalRecordScreen = ({navigation}:Props) => {
                     Condición
                 </Text>
                 <Text style={{fontSize: 17, marginHorizontal: 10, marginVertical: 5}}>
-                    Discapacitado, silla de ruedas
+                    {condition}
                 </Text>
             </View>
 
@@ -56,7 +87,7 @@ export const MedicalRecordScreen = ({navigation}:Props) => {
                     Adicional
                 </Text>
                 <Text style={{fontSize: 17, marginHorizontal: 10, marginVertical: 5}}>
-                    Adicional
+                    {additional}
                 </Text>
             </View>
 

@@ -8,8 +8,9 @@ const express_1 = __importDefault(require("express"));
 const config_1 = require("./config");
 const cors_1 = __importDefault(require("cors"));
 const auth_1 = __importDefault(require("./src/routes/auth"));
-const path_1 = __importDefault(require("path"));
 const patient_1 = __importDefault(require("./src/routes/patient"));
+const doctors_1 = __importDefault(require("./src/routes/doctors"));
+const path_1 = __importDefault(require("path"));
 class App {
     constructor() {
         this.app = (0, express_1.default)();
@@ -28,6 +29,7 @@ class App {
     routes() {
         this.app.use("/auth", auth_1.default);
         this.app.use("/patient", patient_1.default);
+        this.app.use("/doctor", doctors_1.default);
         this.app.use(express_1.default.static(path_1.default.join(__dirname, "src")));
         this.app.use(express_1.default.static(path_1.default.join(__dirname, "dist")));
     }

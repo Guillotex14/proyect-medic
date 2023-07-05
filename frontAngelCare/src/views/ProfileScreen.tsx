@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, ScrollView, TextInput, TouchableOpacity, Image, Platform, Pressable } from 'react-native';
+import { View, Text, ScrollView, TextInput, TouchableOpacity, Image, Platform, Pressable, Modal, FlatList } from 'react-native';
 import { styles } from '../theme/ThemeApp';
 import { StackScreenProps } from '@react-navigation/stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Actionsheet, ChevronLeftIcon, Icon, Radio, Stack, useDisclose } from 'native-base';
+import { Actionsheet, Radio, Stack, useDisclose, useToast } from 'native-base';
 import { Images } from '../assets/imgs/imgs';
 import { Avatar } from 'react-native-paper';
 
@@ -12,13 +12,15 @@ import Moment from 'moment';
 import apiConnection from '../api/Concecction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
+import { TypeDni } from '../interfaces/registerModels';
+import { styles_modal } from '../theme/Modal_Profile_Doctor';
 
 interface Props extends StackScreenProps<any, any>{}
 
 export const ProfileScreen = ({navigation}: Props) => {
 
     const { top } = useSafeAreaInsets();
-
+    const toast = useToast();
     const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
@@ -28,15 +30,33 @@ export const ProfileScreen = ({navigation}: Props) => {
     const [ensurancePolicy, setEnsurancePolicy] = useState('');
     const [policyNumber, setPolicyNumber] = useState('');
     const [gender, setGender] = useState('');
-
+    const [id, setId] = useState('');
+    const [idPatient, setIdPatient] = useState('');
+    const [typeUser, setTypeUser] = useState('');
 
     const [date, setDate] = useState(new Date());
     const [showPicker, setShowPicker] = useState(false);
+    const [showTypeDni, setShowTypeDni] = useState(false);
     const [dateOfBirth, setDateOfBirth] = useState("");
     const [isFocused, setIsFocused] = useState(false);
     const [ isEdit, setIsEdit ] = useState(false);
 
     const { isOpen, onClose, onOpen } = useDisclose();
+
+    const typeDNI: TypeDni[] = [
+        {
+          label: 'V',
+          value: 'V'
+        },
+        {
+          label: 'E',
+          value: 'E'
+        },
+        {
+          label: 'P',
+          value: 'P'
+        }
+    ];
 
     const editProfile = () => {
         setIsEdit(!isEdit);
@@ -58,13 +78,33 @@ export const ProfileScreen = ({navigation}: Props) => {
             ensurancePolicy: ensurancePolicy,
             policyNumber: policyNumber,
             birthdate: dateOfBirth,
-            gender: gender
+            gender: gender,
+            id: id,
         }).then((response) => {
 
             if (response.data.status === true) {
                 console.log(response.data);
-                // AsyncStorage.setItem('me', JSON.stringify(response.data.data));
+                let me = {
+                    fullName: fullName,
+                    email: email,
+                    phone: phone,
+                    typeDni: typeDni,
+                    dni: dni,
+                    address: address,
+                    ensurancePolicy: ensurancePolicy,
+                    policyNumber: policyNumber,
+                    birthdate: dateOfBirth,
+                    id: id,
+                    idPatient: idPatient,
+                    typeUser: typeUser,
+                    gender: gender
+                }
+                AsyncStorage.setItem('me', JSON.stringify(me));
                 setIsEdit(!isEdit);
+                onClose();
+                presentToast("Perfil actualizado correctamente")
+            }else{
+                presentToast("Ocurrio un error al actualizar el perfil")
                 onClose();
             }
         });
@@ -119,11 +159,33 @@ export const ProfileScreen = ({navigation}: Props) => {
         setPolicyNumber(meJson.policyNumber);
         setGender(meJson.gender)
         setDateOfBirth(meJson.birthdate);
+        setId(meJson.id);
+        setIdPatient(meJson.idPatient);
+        setTypeUser(meJson.typeUser);
+    }
+
+    const onPressModal = (value:string) => {
+        setTypeDni(value);
+        setShowTypeDni(false);
     }
 
     useEffect(() => {
         getLocalStorage();
     }, [])
+
+    const presentToast = (message: string) => {
+
+        toast.show({
+            render: () => (
+                <View style={{backgroundColor: '#ea868f', padding: 15, borderRadius: 50}}>
+                    <Text style={{color: 'white', fontSize: 20, textAlign: message.length > 25 ? 'center' : 'justify' }}>{message}</Text>
+                </View>
+            ),
+            placement: 'top',
+            duration: 2000,
+        });
+    
+    };
 
     return (
         <ScrollView>
@@ -133,8 +195,7 @@ export const ProfileScreen = ({navigation}: Props) => {
                 <View style={{ width: '100%', flexDirection: 'row', height: 150,  alignItems: 'center', alignSelf: 'center', marginTop: -30, justifyContent: 'center'}}>
                     <View style={{width: '15%', alignItems: 'center'}} >
                         <TouchableOpacity onPress={()=>{navigation.pop()}}>
-                        {/* <ChevronLeftIcon  color="white" size="lg" style={{alignSelf: 'center', marginTop: 15,marginRight: 20}}/> */}
-                        <Ionicons name="chevron-back-outline" size={30} color="white" style={{alignSelf: 'center', marginTop: 25, marginLeft: 25}} />
+                            <Ionicons name="chevron-back-outline" size={30} color="white" style={{alignSelf: 'center', marginTop: 25, marginLeft: 25}} />
                         </TouchableOpacity>
                     </View>
                     <View style={{width: '75%'}}>
@@ -157,9 +218,41 @@ export const ProfileScreen = ({navigation}: Props) => {
                         <TextInput placeholder="" style={{...styles.input, backgroundColor: 'white'}} value={fullName} onChangeText={setFullName}/>
                     </View>
 
-                    <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>
+                    {/* <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>
                         <Text style={{color: '#0E54BE', fontSize: 15, fontWeight: 'bold', marginHorizontal: 15}}>Cedula</Text>
                         <TextInput placeholder="" style={{...styles.input, backgroundColor: 'white'}} value={dni} onChangeText={setDni}/>
+                    </View> */}
+
+                    <View style={{ width: '100%' }}>
+
+                        <View style={{ marginLeft: 20, marginTop: 15 }}>
+                        <Text>Cedula</Text>
+                        </View>
+
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+
+                        <View style={{ ...styles.input ,width: '25%', backgroundColor: 'white', borderColor: '#B3B8C9', borderRadius: 12, marginTop: 15, marginLeft: 20 }}>
+                            <TouchableOpacity onPress={() => setShowTypeDni(true)}>
+                            <TextInput value={typeDni} editable={false} style={{width: 80, height: 50, marginLeft: 20, textAlign: 'left', color: '#000'}}/>
+                            <Ionicons style={{position: 'absolute', right: 10, marginTop: 12}} name="md-arrow-down-sharp" size={24} color="#818181" />
+                            </TouchableOpacity>
+                            {showTypeDni && (
+
+                            <Modal visible={showTypeDni} animationType="fade" transparent>
+                                <View style={styles_modal.modalContainer}>
+                                <View style={styles_modal.modalContent}>
+                                    <FlatList style={{ flexGrow: 1 }} data={typeDNI} scrollEnabled={false} renderItem={({ item }) => (<TouchableOpacity style={styles_modal.optionContainer} onPress={() => onPressModal(item.value)}><Text style={styles_modal.optionText}>{item.label}</Text></TouchableOpacity>)} keyExtractor={(item) => item.value} />
+                                </View>
+                                </View>
+                            </Modal>
+                            )}
+                        </View>
+
+                        <View style={{ width: '60%' }}>
+                            <TextInput placeholder="" style={{ ...styles.input, width: 230,}} value={dni} onChangeText={setDni}/>
+                        </View>
+                        </View>
+
                     </View>
 
                     <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>

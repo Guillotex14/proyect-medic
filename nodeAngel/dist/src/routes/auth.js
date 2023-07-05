@@ -53,15 +53,17 @@ authRouter.post("/loginPatient", (req, res) => __awaiter(void 0, void 0, void 0,
                             address: res2.address,
                             id_patient: res2._id,
                             ensuracePolicy: res2.ensurancePolicy != "" ? res2.ensurancePolicy : "",
-                            policyNumber: res2.policyNumber != "" ? res2.policyNumber : ""
+                            policyNumber: res2.policyNumber != "" ? res2.policyNumber : "",
+                            gender: res2.gender
                         };
                         jsonRes.data = patientInfo;
+                        return jsonRes;
                     }
                     else {
                         jsonRes.code = 400;
                         jsonRes.message = "no existe 1";
                         jsonRes.status = false;
-                        jsonRes.data = res;
+                        // jsonRes.data = res;
                         return jsonRes;
                     }
                 })).catch((err) => {
@@ -111,6 +113,7 @@ authRouter.post("/loginMedic", (req, res) => __awaiter(void 0, void 0, void 0, f
                             address: res2.address,
                             id_medic: res2._id,
                             speciality: res2.specialty,
+                            gender: res2.gender
                         };
                         jsonRes.data = me;
                     }

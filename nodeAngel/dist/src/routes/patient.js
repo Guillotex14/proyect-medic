@@ -41,10 +41,12 @@ patientRouter.get("/allMedics", (req, res) => __awaiter(void 0, void 0, void 0, 
 patientRouter.post("/updateProfile", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const jsonRes = new response_1.RespondesModel();
     const { id, fullName, email, phone, typeDni, dni, address, ensurancePolicy, policyNumber, gender, birthdate } = req.body;
-    const id_user = { id: id };
+    const id_user = { id_user: id };
+    const _id = { _id: id };
     const update_user = { email: email };
+    let id_patient = "";
     console.log(req.body);
-    yield Users_1.default.findOneAndUpdate(id_user, update_user);
+    yield Users_1.default.findOneAndUpdate(_id, update_user);
     yield patients_1.default.findOneAndUpdate(id_user, {
         fullName: fullName,
         phone: phone,
@@ -55,7 +57,29 @@ patientRouter.post("/updateProfile", (req, res) => __awaiter(void 0, void 0, voi
         policyNumber: policyNumber,
         gender: gender,
         birthdate: birthdate
+    }).then((res) => {
+        console.log(res);
+        if (res) {
+            id_patient = res._id.toString();
+        }
+    }).catch((err) => {
+        console.log(err);
     });
+    // let me = {
+    //     id: id,
+    //     id_patient: id_patient,
+    //     fullName: fullName,
+    //     email: email,
+    //     phone: phone,
+    //     typeDni: typeDni,
+    //     dni: dni,
+    //     address: address,
+    //     ensurancePolicy: ensurancePolicy,
+    //     policyNumber: policyNumber,
+    //     gender: gender,
+    //     birthdate: birthdate,
+    //     typeUser: "patient"
+    // }
     jsonRes.code = 200;
     jsonRes.message = "actualizado";
     jsonRes.status = true;

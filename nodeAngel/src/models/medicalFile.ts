@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-const medicalFile = new Schema({
+const medicalFileSchema = new Schema({
     disease: String,
     allergy: String,
     condiction: String,
@@ -10,4 +10,4 @@ const medicalFile = new Schema({
     }
 });
 
-export default model("medicalFile", medicalFile);
+export default model("medicalFile", medicalFileSchema);

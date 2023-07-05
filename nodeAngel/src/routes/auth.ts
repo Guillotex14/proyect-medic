@@ -47,15 +47,17 @@ authRouter.post("/loginPatient", async (req: Request, res: Response) => {
                             address: res2.address,
                             id_patient: res2._id,
                             ensuracePolicy: res2.ensurancePolicy != "" ? res2.ensurancePolicy : "",
-                            policyNumber: res2.policyNumber != "" ? res2.policyNumber : ""
+                            policyNumber: res2.policyNumber != "" ? res2.policyNumber : "",
+                            gender: res2.gender
                         }
 
                         jsonRes.data = patientInfo;
+                        return jsonRes;
                     }else{
                         jsonRes.code = 400;
                         jsonRes.message = "no existe 1";
                         jsonRes.status = false;
-                        jsonRes.data = res;
+                        // jsonRes.data = res;
                         return jsonRes;
                     }   
                     
@@ -113,6 +115,7 @@ authRouter.post("/loginMedic", async (req: Request, res: Response) => {
                             address: res2.address,
                             id_medic: res2._id,
                             speciality: res2.specialty,
+                            gender: res2.gender
                         }
 
                         jsonRes.data = me;
@@ -460,26 +463,27 @@ authRouter.get('/fitbitAuth', (req, res) => {
 authRouter.get('/fitbitCallback', async (req, res) => {
     const accessToken = '3e1d22b2013e08a4f57de703077f197934421076'; // Reemplazar con tu access token obtenido
 
-const profileUrl = 'https://api.fitbit.com/1/user/-/profile.json';
+    const profileUrl = 'https://api.fitbit.com/1/user/-/profile.json';
 
-const requestOptions = {
-  headers: {
-    Authorization: `Bearer ${accessToken}`
-  }
-};
+    const requestOptions = {
+    headers: {
+        Authorization: `Bearer ${accessToken}`
+    }
+    };
 
-fetch(profileUrl, requestOptions)
-  .then(response => response.json())
-  .then(data => {
-    // Hacer algo con los datos del perfil del usuario
-    console.log(data);
-  })
-  .catch(error => {
-    // Manejar el error de la solicitud
-    console.error(error);
-  });
+    fetch(profileUrl, requestOptions)
+    .then(response => response.json())
+    .then(data => {
+        // Hacer algo con los datos del perfil del usuario
+        console.log(data);
+    })
+    .catch(error => {
+        // Manejar el error de la solicitud
+        console.error(error);
+    });
 
 });
+
 
 
 export default authRouter;
