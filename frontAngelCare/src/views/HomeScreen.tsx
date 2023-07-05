@@ -12,8 +12,8 @@ import { Images } from '../assets/imgs/imgs';
 // import Carousel from 'react-native-snap-carousel';
 import {  Card } from 'react-native-paper';
 import { FooterNavigation } from '../components/Footer';
-//import { useFooter } from '../hooks/useFooter';
-import { useRoute, useNavigation } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 import { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 interface Props extends StackScreenProps<any, any>{}
@@ -27,10 +27,10 @@ export const HomeScreen = ({navigation}:Props) => {
 
     const animatedStyle = useAnimatedStyle(() => {
         return {
-          opacity: opacity.value,
-          transform: [{ translateY: withTiming(scrollY.value, { duration: 250 }) }],
+            opacity: opacity.value,
+            transform: [{ translateY: withTiming(scrollY.value, { duration: 250 }) }],
         };
-      });
+    });
 
     const { top } = useSafeAreaInsets();
 
@@ -60,8 +60,8 @@ export const HomeScreen = ({navigation}:Props) => {
     return (
         <>
         <ScrollView onScroll={(event) => {
-          const scrollY = event.nativeEvent.contentOffset.y;
-          const shouldHideFooter = scrollY > 0;
+            const scrollY = event.nativeEvent.contentOffset.y;
+            const shouldHideFooter = scrollY > 0;
             opacity.value = withTiming(shouldHideFooter ? 0 : 1, { duration: 500 });
         }}>
             <View style={{...styles.container, backgroundColor: '#0E54BE'}}>
@@ -71,9 +71,10 @@ export const HomeScreen = ({navigation}:Props) => {
                     <View style={{width: '70%', marginTop: top+30, }}>
                         <Text style={{...styles.title, color: 'white', fontSize: 18, textAlign: 'left', marginLeft: 25}} onPress={()=>{navigation.navigate('Profile')}}>Bienvenido, Doctor</Text>
                     </View>
-                    <View style={{width: '30%', marginTop: top+50 }}>
+                    <View style={{width: '30%', marginTop: top+45 }}>
                         <TouchableOpacity onPress={()=> navigation.navigate('ChatList')}>
-                            <Image source={Images.chat} style={{width: 25, height: 25, alignSelf: 'center'}}/>
+                            {/* <Image source={Images.chat} style={{width: 25, height: 25, alignSelf: 'center'}}/> */}
+                            <Ionicons name='chatbox' size={35} style={{color: "#fff", alignSelf: 'center'}}/>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -103,7 +104,8 @@ export const HomeScreen = ({navigation}:Props) => {
                                     <View style={{backgroundColor: 'white', borderRadius: 10, width: 40, height: 40, justifyContent: 'center', alignItems: 'center', alignSelf: 'center' }}>
                                         
                                         <TouchableOpacity onPress={()=>{navigation.navigate('Services')}}>
-                                            <AddIcon color="blue.500" size="6"/>
+                                            {/* <AddIcon color="blue.500" size="6"/> */}
+                                            <Ionicons name='add' size={35} style={{color: "rgb(14, 84, 190)"}}/>
                                         </TouchableOpacity>
                                     </View>
                                 </View>

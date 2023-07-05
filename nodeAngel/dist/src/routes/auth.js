@@ -24,6 +24,10 @@ const dataProfessional_1 = __importDefault(require("../models/dataProfessional")
 const medics_1 = __importDefault(require("../models/medics"));
 const medicalFile_1 = __importDefault(require("../models/medicalFile"));
 const codeVerification_1 = __importDefault(require("../models/codeVerification"));
+const CLIENT_ID = '23R7C6'; // Reemplazar con tu Client ID de Fitbit
+const REDIRECT_URI = 'http://localhost'; // Reemplazar con tu Redirect URI de Fitbit
+const STATE = 'YOUR_STATE'; // Reemplazar con un valor aleatorio o único para protección CSRF
+const SCOPES = 'activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight'; // No modificar
 const authRouter = (0, express_1.Router)();
 authRouter.post("/loginPatient", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const jsonRes = new response_1.RespondesModel();
@@ -160,10 +164,34 @@ authRouter.post("/registerMedic", (req, res) => __awaiter(void 0, void 0, void 0
         console.log(err);
     });
     yield newDataProfessional.save();
+    let userMedic = {
+        id: newUser._id,
+        id_medic: newMedic._id,
+        email: newUser.email,
+        typeUser: newUser.type_user,
+        fullName: newMedic.fullName,
+        typeDni: newMedic.typeDni,
+        dni: newMedic.dni,
+        birthdate: newMedic.birthdate,
+        phone: newMedic.phone,
+        address: newMedic.address,
+        speciality: newMedic.specialty,
+        university: newDataProfessional.university,
+        uniAdmissionDate: newDataProfessional.uniAdmissionDate,
+        uniGraduationDate: newDataProfessional.uniGraduationDate,
+        mpps: newDataProfessional.mpps,
+        postgrade: newDataProfessional.postgrade,
+        postgradeUniversity: newDataProfessional.postgradeUniversity,
+        postgradeGraduationDate: newDataProfessional.postgradeGraduationDate,
+        postgradeAdmissionDate: newDataProfessional.postgradeAdmissionDate,
+        additional: newDataProfessional.additional,
+        dayService: newDataProfessional.dayService,
+        dayService2: newDataProfessional.dayService2,
+    };
     jsonRes.code = 200;
     jsonRes.message = "register success";
     jsonRes.status = true;
-    jsonRes.data = newUser;
+    jsonRes.data = userMedic;
     res.json(jsonRes);
 }));
 authRouter.post("/registerPatient", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -203,10 +231,27 @@ authRouter.post("/registerPatient", (req, res) => __awaiter(void 0, void 0, void
         console.log(err);
     });
     yield filePatient.save();
+    let userPatient = {
+        id: newUser._id,
+        id_patient: newPatient._id,
+        fullName: newPatient.fullName,
+        typeDni: newPatient.typeDni,
+        dni: newPatient.dni,
+        email: newUser.email,
+        password: newUser.password,
+        phone: newPatient.phone,
+        address: newPatient.address,
+        gender: newPatient.gender,
+        diseases: diseases,
+        alergies: alergies,
+        condition: filePatient.condiction,
+        aditional: filePatient.additional,
+        birthdate: newPatient.birthdate,
+    };
     jsonRes.code = 200;
     jsonRes.message = "register success";
     jsonRes.status = true;
-    jsonRes.data = {};
+    jsonRes.data = userPatient;
     res.json(jsonRes);
 }));
 authRouter.post("/forgotPassword", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -337,6 +382,31 @@ authRouter.post("/emailExist", (req, res) => __awaiter(void 0, void 0, void 0, f
         console.log(err);
     });
     res.json(ress);
+}));
+// Ruta para mostrar el botón de autorización
+authRouter.get('/fitbitAuth', (req, res) => {
+    const authUrl = `https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=${CLIENT_ID}&scope=${SCOPES}`;
+    const html = `<html><body><a href="${authUrl}"><button>Iniciar sesión con Fitbit</button></a></body></html>`;
+    res.send(html);
+});
+authRouter.get('/fitbitCallback', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const accessToken = '3e1d22b2013e08a4f57de703077f197934421076'; // Reemplazar con tu access token obtenido
+    const profileUrl = 'https://api.fitbit.com/1/user/-/profile.json';
+    const requestOptions = {
+        headers: {
+            Authorization: `Bearer ${accessToken}`
+        }
+    };
+    fetch(profileUrl, requestOptions)
+        .then(response => response.json())
+        .then(data => {
+        // Hacer algo con los datos del perfil del usuario
+        console.log(data);
+    })
+        .catch(error => {
+        // Manejar el error de la solicitud
+        console.error(error);
+    });
 }));
 exports.default = authRouter;
 //# sourceMappingURL=auth.js.map

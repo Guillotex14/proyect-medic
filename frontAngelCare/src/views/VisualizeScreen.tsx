@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
-import { View, Text, TouchableOpacity, Image, StyleSheet, TextInput} from 'react-native';
+import { View, Text, TouchableOpacity, Image, StyleSheet, TextInput, Modal, FlatList} from 'react-native';
 import { styles } from '../theme/ThemeApp';
 import { Images } from '../assets/imgs/imgs';
 import { Card } from 'react-native-paper';
-import {  ChevronLeftIcon, FormControl, Select} from 'native-base';
+import {  ChevronLeftIcon} from 'native-base';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
+import { Ionicons } from '@expo/vector-icons';
+import { styles_modal } from '../theme/Modal_Profile_Doctor';
+import { TypeDni } from '../interfaces/registerModels';
 
 interface Props extends StackScreenProps<any, any>{};
 
@@ -13,9 +16,35 @@ export const VisualizeScreen = ({navigation}:Props) => {
 
     const { top, bottom } = useSafeAreaInsets();
     const [search, setSearch] = useState(false);
+    const [showTypeDNI, setShowTypeDNI] = useState(false);
+    const [validDNI, setValidDNI] = useState(false);
+    const [validTypeDni, setValidTypeDni] = useState(false);
+    
+    const [dni, setDni] = useState('');
+    const [typeDNISelected, setTypeDNISelected] = useState('V');
+
+    const typeDNI: TypeDni[] = [
+    {
+        label: 'V',
+        value: 'V'
+    },
+    {
+        label: 'E',
+        value: 'E'
+    },
+    {
+        label: 'P',
+        value: 'P'
+    }
+    ];
 
     const onSearch = () => {
         setSearch(true);
+    }
+
+    const onPressModal = (value: string) => {
+        setTypeDNISelected(value);
+        setShowTypeDNI(false);
     }
 
     return (
@@ -26,7 +55,8 @@ export const VisualizeScreen = ({navigation}:Props) => {
                 <View style={{width: 70}}>
                     <TouchableOpacity onPress={()=>{ navigation.pop()}}
                     style={{marginLeft: 18}}>
-                        <ChevronLeftIcon size={6} color={'black'} />
+                        {/* <ChevronLeftIcon size={6} color={'black'} /> */}
+                        <Ionicons name="chevron-back" size={35} color="black" />
                     </TouchableOpacity>
                 </View>
                 <View style={{width: 300}}>
@@ -38,29 +68,44 @@ export const VisualizeScreen = ({navigation}:Props) => {
 
             {
                 !search && (
-                <Card style={{width: '90%', alignContent: 'center', alignItems: 'center', alignSelf: 'center', margin: top+30, height: 180}}>
-                <Card.Content>
-                    <FormControl>
-                        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center',alignSelf: 'center' ,width: '100%'}}>
-                            <View style={{width: '25%', alignItems: 'center', alignContent: 'center', alignSelf: 'center', marginTop: 10, backgroundColor: '#fff'}}>
-                                <Select style={{height: 45}}>
-                                    <Select.Item label="V" value="V" />
-                                    <Select.Item label="P" value="P" />
-                                    <Select.Item label="E" value="E" />
-                                </Select>
+                <Card style={{width: '90%', alignContent: 'center', alignItems: 'center', alignSelf: 'center', marginTop: top+40}}>
+                    <Card.Content>
+
+                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 25 }}>
+
+                            <View style={{ ...styles.input ,width: '30%', backgroundColor: 'white', borderColor: '#B3B8C9', borderRadius: 12, marginTop: 15, marginLeft: 20 }}>
+                                <TouchableOpacity onPress={() => setShowTypeDNI(true)}>
+                                    <TextInput value={typeDNISelected} editable={false} style={{width: 80, height: 50, marginLeft: 20, textAlign: 'left', color: '#000', borderColor: validTypeDni ? 'red' : '#aaaaaa'}}/>
+                                    <Ionicons style={{position: 'absolute', right: 10, marginTop: 12}} name="md-arrow-down-sharp" size={24} color="#818181" />
+                                </TouchableOpacity>
+                                {showTypeDNI && (
+                                    <Modal visible={showTypeDNI} animationType="fade" transparent>
+                                        <View style={styles_modal.modalContainer}>
+                                            <View style={styles_modal.modalContent}>
+                                                <FlatList style={{ flexGrow: 1 }} data={typeDNI} scrollEnabled={false} renderItem={({ item }) => (
+                                                <TouchableOpacity style={styles_modal.optionContainer} onPress={() => onPressModal(item.value)}>
+                                                    <Text style={styles_modal.optionText}>{item.label}</Text>
+                                                </TouchableOpacity>)} keyExtractor={(item) => item.value} />
+                                            </View>
+                                        </View>
+                                    </Modal>
+                                )}
                             </View>
-                            <View style={{width: '50%', alignItems: 'center'}}>
-                                <TextInput style={styles.input}/>
+
+                            <View style={{ width: '60%' }}>
+                                <TextInput placeholder="" style={{ ...styles.input, borderColor: validDNI ? 'red' : '#aaaaaa' }} value={dni} onChangeText={setDni}/>
                             </View>
                         </View>
-                    </FormControl>
-                    <TouchableOpacity style={{...styles.button, width: '70%', alignSelf: 'center', marginVertical: 20}} onPress={()=>{
-                        onSearch()
-                    }}>
-                        <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold'}}>Buscar</Text>
-                    </TouchableOpacity>
-                </Card.Content>
+
+                        <TouchableOpacity style={{...styles.button, width: '70%', alignSelf: 'center', marginTop: 40, marginBottom: 25}} onPress={()=>{
+                            onSearch()
+                        }}>
+                            <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold', alignContent: 'center', alignItems: 'center', justifyContent: 'center', alignSelf: 'center'}}>Buscar</Text>
+                        </TouchableOpacity>
+                    </Card.Content>
                 </Card>
+
+
                 )
             }
 

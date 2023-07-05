@@ -834,7 +834,6 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
               </>
           )
         } 
-  
 
         {
           nextStep2 && (
@@ -860,7 +859,6 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
             </>
           )
         }
- 
 
       {/* <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>
         <Text style={{fontSize: 15, fontWeight: 'bold', marginHorizontal: 15, color: '#677294'}}>Adjuntar Archivo</Text>

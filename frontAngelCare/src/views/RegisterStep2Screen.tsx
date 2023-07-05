@@ -77,7 +77,6 @@ export const RegisterStep2Screen = ({navigation, route}:Props) => {
 
   const [date1, setDate1] = useState(new Date());
 
-
   const onPressModal = (typedni:string) => {
     setTypeDNISelected(typedni)
     setShowTypeDNI(!showTypeDNI);
@@ -330,32 +329,32 @@ export const RegisterStep2Screen = ({navigation, route}:Props) => {
     toggleDatepicker();
 
     }
-};
+  };
 
-const setEmailValid = (dataEmail:string) => {
+  const setEmailValid = (dataEmail:string) => {
 
-  let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
 
-  if (reg.test(dataEmail) === false) {
-      return false;
-  }else{
-      return true;
+    if (reg.test(dataEmail) === false) {
+        return false;
+    }else{
+        return true;
+    }
   }
-}
 
-const presentToast = (message: string) => {
+  const presentToast = (message: string) => {
 
-  toast.show({
-      render: () => (
-          <View style={{backgroundColor: '#ea868f', padding: 15, borderRadius: 50}}>
-              <Text style={{color: 'white', fontSize: 20, textAlign: message.length > 25 ? 'center' : 'justify' }}>{message}</Text>
-          </View>
-      ),
-      placement: 'top',
-      duration: 2000,
-  });
+    toast.show({
+        render: () => (
+            <View style={{backgroundColor: '#ea868f', padding: 15, borderRadius: 50}}>
+                <Text style={{color: 'white', fontSize: 20, textAlign: message.length > 25 ? 'center' : 'justify' }}>{message}</Text>
+            </View>
+        ),
+        placement: 'top',
+        duration: 2000,
+    });
 
-};
+  };
 
   return (
     <ScrollView style={{backgroundColor: '#E6F1FF'}}>

@@ -1,7 +1,7 @@
 import { Text, TextInput, TouchableOpacity, View, Image, FlatList, Modal} from 'react-native';
 import React, { useState } from 'react';
 import { styles } from '../theme/ThemeApp';
-import { AddIcon, ChevronLeftIcon,  } from 'native-base';
+import { AddIcon, ChevronLeftIcon, useToast,  } from 'native-base';
 import { StackScreenProps } from '@react-navigation/stack';
 import { Images } from '../assets/imgs/imgs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -20,8 +20,13 @@ export const DatesScreen = ({navigation}:Props) => {
   const [isOpen, setIsOpen ] = useState(false);
   const [isSend, setIsSend ] = useState(false);
   const [isSeach, setIsSeach ] = useState(false);
+  const [validReason, setValidReason] = useState(false);
+  const [validSymptom, setValidSymptom] = useState(false);
+  const [validArraySymptoms, setValidArraySymptoms] = useState(false);
 
   const { top, bottom } = useSafeAreaInsets();
+
+  const toast = useToast();
 
   const searchDoctor = () => {
     setIsSeach(true);
@@ -29,6 +34,26 @@ export const DatesScreen = ({navigation}:Props) => {
   }
 
   const sendDates = () => {
+
+    if (reason === '') {
+      setValidReason(true);
+      presentToast('Ingrese un motivo de la cita');
+      setIsOpen(false);
+      return;
+    }else{
+      setValidReason(false);
+    }
+
+    if (arraySymptoms.length === 0) {
+      setValidArraySymptoms(true);
+      presentToast('Ingrese un sintoma');
+      setIsOpen(false);
+      return;
+    }else{
+      setValidArraySymptoms(false);
+    }
+
+
     setIsSend(true);
     setIsSeach(false);
     setIsOpen(false);
@@ -52,6 +77,9 @@ export const DatesScreen = ({navigation}:Props) => {
         setSymptoms('');
       }
   
+    }else{
+      presentToast('Ingrese un sintoma');
+      return;
     }
   }
 
@@ -60,6 +88,21 @@ export const DatesScreen = ({navigation}:Props) => {
     const newArray = arraySymptoms.filter((item) => item !== symp);
     setArraySymptoms(newArray);
   }
+
+  const presentToast = (message: string) => {
+
+    toast.show({
+        render: () => (
+            <View style={{backgroundColor: '#ea868f', padding: 15, borderRadius: 50}}>
+                <Text style={{color: 'white', fontSize: 20}}>{message}</Text>
+            </View>
+        ),
+        placement: 'top',
+        duration: 2000,
+    });
+
+};
+
 
   if (isSend && !isSeach){
     return (
@@ -276,6 +319,6 @@ export const DatesScreen = ({navigation}:Props) => {
             </Modal.Content>
           </Modal> */}
         </View>
-    );
+  );
 
 };
