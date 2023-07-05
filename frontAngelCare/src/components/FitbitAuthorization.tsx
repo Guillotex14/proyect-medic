@@ -3,14 +3,14 @@ import { authorize, refresh } from 'react-native-app-auth';
 import { View, Text, Button, TouchableOpacity } from 'react-native';
 
 const config = {
-  clientId: '23R7C6',
-  redirectUrl: 'YOUR_REDIRECT_URI',
-  scopes: ['heartrate'],
-  serviceConfiguration: {
-    authorizationEndpoint: 'https://www.fitbit.com/oauth2/authorize',
-    tokenEndpoint: 'https://api.fitbit.com/oauth2/token',
-    revocationEndpoint: 'https://api.fitbit.com/oauth2/revoke',
-  },
+    clientId: '23R7C6',
+    redirectUrl: 'YOUR_REDIRECT_URI',
+    scopes: ['heartrate'],
+    serviceConfiguration: {
+        authorizationEndpoint: 'https://www.fitbit.com/oauth2/authorize',
+        tokenEndpoint: 'https://api.fitbit.com/oauth2/token',
+        revocationEndpoint: 'https://api.fitbit.com/oauth2/revoke',
+    },
 };
 
 const FitbitAuthorization = () => {

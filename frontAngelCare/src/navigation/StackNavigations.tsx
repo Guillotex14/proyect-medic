@@ -69,10 +69,10 @@ export const StackNavigations = () => {
                 backgroundColor: 'white',
             },
         }}>
-            <Stack.Screen name="Login" component={LoginScreen} />
+            {/* <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Register" component={RegisterScreen} />
             <Stack.Screen name="RegisterStep2" component={RegisterStep2Screen} />
-            <Stack.Screen name="RegisterMedicStep2" component={RegisterMedicStep2Screen} />
+            <Stack.Screen name="RegisterMedicStep2" component={RegisterMedicStep2Screen} /> */}
             
             {/* navigation of pactients */}
             <Stack.Screen name="Home" component={HomeScreen} />

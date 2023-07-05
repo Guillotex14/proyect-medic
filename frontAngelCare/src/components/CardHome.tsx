@@ -44,11 +44,12 @@ export const CardHome = () => {
                                     <Ionicons name="pulse" color="#0E54BE" style={{fontSize: 65}}/>
                                 </View>
                             </View>
-                            <View style={{marginLeft: 5, marginTop: -10}}>
+                            <View style={{marginLeft: -6, marginTop: 0}}>
                                 <TouchableOpacity onPress={toggleModal}>
-                                    <Text style={{color: '#0E54BE', fontSize: 20, fontWeight: 'bold', marginTop: -10}}>.</Text>
+                                    {/* <Text style={{color: '#0E54BE', fontSize: 20, fontWeight: 'bold', marginTop: -10}}>.</Text>
                                     <Text style={{color: '#0E54BE', fontSize: 20, fontWeight: 'bold', marginTop: -18}}>.</Text>
-                                    <Text style={{color: '#0E54BE', fontSize: 20, fontWeight: 'bold', marginTop: -18}}>.</Text>
+                                    <Text style={{color: '#0E54BE', fontSize: 20, fontWeight: 'bold', marginTop: -18}}>.</Text> */}
+                                    <Ionicons name="ellipsis-vertical" color="#0E54BE" size={35}/>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -56,7 +57,8 @@ export const CardHome = () => {
                         <View style={{...stylesCard.cardRectangle, flexDirection: 'row', borderWidth: 0, marginTop: 0}}>
                             <View style={{width: '45%', alignSelf: 'center'}}>
                                 <View style={{flexDirection: 'row', alignItems: 'center', alignContent: 'center', alignSelf: 'center'}}>
-                                    <Image source={Images.oxigen_blood} style={{width: 20, height: 25}}/>
+                                    {/* <Image source={Images.oxigen_blood} style={{width: 20, height: 25}}/> */}
+                                    <Ionicons name="water" color="red" size={35}/>
                                     <Text style={{color: '#0E54BE', fontSize: 22, textAlign: 'center', fontWeight: 'bold', marginHorizontal: 5}}>92</Text>
                                 </View>
                                 <Text style={{ color: '#0E54BE', fontSize: 11, textAlign: 'center', fontWeight: '600'}}>Presión sanguinea</Text>
@@ -64,7 +66,9 @@ export const CardHome = () => {
                             <View style={{width: '0%', height: 50,borderWidth: 0.3, borderColor: '#0E54B',alignSelf: 'center'}} />
                             <View style={{width: '45%', alignSelf: 'center'}}>
                             <View style={{flexDirection: 'row', alignItems: 'center', alignContent: 'center', alignSelf: 'center'}}>
-                                    <Image source={Images.ritmo_cardiaco} style={{width: 35, height: 25}}/>
+                                    {/* <Image source={Images.ritmo_cardiaco} style={{width: 35, height: 25}}/>
+                                     */}
+                                    <Ionicons name="heart" color="red" size={35}/>
                                     <Text style={{color: '#0E54BE', fontSize: 22, textAlign: 'center', fontWeight: 'bold', marginHorizontal: 5}}>76</Text>
                                 </View>
                                 <Text style={{ color: '#0E54BE', fontSize: 11, textAlign: 'center', fontWeight: '600'}}>Presión sanguinea</Text>
@@ -88,7 +92,9 @@ export const CardHome = () => {
                                         </Text>
                                     </View>
                                     <View style={{alignSelf: 'center', alignContent: 'center', alignItems: 'center' ,width: '50%'}}>
-                                        <Image source={Images.sensor_cardiaco} style={{width: 70,height: 60}}/>
+                                        {/* <Image source={Images.sensor_cardiaco} style={{width: 70,height: 60}}/>
+                                         */}
+                                        <Ionicons name="pulse" color="#0E54BE" style={{fontSize: 65}}/>
                                     </View>
                                 </View>
                             </View>
@@ -96,7 +102,8 @@ export const CardHome = () => {
                             <View style={{...stylesCard.cardRectangle, flexDirection: 'row', borderWidth: 0, marginTop: 0}}>
                                 <View style={{width: '45%', alignSelf: 'center'}}>
                                     <View style={{flexDirection: 'row', alignItems: 'center', alignContent: 'center', alignSelf: 'center'}}>
-                                        <Image source={Images.oxigen_blood} style={{width: 20, height: 25}}/>
+                                        {/* <Image source={Images.oxigen_blood} style={{width: 20, height: 25}}/> */}
+                                        <Ionicons name="water" color="red" size={35}/>
                                         <Text style={{color: '#0E54BE', fontSize: 22, textAlign: 'center', fontWeight: 'bold', marginHorizontal: 5}}>92</Text>
                                     </View>
                                     <Text style={{ color: '#0E54BE', fontSize: 11, fontWeight: '600',textAlign: 'center'}}>Oxigeno en la sangre</Text>
@@ -104,7 +111,8 @@ export const CardHome = () => {
                                 <View style={{width: '0%', height: 50,borderWidth: 0.3, borderColor: '#0E54B',alignSelf: 'center'}} />
                                 <View style={{width: '45%', alignSelf: 'center'}}>
                                 <View style={{flexDirection: 'row', alignItems: 'center', alignContent: 'center', alignSelf: 'center'}}>
-                                        <Image source={Images.ritmo_cardiaco} style={{width: 30, height: 25}}/>
+                                        {/* <Image source={Images.ritmo_cardiaco} style={{width: 30, height: 25}}/> */}
+                                        <Ionicons name="heart" color="red" size={35}/>
                                         <Text style={{color: '#0E54BE', fontSize: 22, textAlign: 'center', fontWeight: 'bold', marginHorizontal: 5}}>76</Text>
                                     </View>
                                     <Text style={{ color: '#0E54BE', fontSize: 11, fontWeight: '600', textAlign: 'center'}}>Sensor Ritmo Cardiaco</Text>
@@ -114,7 +122,8 @@ export const CardHome = () => {
                             <View style={{...stylesCard.cardRectangle, flexDirection: 'row', borderWidth: 0, marginTop: 0}}>
                                 <View style={{width: '45%', alignSelf: 'center'}}>
                                     <View style={{flexDirection: 'row', alignItems: 'center', alignContent: 'center', alignSelf: 'center'}}>
-                                        <Image source={Images.temper} style={{width: 12, height: 20}}/>
+                                        {/* <Image source={Images.temper} style={{width: 12, height: 20}}/> */}
+                                        <Ionicons name="thermometer" color="orange" size={35}/>
                                         <Text style={{color: '#0E54BE', fontSize: 22, textAlign: 'center', fontWeight: 'bold', marginHorizontal: 5}}>36°</Text>
                                     </View>
                                     <Text style={{ color: '#0E54BE', fontSize: 11, fontWeight: '600', textAlign: 'center'}}>Temperatura</Text>
@@ -122,7 +131,8 @@ export const CardHome = () => {
                                 <View style={{width: '0%', height: 50,borderWidth: 0.3, borderColor: '#0E54B',alignSelf: 'center'}} />
                                 <View style={{width: '45%', alignSelf: 'center'}}>
                                 <View style={{flexDirection: 'row', alignItems: 'center', alignContent: 'center', alignSelf: 'center'}}>
-                                        <Image source={Images.presion_arterial} style={{width: 20, height: 25}}/>
+                                        {/* <Image source={Images.presion_arterial} style={{width: 20, height: 25}}/> */}
+                                        <Ionicons name="git-network" color="#0E54BE" size={35}/>
                                         <Text style={{color: '#0E54BE', fontSize: 22, textAlign: 'center', fontWeight: 'bold', marginHorizontal: 5}}>120/80</Text>
                                     </View>
                                     <Text style={{ color: '#0E54BE', fontSize: 11, fontWeight: '600', textAlign: 'center'}}>Presión Arterial</Text>
@@ -132,7 +142,8 @@ export const CardHome = () => {
                             <View style={{...stylesCard.cardRectangle, flexDirection: 'row', borderWidth: 0, marginTop: 0}}>
                                 <View style={{width: '45%', alignSelf: 'center'}}>
                                     <View style={{flexDirection: 'row', alignItems: 'center', alignContent: 'center', alignSelf: 'center'}}>
-                                        <Image source={Images.ciclo_menstrual} style={{width: 30, height: 28}}/>
+                                        {/* <Image source={Images.ciclo_menstrual} style={{width: 30, height: 28}}/> */}
+                                        <Ionicons name="flower-outline" color="purple" size={35}/>
                                         <Text style={{color: '#0E54BE', fontSize: 22, textAlign: 'center', fontWeight: 'bold', marginHorizontal: 5}}>96</Text>
                                     </View>
                                     <Text style={{ color: '#0E54BE', fontSize: 11, fontWeight: '600', textAlign: 'center'}}>Clico menstrual</Text>
@@ -140,7 +151,8 @@ export const CardHome = () => {
                                 <View style={{width: '0%', height: 50,borderWidth: 0.3, borderColor: '#0E54B',alignSelf: 'center'}} />
                                 <View style={{width: '45%', alignSelf: 'center'}}>
                                 <View style={{flexDirection: 'row', alignItems: 'center', alignContent: 'center', alignSelf: 'center'}}>
-                                        <Image source={Images.sueño} style={{width: 30, height: 28}}/>
+                                        {/* <Image source={Images.sueño} style={{width: 30, height: 28}}/> */}
+                                        <Ionicons name="moon" color="blue" size={35}/>
                                         <Text style={{color: '#0E54BE', fontSize: 22, textAlign: 'center', fontWeight: 'bold', marginHorizontal: 5}}>8</Text>
                                     </View>
                                     <Text style={{ color: '#0E54BE', fontSize: 11, fontWeight: '600', textAlign: 'center'}}>Seguimiento del sueño</Text>
@@ -150,7 +162,8 @@ export const CardHome = () => {
                             <View style={{...stylesCard.cardRectangle, flexDirection: 'row', borderWidth: 0, marginTop: 0}}>
                                 <View style={{width: '45%', alignSelf: 'center'}}>
                                     <View style={{flexDirection: 'row', alignItems: 'center', alignContent: 'center', alignSelf: 'center'}}>
-                                        <Image source={Images.estres} style={{width: 22, height: 25}}/>
+                                        {/* <Image source={Images.estres} style={{width: 22, height: 25}}/> */}
+                                        <Ionicons name="ellipse" color="orange" size={35}/>
                                         <Text style={{color: '#0E54BE', fontSize: 22, textAlign: 'center', fontWeight: 'bold', marginHorizontal: 5}}>50</Text>
                                     </View>
                                     <Text style={{ color: '#0E54BE', fontSize: 11, fontWeight: '600',textAlign: 'center'}}>Niveles de estrés</Text>
@@ -158,7 +171,8 @@ export const CardHome = () => {
                                 <View style={{width: '0%', height: 50,borderWidth: 0.3, borderColor: '#0E54B',alignSelf: 'center'}} />
                                 <View style={{width: '45%', alignSelf: 'center'}}>
                                 <View style={{flexDirection: 'row', alignItems: 'center', alignContent: 'center', alignSelf: 'center'}}>
-                                        <Image source={Images.presion_sanguinea} style={{width: 20, height: 25}}/>
+                                        {/* <Image source={Images.presion_sanguinea} style={{width: 20, height: 25}}/> */}
+                                        <Ionicons name="body-outline" size={35} color="green"/>
                                         <Text style={{color: '#0E54BE', fontSize: 22, textAlign: 'center', fontWeight: 'bold', marginHorizontal: 5}}>76</Text>
                                     </View>
                                     <Text style={{ color: '#0E54BE', fontSize: 11, fontWeight: '600',textAlign: 'center'}}>Presión sanguinea</Text>
