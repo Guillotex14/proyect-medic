@@ -15,6 +15,7 @@ import { RadioButton } from 'react-native-paper';
 import apiConnection from '../api/Concecction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { color, set } from 'react-native-reanimated';
+import FitbitAuthorization from '../components/FitbitAuthorization';
 
 interface Props extends StackScreenProps<any, any>{}
 
@@ -358,15 +359,16 @@ export const LoginScreen = ({navigation}: Props) => {
                     }}>Inicia sesión para comenzar con la aventura</Text>
                 </View>
 
-                {/*<View style={
+                <View style={
                     {
                         marginTop: 35,
                         alignItems: 'center',
                         justifyContent: 'center',
-                        flexDirection: 'row',
+                        // flexDirection: 'row',
                     }
                 }>
-                    <TouchableOpacity style={styles.buttonGoogleLogin}
+                    <FitbitAuthorization />
+                    {/* <TouchableOpacity style={styles.buttonGoogleLogin}
                     onPress={() => console.log('Hola')}>
 
                         <View style={{flexDirection: 'row'}}>
@@ -382,9 +384,9 @@ export const LoginScreen = ({navigation}: Props) => {
                             <Image source={Images.logofb} style={{width:20, height:20}}/>
                             <Text style={{...styles.buttonFBText,  marginHorizontal: 10, fontSize: 13}}>Facebook </Text>
                         </View>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
 
-                </View>*/}
+                </View>
 
                 <View style={
                     {

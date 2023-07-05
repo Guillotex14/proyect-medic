@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Modal } from 'native-base';
 import { Button, Card } from 'react-native-paper';
+import { Ionicons } from '@expo/vector-icons';
 import { styles } from '../theme/ThemeApp';
 
 
@@ -39,7 +40,8 @@ export const CardHome = () => {
                                     </Text>
                                 </View>
                                 <View style={{alignSelf: 'center', alignContent: 'center', alignItems: 'center' ,width: '50%'}}>
-                                    <Image source={Images.sensor_cardiaco} style={{width: 70,height: 60}}/>
+                                    {/* <Image source={Images.sensor_cardiaco} style={{width: 70,height: 60}}/> */}
+                                    <Ionicons name="pulse" color="#0E54BE" style={{fontSize: 65}}/>
                                 </View>
                             </View>
                             <View style={{marginLeft: 5, marginTop: -10}}>
