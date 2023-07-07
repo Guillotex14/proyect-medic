@@ -88,15 +88,7 @@ authFitbit.get('/profile', async (req: Request, res: Response) => {
       return;
     }
 
-    const userId = req.query.userId; // Asegúrate de enviar el userId en la consulta GET
-
-    if (!userId) {
-      console.log('No se proporcionó el userId');
-      res.sendStatus(400);
-      return;
-    }
-
-    const response = await axios.get(`https://api.fitbit.com/1/user/${userId}/profile.json`, {
+    const response = await axios.get('https://api.fitbit.com/1/user/-/profile.json', {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
