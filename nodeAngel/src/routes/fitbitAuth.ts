@@ -24,6 +24,9 @@ const authenticate = async (code: string) => {
     Authorization: `Basic ${Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64')}`,
   };
 
+    console.log(querystring.stringify(params)) 
+    console.log(headers)
+
   try {
     const response = await axios.post('https://api.fitbit.com/oauth2/token', querystring.stringify(params), {
       headers: headers,
