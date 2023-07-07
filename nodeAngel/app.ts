@@ -31,7 +31,7 @@ export class App {
         this.app.use("/auth", authRouter );
         this.app.use("/patient", patientRouter);
         this.app.use("/doctor", doctorRouter);
-        this.app.use("fitbit", authFitbit)
+        this.app.use("/fitbit", authFitbit)
         this.app.use(Express.static(path.join(__dirname, "src")));
         this.app.use(Express.static(path.join(__dirname, "dist")));
     }

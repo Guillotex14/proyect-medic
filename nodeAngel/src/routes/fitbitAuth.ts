@@ -36,40 +36,40 @@ const authenticate = async (code: string) => {
     } catch (error) {
         //console.error('Error al autenticar:', error.response.data);
     }
-    };
+};
 
-    const refreshTokens = async () => {
-    if (!refreshToken) {
-        console.log('No hay token de refresco');
-        return;
-    }
+const refreshTokens = async () => {
+if (!refreshToken) {
+    console.log('No hay token de refresco');
+    return;
+}
 
-    const params = {
-        grant_type: 'refresh_token',
-        refresh_token: refreshToken,
-    };
+const params = {
+    grant_type: 'refresh_token',
+    refresh_token: refreshToken,
+};
 
-    const headers = {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        Authorization: `Basic ${Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64')}`,
-    };
+const headers = {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    Authorization: `Basic ${Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64')}`,
+};
 
-    try {
-        const response = await axios.post('https://api.fitbit.com/oauth2/token', querystring.stringify(params), {
-        headers: headers,
-        });
+try {
+    const response = await axios.post('https://api.fitbit.com/oauth2/token', querystring.stringify(params), {
+    headers: headers,
+    });
 
-        accessToken = response.data.access_token;
-        refreshToken = response.data.refresh_token;
+    accessToken = response.data.access_token;
+    refreshToken = response.data.refresh_token;
 
-        console.log('Nuevo access token:', accessToken);
-        console.log('Nuevo refresh token:', refreshToken);
-    } catch (error) {
-        //console.error('Error al renovar los tokens:', error.response.data);
-    }
-    };
+    console.log('Nuevo access token:', accessToken);
+    console.log('Nuevo refresh token:', refreshToken);
+} catch (error) {
+    //console.error('Error al renovar los tokens:', error.response.data);
+}
+};
 
-    authFitbit.get('/profile', async (req: Request, res: Response) => {
+authFitbit.get('/profile', async (req: Request, res: Response) => {
     try {
         if (!accessToken) {
         console.log('No hay token de acceso');
