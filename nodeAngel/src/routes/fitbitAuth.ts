@@ -12,6 +12,7 @@ let accessToken: string | null = null;
 let refreshToken: string | null = null;
 
 const authenticate = async (code: string) => {
+  console.log(code);
   const params = {
     code: code,
     grant_type: 'authorization_code',
