@@ -27,7 +27,7 @@ const authenticate = async (code: string) => {
     const response = await axios.post('https://api.fitbit.com/oauth2/token', querystring.stringify(params), {
       headers: headers,
     });
-
+    console.log(response);
     accessToken = response.data.access_token;
     refreshToken = response.data.refresh_token;
 
