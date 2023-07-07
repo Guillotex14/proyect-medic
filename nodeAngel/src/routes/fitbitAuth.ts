@@ -75,7 +75,7 @@ const refreshTokens = async () => {
 
 authFitbit.post('/profile', async (req: Request, res: Response) => {
   try {
-    const code = req.query.code as string;
+    const code = req.body.code as string;
 
     if (!code) {
       console.log('No se proporcionó el código');
