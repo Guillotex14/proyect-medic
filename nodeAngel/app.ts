@@ -5,6 +5,7 @@ import authRouter from "./src/routes/auth";
 import patientRouter from "./src/routes/patient";
 import doctorRouter from "./src/routes/doctors"
 import path from "path"
+import authFitbit from "./src/routes/fitbitAuth";
 
 export class App {
     app: Express.Application;
@@ -30,6 +31,7 @@ export class App {
         this.app.use("/auth", authRouter );
         this.app.use("/patient", patientRouter);
         this.app.use("/doctor", doctorRouter);
+        this.app.use("fitbit", authFitbit)
         this.app.use(Express.static(path.join(__dirname, "src")));
         this.app.use(Express.static(path.join(__dirname, "dist")));
     }

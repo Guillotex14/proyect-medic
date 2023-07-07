@@ -298,6 +298,7 @@ export const LoginScreen = ({navigation}: Props) => {
             render: () => (
                 <View style={{backgroundColor: '#ea868f', padding: 15, borderRadius: 50}}>
                     <Text style={{color: 'white', fontSize: 20}}>{message}</Text>
+                    <Text style={{color: 'white', fontSize: 20}}>{message}</Text>
                 </View>
             ),
             placement: 'top',
