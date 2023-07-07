@@ -34,7 +34,7 @@ const authenticate = async (code: string) => {
     console.log('Access token:', accessToken);
     console.log('Refresh token:', refreshToken);
   } catch (error) {
-    console.error('Error al autenticar:');
+    console.error('Error al autenticar:', error);
   }
 };
 
@@ -65,19 +65,38 @@ const refreshTokens = async () => {
     console.log('Nuevo access token:', accessToken);
     console.log('Nuevo refresh token:', refreshToken);
   } catch (error) {
-    console.error('Error al renovar los tokens:');
+    console.error('Error al renovar los tokens:', error);
   }
 };
 
 authFitbit.get('/profile', async (req: Request, res: Response) => {
   try {
+    const code = req.query.code as string;
+
+    if (!code) {
+      console.log('No se proporcionó el código');
+      res.sendStatus(400);
+      return;
+    }
+
+    // Aquí se realiza la autenticación antes de la solicitud GET
+    await authenticate(code);
+
     if (!accessToken) {
       console.log('No hay token de acceso');
       res.sendStatus(401);
       return;
     }
 
-    const response = await axios.get('https://api.fitbit.com/1/user/-/profile.json', {
+    const userId = req.query.userId; // Asegúrate de enviar el userId en la consulta GET
+
+    if (!userId) {
+      console.log('No se proporcionó el userId');
+      res.sendStatus(400);
+      return;
+    }
+
+    const response = await axios.get(`https://api.fitbit.com/1/user/${userId}/profile.json`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -86,7 +105,7 @@ authFitbit.get('/profile', async (req: Request, res: Response) => {
     const data = response.data;
     res.json(data);
   } catch (error) {
-    console.error('Error al obtener los datos de perfil:');
+    console.error('Error al obtener los datos de perfil:', error);
     res.sendStatus(500);
   }
 });
