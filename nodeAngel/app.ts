@@ -4,6 +4,7 @@ import cors from "cors";
 import authRouter from "./src/routes/auth";
 import path from "path"
 import patientRouter from "./src/routes/patient";
+import authFitbit from "./src/routes/fitbitauth";
 
 export class App {
     app: Express.Application;
@@ -28,6 +29,7 @@ export class App {
     routes() {
         this.app.use("/auth", authRouter );
         this.app.use("/patient", patientRouter);
+        this.app.use("/fitbit", authFitbit);
         this.app.use(Express.static(path.join(__dirname, "src")));
         this.app.use(Express.static(path.join(__dirname, "dist")));
     }
