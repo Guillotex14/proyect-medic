@@ -31,7 +31,7 @@ const authenticate = async (code: string) => {
     accessToken = response.data.access_token;
     refreshToken = response.data.refresh_token;
 
-<<<<<<< HEAD
+    
         console.log('Access token:', accessToken);
         console.log('Refresh token:', refreshToken);
     } catch (error) {
@@ -90,7 +90,7 @@ authFitbit.get('/profile', async (req: Request, res: Response) => {
         //console.error('Error al obtener los datos de perfil:', error.response.data);
         res.sendStatus(500);
     }
-=======
+  
     console.log('Access token:', accessToken);
     console.log('Refresh token:', refreshToken);
   } catch (error) {
@@ -149,7 +149,7 @@ authFitbit.get('/profile', async (req: Request, res: Response) => {
     console.error('Error al obtener los datos de perfil:');
     res.sendStatus(500);
   }
->>>>>>> 0c543eb278789f46b34ebd728321ae084447a4a2
+
 });
 
 // Renovar automáticamente el token cada 24 horas
