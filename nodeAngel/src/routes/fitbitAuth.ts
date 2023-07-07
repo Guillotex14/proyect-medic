@@ -12,25 +12,26 @@ let accessToken: string | null = null;
 let refreshToken: string | null = null;
 
 const authenticate = async (code: string) => {
-    const params = {
-        code: code,
-        grant_type: 'authorization_code',
-        redirect_uri: REDIRECT_URI,
-    };
+  const params = {
+    code: code,
+    grant_type: 'authorization_code',
+    redirect_uri: REDIRECT_URI,
+  };
 
-    const headers = {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        Authorization: `Basic ${Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64')}`,
-    };
+  const headers = {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    Authorization: `Basic ${Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64')}`,
+  };
 
-    try {
-        const response = await axios.post('https://api.fitbit.com/oauth2/token', querystring.stringify(params), {
-        headers: headers,
-        });
+  try {
+    const response = await axios.post('https://api.fitbit.com/oauth2/token', querystring.stringify(params), {
+      headers: headers,
+    });
 
-        accessToken = response.data.access_token;
-        refreshToken = response.data.refresh_token;
+    accessToken = response.data.access_token;
+    refreshToken = response.data.refresh_token;
 
+<<<<<<< HEAD
         console.log('Access token:', accessToken);
         console.log('Refresh token:', refreshToken);
     } catch (error) {
@@ -89,6 +90,66 @@ authFitbit.get('/profile', async (req: Request, res: Response) => {
         //console.error('Error al obtener los datos de perfil:', error.response.data);
         res.sendStatus(500);
     }
+=======
+    console.log('Access token:', accessToken);
+    console.log('Refresh token:', refreshToken);
+  } catch (error) {
+    console.error('Error al autenticar:');
+  }
+};
+
+const refreshTokens = async () => {
+  if (!refreshToken) {
+    console.log('No hay token de refresco');
+    return;
+  }
+
+  const params = {
+    grant_type: 'refresh_token',
+    refresh_token: refreshToken,
+  };
+
+  const headers = {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    Authorization: `Basic ${Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64')}`,
+  };
+
+  try {
+    const response = await axios.post('https://api.fitbit.com/oauth2/token', querystring.stringify(params), {
+      headers: headers,
+    });
+
+    accessToken = response.data.access_token;
+    refreshToken = response.data.refresh_token;
+
+    console.log('Nuevo access token:', accessToken);
+    console.log('Nuevo refresh token:', refreshToken);
+  } catch (error) {
+    console.error('Error al renovar los tokens:');
+  }
+};
+
+authFitbit.get('/profile', async (req: Request, res: Response) => {
+  try {
+    if (!accessToken) {
+      console.log('No hay token de acceso');
+      res.sendStatus(401);
+      return;
+    }
+
+    const response = await axios.get('https://api.fitbit.com/1/user/-/profile.json', {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    const data = response.data;
+    res.json(data);
+  } catch (error) {
+    console.error('Error al obtener los datos de perfil:');
+    res.sendStatus(500);
+  }
+>>>>>>> 0c543eb278789f46b34ebd728321ae084447a4a2
 });
 
 // Renovar automáticamente el token cada 24 horas
