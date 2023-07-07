@@ -69,7 +69,7 @@ const refreshTokens = async () => {
   }
 };
 
-authFitbit.get('/profile', async (req: Request, res: Response) => {
+authFitbit.post('/profile', async (req: Request, res: Response) => {
   try {
     const code = req.query.code as string;
 
