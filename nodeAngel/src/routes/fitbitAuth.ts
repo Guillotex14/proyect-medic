@@ -25,7 +25,7 @@ const authenticate = async (code: string) => {
     Authorization: `Basic ${Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64')}`,
   };
 
-  const params2 = `code=${code}&client_secret=${CLIENT_SECRET}&code_verifier=${CODE_VERIFIER}grant_type=authorization_code&redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
+  const params2 = `code=${code}&code_verifier=${CODE_VERIFIER}grant_type=authorization_code&redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
 
   try {
     const response = await axios.post('https://api.fitbit.com/oauth2/token', params2, {
