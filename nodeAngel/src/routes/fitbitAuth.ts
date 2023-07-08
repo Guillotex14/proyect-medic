@@ -12,7 +12,6 @@ let accessToken: string | null = null;
 let refreshToken: string | null = null;
 
 const authenticate = async (code: string) => {
-  console.log(code);
   const params = {
     code: code,
     grant_type: 'authorization_code',
@@ -24,20 +23,11 @@ const authenticate = async (code: string) => {
     Authorization: `Basic ${Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64')}`,
   };
 
-    console.log(querystring.stringify(params)) 
-    console.log(headers)
-
-    const response = await axios.post('https://api.fitbit.com/oauth2/token', querystring.stringify(params), {
-      headers: headers,
-    });
-
-    console.log(response);
-
   try {
     const response = await axios.post('https://api.fitbit.com/oauth2/token', querystring.stringify(params), {
       headers: headers,
     });
-    console.log(response);
+
     accessToken = response.data.access_token;
     refreshToken = response.data.refresh_token;
 
