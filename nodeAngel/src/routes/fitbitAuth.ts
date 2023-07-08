@@ -6,8 +6,6 @@ const CLIENT_ID = '23R7C6'; // Reemplaza con tu cliente ID de Fitbit
 const CLIENT_SECRET = '0017003c1ad27fba89b724a16c4716d5'; // Reemplaza con tu cliente secreto de Fitbit
 const REDIRECT_URI = 'https://proyect-medic-backend.up.railway.app/auth/fitbit/callback'; // Reemplaza con tu URI de redirección
 
-const encodedRedirectUri = encodeURIComponent(REDIRECT_URI);
-
 const authFitbit = Router();
 
 let accessToken: string | null = null;
@@ -17,7 +15,7 @@ const authenticate = async (code: string) => {
   const params = {
     code: code,
     grant_type: 'authorization_code',
-    redirect_uri: encodedRedirectUri,
+    redirect_uri: REDIRECT_URI,
   };
 
   const headers = {
@@ -25,8 +23,10 @@ const authenticate = async (code: string) => {
     Authorization: `Basic ${Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64')}`,
   };
 
+  const params2 = `code=${code}&grant_type=authorization_code&redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
+
   try {
-    const response = await axios.post('https://api.fitbit.com/oauth2/token', querystring.stringify(params), {
+    const response = await axios.post('https://api.fitbit.com/oauth2/token', params, {
       headers: headers,
     });
 
@@ -67,8 +67,8 @@ const refreshTokens = async () => {
 
     console.log('Nuevo access token:', accessToken);
     console.log('Nuevo refresh token:', refreshToken);
-  } catch (error) {
-    console.error('Error al renovar los tokens:', error);
+  } catch (error: any) {
+    console.error('Error al renovar los tokens:', error.response.data);
   }
 };
 
@@ -99,8 +99,8 @@ authFitbit.post('/profile', async (req: Request, res: Response) => {
 
     const data = response.data;
     res.json(data);
-  } catch (error) {
-    console.error('Error al obtener los datos de perfil:', error);
+  } catch (error: any) {
+    console.error('Error al obtener los datos de perfil:', error.response.data);
     res.sendStatus(500);
   }
 });
