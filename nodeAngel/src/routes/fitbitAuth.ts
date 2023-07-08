@@ -6,6 +6,8 @@ const CLIENT_ID = '23R7C6'; // Reemplaza con tu cliente ID de Fitbit
 const CLIENT_SECRET = '0017003c1ad27fba89b724a16c4716d5'; // Reemplaza con tu cliente secreto de Fitbit
 const REDIRECT_URI = 'exp://192.168.0.7:19000/--/*'; // Reemplaza con tu URI de redirección
 
+const encodedRedirectUri = encodeURIComponent(REDIRECT_URI);
+
 const authFitbit = Router();
 
 let accessToken: string | null = null;
@@ -15,7 +17,7 @@ const authenticate = async (code: string) => {
   const params = {
     code: code,
     grant_type: 'authorization_code',
-    redirect_uri: REDIRECT_URI,
+    redirect_uri: encodedRedirectUri,
   };
 
   const headers = {
