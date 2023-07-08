@@ -27,6 +27,12 @@ const authenticate = async (code: string) => {
     console.log(querystring.stringify(params)) 
     console.log(headers)
 
+    const response = await axios.post('https://api.fitbit.com/oauth2/token', querystring.stringify(params), {
+      headers: headers,
+    });
+
+    console.log(response);
+
   try {
     const response = await axios.post('https://api.fitbit.com/oauth2/token', querystring.stringify(params), {
       headers: headers,
