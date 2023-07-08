@@ -1,18 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Button, TouchableOpacity } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, Button} from 'react-native';
 import { useAuthRequest } from 'expo-auth-session';
-
-// const config = {
-//     clientId: '23R7C6',
-//     redirectUrl: 'YOUR_REDIRECT_URI',
-//     scopes: ['heartrate'],
-//     serviceConfiguration: {
-//         authorizationEndpoint: 'https://www.fitbit.com/oauth2/authorize',
-//         tokenEndpoint: 'https://api.fitbit.com/oauth2/token',
-//         revocationEndpoint: 'https://api.fitbit.com/oauth2/revoke',
-//     },
-// };
-
 
 const CLIENT_ID = '23R7C6'; // Reemplaza con tu cliente ID de Fitbit
 const REDIRECT_URI = 'exp://192.168.0.16:19000/--/*'; // Reemplaza con tu URI de redirección
@@ -101,14 +89,14 @@ const REDIRECT_URI = 'exp://192.168.0.16:19000/--/*'; // Reemplaza con tu URI de
 // }
 
 function FitbitAuthorization() {
-const [request, response, promptAsync] = useAuthRequest(
-    {
-    clientId: CLIENT_ID,
-    redirectUri: REDIRECT_URI,
-    scopes: ['profile'], // Define los alcances necesarios
-    },
-    { authorizationEndpoint: 'https://www.fitbit.com/oauth2/authorize' }
-);
+    const [request, response, promptAsync] = useAuthRequest(
+        {
+        clientId: CLIENT_ID,
+        redirectUri: REDIRECT_URI,
+        scopes: ['profile'], // Define los alcances necesarios
+        },
+        { authorizationEndpoint: 'https://www.fitbit.com/oauth2/authorize' }
+    );
 
 useEffect(() => {
     if (response?.type === 'success') {
@@ -119,7 +107,7 @@ useEffect(() => {
 
 const fetchProfileData = async (accessToken: string) => {
     try {
-    const response = await fetch('http://localhost:3000/profile', {
+    const response = await fetch('http://localhost:3000/fitbit/profile', {
         headers: {
         Authorization: `Bearer ${accessToken}`,
         },
