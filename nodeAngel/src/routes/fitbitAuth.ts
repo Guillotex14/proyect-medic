@@ -4,7 +4,7 @@ import querystring from 'querystring';
 
 const CLIENT_ID = '23R7C6'; // Reemplaza con tu cliente ID de Fitbit
 const CLIENT_SECRET = '0017003c1ad27fba89b724a16c4716d5'; // Reemplaza con tu cliente secreto de Fitbit
-const REDIRECT_URI = 'https://proyect-medic-backend.up.railway.app/callback'; // Reemplaza con tu URI de redirección
+const REDIRECT_URI = 'https://proyect-medic-backend.up.railway.app/auth/fitbit/callback'; // Reemplaza con tu URI de redirección
 
 const encodedRedirectUri = encodeURIComponent(REDIRECT_URI);
 
