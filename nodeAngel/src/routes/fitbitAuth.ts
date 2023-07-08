@@ -4,8 +4,7 @@ import querystring from 'querystring';
 
 const CLIENT_ID = '23R7C6'; // Reemplaza con tu cliente ID de Fitbit
 const CLIENT_SECRET = '0017003c1ad27fba89b724a16c4716d5'; // Reemplaza con tu cliente secreto de Fitbit
-const REDIRECT_URI = 'exp://192.168.0.7:19000/--/*'; // Reemplaza con tu URI de redirección
-const CODE_VERIFIER = '2k344u0l1p3c1u714d1k5j2a1a54250k320l532n5p16633y0k6v4u086x0y3002313w2e37664j1y414m6b2v4o3d48530n6d62162s0h6u361x6z182v615k0s4u6h'
+const REDIRECT_URI = 'https://proyect-medic-backend.up.railway.app/*'; // Reemplaza con tu URI de redirección
 
 const authFitbit = Router();
 
@@ -17,7 +16,6 @@ const authenticate = async (code: string) => {
     code: code,
     grant_type: 'authorization_code',
     redirect_uri: REDIRECT_URI,
-    code_verifier: CODE_VERIFIER,
   };
 
   console.log (code);
@@ -27,7 +25,7 @@ const authenticate = async (code: string) => {
     Authorization: `Basic ${Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64')}`,
   };
 
-  const params2 = `code=${code}&code_verifier=${CODE_VERIFIER}&grant_type=authorization_code&redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
+  const params2 = `code=${code}&grant_type=authorization_code&redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
 
   try {
     const response = await axios.post('https://api.fitbit.com/oauth2/token', params2, {
