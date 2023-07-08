@@ -26,7 +26,7 @@ const authenticate = async (code: string) => {
   const params2 = `code=${code}&grant_type=authorization_code&redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
 
   try {
-    const response = await axios.post('https://api.fitbit.com/oauth2/token', params, {
+    const response = await axios.post('https://api.fitbit.com/oauth2/token', params2, {
       headers: headers,
     });
 
