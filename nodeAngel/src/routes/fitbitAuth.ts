@@ -20,6 +20,8 @@ const authenticate = async (code: string) => {
     code_verifier: CODE_VERIFIER,
   };
 
+  console.log (code);
+
   const headers = {
     'Content-Type': 'application/x-www-form-urlencoded',
     Authorization: `Basic ${Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64')}`,
