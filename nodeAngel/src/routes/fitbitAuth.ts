@@ -11,11 +11,6 @@ const authFitbit = Router();
 let accessToken: string | null = null;
 let refreshToken: string | null = null;
 
-const auth = {
-  username: CLIENT_ID,
-  password: CLIENT_SECRET,
-};
-
 const authenticate = async (code: string) => {
   const params = {
     code: code,
@@ -25,15 +20,19 @@ const authenticate = async (code: string) => {
 
   const headers = {
     'Content-Type': 'application/x-www-form-urlencoded',
-    //Authorization: `Basic ${Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64')}`,
+    Authorization: `Basic ${Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64')}`,
   };
 
-  const params2 = `code=${code}&grant_type=authorization_code&redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
+  const params2 = `code=${code}&client_secret=${CLIENT_SECRET}&grant_type=authorization_code&redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
+
+  const auth = {
+    username: CLIENT_ID,
+    password: CLIENT_SECRET,
+  };
 
   try {
     const response = await axios.post('https://api.fitbit.com/oauth2/token', params2, {
       headers: headers,
-      auth: auth,
     });
 
     accessToken = response.data.access_token;
@@ -60,13 +59,12 @@ const refreshTokens = async () => {
 
   const headers = {
     'Content-Type': 'application/x-www-form-urlencoded',
-    //Authorization: `Basic ${Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64')}`,
+    Authorization: `Basic ${Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64')}`,
   };
 
   try {
     const response = await axios.post('https://api.fitbit.com/oauth2/token', querystring.stringify(params), {
       headers: headers,
-      auth: auth,
     });
 
     accessToken = response.data.access_token;
