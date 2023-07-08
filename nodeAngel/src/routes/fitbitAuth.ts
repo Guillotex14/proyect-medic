@@ -35,8 +35,9 @@ const authenticate = async (code: string) => {
 
     console.log('Access token:', accessToken);
     console.log('Refresh token:', refreshToken);
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error al autenticar:', error);
+    console.log('Response data:', error.response.data);
   }
 };
 
