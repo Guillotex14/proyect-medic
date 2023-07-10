@@ -46,8 +46,8 @@ authFitbit.get('/callback', async (req, res) => {
     const redirectFrontendUrl = `${frontendUri}?accessToken=${accessToken}&profileData=${encodeURIComponent(JSON.stringify(profileData))}`;
     // Redireccionar al frontend con los datos obtenidos
     res.redirect(redirectFrontendUrl);
-  } catch (error) {
-    console.error('Error al obtener los datos de perfil:', error);
+  } catch (error: any) {
+    console.error('Error al obtener los datos de perfil:', error.response.data);
     res.status(500).json({ error: 'Error al obtener los datos de perfil.' });
   }
 });
