@@ -12,9 +12,9 @@ const frontendUri = 'exp://192.168.0.12:19000/--/*'; // Reemplaza con la URL de 
 authFitbit.get('/callback', async (req, res) => {
   const { code, codeVerifier } = req.query;
   console.log('code', code);
-  //console.log('codeVerifier', codeVerifier);
+  console.log('codeVerifier', codeVerifier);
 
-  if (!code) {
+  if (!code || !codeVerifier) {
     return res.status(400).json({ error: 'No se proporcionó el código de autorización o el codeVerifier.' });
   }
 
@@ -28,6 +28,7 @@ authFitbit.get('/callback', async (req, res) => {
     grant_type: 'authorization_code',
     clientId: '23R7C6',
     redirect_uri: redirectUri,
+    code_verifier: codeVerifier.toString(),
   };
 
   try {
