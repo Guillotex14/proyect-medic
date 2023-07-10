@@ -10,11 +10,12 @@ const redirectUri = 'https://proyect-medic-backend.up.railway.app/fitbit/callbac
 const frontendUri = 'exp://192.168.0.12:19000/--/*'; // Reemplaza con la URL de tu frontend
 
 authFitbit.get('/callback', async (req, res) => {
-  const { code } = req.query;
+  const { code, codeVerifier } = req.query;
   console.log('code', code);
+  console.log('codeVerifier', codeVerifier);
 
-  if (!code) {
-    return res.status(400).json({ error: 'No se proporcionó el código de autorización.' });
+  if (!code || !codeVerifier) {
+    return res.status(400).json({ error: 'No se proporcionó el código de autorización o el codeVerifier.' });
   }
 
   const tokenEndpoint = 'https://api.fitbit.com/oauth2/token';
@@ -25,6 +26,7 @@ authFitbit.get('/callback', async (req, res) => {
   const params = {
     code: code.toString(),
     grant_type: 'authorization_code',
+    clientId: '23R7C6',
     redirect_uri: redirectUri,
   };
 
