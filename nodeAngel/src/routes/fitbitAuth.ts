@@ -6,7 +6,7 @@ const authFitbit = Router();
 
 const clientId = '23R7C6'; // Reemplaza con tu cliente ID de Fitbit
 const clientSecret = '0017003c1ad27fba89b724a16c4716d5'; // Reemplaza con tu cliente secreto de Fitbit
-const redirectUri = 'https://proyect-medic-backend.up.railway.app/fitbit/callback'; // Reemplaza con la URL de tu backend
+const redirectUri = 'exp://192.168.0.12:19000/--/*'; // Reemplaza con la URL de tu backend
 const frontendUri = 'exp://192.168.0.12:19000/--/*'; // Reemplaza con la URL de tu frontend
 
 authFitbit.get('/callback', async (req, res) => {
