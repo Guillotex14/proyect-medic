@@ -11,6 +11,7 @@ const frontendUri = 'exp://192.168.0.12:19000/--/*'; // Reemplaza con la URL de 
 
 authFitbit.get('/callback', async (req, res) => {
   const { code } = req.query;
+  console.log('code', code);
 
   if (!code) {
     return res.status(400).json({ error: 'No se proporcionó el código de autorización.' });
