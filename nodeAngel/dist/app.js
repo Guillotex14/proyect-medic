@@ -31,7 +31,7 @@ class App {
         this.app.use("/auth", auth_1.default);
         this.app.use("/patient", patient_1.default);
         this.app.use("/doctor", doctors_1.default);
-        this.app.use("fitbit", fitbitAuth_1.default);
+        this.app.use("/fitbit", fitbitAuth_1.default);
         this.app.use(express_1.default.static(path_1.default.join(__dirname, "src")));
         this.app.use(express_1.default.static(path_1.default.join(__dirname, "dist")));
     }

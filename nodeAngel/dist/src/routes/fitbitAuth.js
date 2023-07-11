@@ -31,6 +31,8 @@ const authenticate = (code) => __awaiter(void 0, void 0, void 0, function* () {
         'Content-Type': 'application/x-www-form-urlencoded',
         Authorization: `Basic ${Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64')}`,
     };
+    console.log(querystring_1.default.stringify(params));
+    console.log(headers);
     try {
         const response = yield axios_1.default.post('https://api.fitbit.com/oauth2/token', querystring_1.default.stringify(params), {
             headers: headers,
@@ -41,7 +43,7 @@ const authenticate = (code) => __awaiter(void 0, void 0, void 0, function* () {
         console.log('Refresh token:', refreshToken);
     }
     catch (error) {
-        //console.error('Error al autenticar:', error.response.data);
+        console.error('Error al autenticar:');
     }
 });
 const refreshTokens = () => __awaiter(void 0, void 0, void 0, function* () {
@@ -67,7 +69,7 @@ const refreshTokens = () => __awaiter(void 0, void 0, void 0, function* () {
         console.log('Nuevo refresh token:', refreshToken);
     }
     catch (error) {
-        //console.error('Error al renovar los tokens:', error.response.data);
+        console.error('Error al renovar los tokens:');
     }
 });
 authFitbit.get('/profile', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -80,13 +82,13 @@ authFitbit.get('/profile', (req, res) => __awaiter(void 0, void 0, void 0, funct
         const response = yield axios_1.default.get('https://api.fitbit.com/1/user/-/profile.json', {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
-            },
+            }
         });
         const data = response.data;
         res.json(data);
     }
     catch (error) {
-        //console.error('Error al obtener los datos de perfil:', error.response.data);
+        console.error('Error al obtener los datos de perfil:');
         res.sendStatus(500);
     }
 }));
