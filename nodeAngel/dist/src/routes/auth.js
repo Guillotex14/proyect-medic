@@ -99,32 +99,56 @@ authRouter.post("/loginMedic", (req, res) => __awaiter(void 0, void 0, void 0, f
                 jsonRes.code = 200;
                 jsonRes.message = "login success";
                 jsonRes.status = true;
-                yield medics_1.default.findOne({ id_user: res._id }).then((res2) => {
+                yield medics_1.default.findOne({ id_user: res._id }).then((res2) => __awaiter(void 0, void 0, void 0, function* () {
+                    console.log(res2);
                     if (res2) {
-                        let me = {
-                            id: res._id,
-                            email: res.email,
-                            typeUser: res.type_user,
-                            fullName: res2.fullName,
-                            typeDni: res2.typeDni,
-                            dni: res2.dni,
-                            birthdate: res2.birthdate,
-                            phone: res2.phone,
-                            address: res2.address,
-                            id_medic: res2._id,
-                            speciality: res2.specialty,
-                            gender: res2.gender
-                        };
-                        jsonRes.data = me;
+                        yield dataProfessional_1.default.findOne({ id_medic: res2._id }).then((res3) => __awaiter(void 0, void 0, void 0, function* () {
+                            console.log(res3);
+                            if (res3) {
+                                let me = {
+                                    id: res._id,
+                                    email: res.email,
+                                    typeUser: res.type_user,
+                                    fullName: res2.fullName,
+                                    typeDni: res2.typeDni,
+                                    dni: res2.dni,
+                                    birthdate: res2.birthdate,
+                                    phone: res2.phone,
+                                    address: res2.address,
+                                    id_medic: res2._id,
+                                    speciality: res2.specialty,
+                                    gender: res2.gender,
+                                    university: res3.university,
+                                    uniAdmissionDate: res3.uniAdmissionDate,
+                                    uniGraduationDate: res3.uniGraduationDate,
+                                    mpps: res3.mpps,
+                                    postgrade: res3.postgrade,
+                                    postgradeAdmissionDate: res3.postgradeAdmissionDate,
+                                    postgradeGraduationDate: res3.postgradeGraduationDate,
+                                    postgradeUniversity: res3.postgradeUniversity,
+                                    dayService: res3.dayService,
+                                    dayService2: res3.dayService2,
+                                    additional: res3.additional
+                                };
+                                jsonRes.data = me;
+                            }
+                            else {
+                                jsonRes.code = 400;
+                                jsonRes.message = "no existe 3";
+                                jsonRes.status = false;
+                                jsonRes.data = res;
+                                return jsonRes;
+                            }
+                        }));
                     }
                     else {
                         jsonRes.code = 400;
-                        jsonRes.message = "no existe";
+                        jsonRes.message = "no existe 2";
                         jsonRes.status = false;
                         jsonRes.data = res;
                         return jsonRes;
                     }
-                }).catch((err) => {
+                })).catch((err) => {
                     console.log(err);
                 });
                 return jsonRes;
@@ -146,7 +170,7 @@ authRouter.post("/loginMedic", (req, res) => __awaiter(void 0, void 0, void 0, f
         console.log(err);
     });
     console.log(ress);
-    res.json(ress);
+    res.json(jsonRes);
 }));
 authRouter.post("/registerMedic", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const jsonRes = new response_1.RespondesModel();

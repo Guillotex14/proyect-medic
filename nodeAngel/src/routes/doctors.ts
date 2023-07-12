@@ -5,6 +5,7 @@ import users from "../models/Users";
 import medics from "../models/medics";
 import patients from "../models/patients";
 import medicalFiles from "../models/medicalFile";
+import dataProfessional from "../models/dataProfessional";
 
 const doctorRouter = Router();
 
@@ -16,16 +17,21 @@ doctorRouter.post("/updateProfile", async (req: Request, res: Response) => {
 
     const idUser = {id_user: id};
     const _id = {_id:id};
+    const idMedic = {id_medic: id_medic};
+    
     const update_user = {email: email};
 
     const update_medic = {
         fullName: fullName,
-        typeDNISelected: typeDni,
+        typeDni: typeDni,
         dni: dni,
         phone: phone,
         address: address,
-        speciality: speciality,
         gender: gender,
+        speciality: speciality,
+    };
+
+    const update_dataprof = {
         university: university,
         uniAdmissionDate: uniAdmissionDate,
         uniGraduationDate: uniGraduationDate,
@@ -37,11 +43,13 @@ doctorRouter.post("/updateProfile", async (req: Request, res: Response) => {
         additional: additional,
         dayService: dayService,
         dayService2: dayService2
-    };
+    }
 
     await users.findOneAndUpdate(_id, update_user);
 
     await medics.findOneAndUpdate(idUser, update_medic);
+
+    await dataProfessional.findOneAndUpdate(idMedic, update_dataprof);
 
     jsonRes.code = 200;
     jsonRes.message = "actualizado";

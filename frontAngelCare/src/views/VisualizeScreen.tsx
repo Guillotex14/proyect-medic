@@ -24,7 +24,7 @@ export const VisualizeScreen = ({navigation}:Props) => {
     const [validTypeDni, setValidTypeDni] = useState(false);
     
     const [dni, setDni] = useState('');
-    const [typeDNISelected, setTypeDNISelected] = useState('V');
+    const [typeDNISelected, setTypeDNISelected] = useState('');
     const [dataPatient, setDataPatient] = useState<any>({});
 
     const typeDNI: TypeDni[] = [
@@ -68,7 +68,10 @@ export const VisualizeScreen = ({navigation}:Props) => {
             if (response.data.status) {
                 setDataPatient(response.data.data);
                 setSearch(true);
+            }else{
+                presentToast("El paciente no se encuentra registrado");
             }
+
         }).catch((error) => {
             console.log(error);
         });
@@ -102,11 +105,26 @@ export const VisualizeScreen = ({navigation}:Props) => {
             {/* header */}
             <View style={{width: '100%', marginHorizontal: 40, alignSelf: 'center', marginTop: 50, flexDirection: 'row', alignContent: 'center', alignItems: 'center' }}>
                 <View style={{width: 70}}>
-                    <TouchableOpacity onPress={()=>{ navigation.pop()}}
-                    style={{marginLeft: 18}}>
-                        {/* <ChevronLeftIcon size={6} color={'black'} /> */}
-                        <Ionicons name="chevron-back" size={35} color="black" />
-                    </TouchableOpacity>
+
+                    {
+                        !search && (
+                            <TouchableOpacity onPress={()=>{ navigation.pop()}}
+                            style={{marginLeft: 18}}>
+                                <Ionicons name="chevron-back" size={35} color="black" />
+                            </TouchableOpacity>
+                        )
+                    }
+
+                    {
+                        search && (
+                            <TouchableOpacity onPress={()=>{ setSearch(false)}}
+                            style={{marginLeft: 18}}>
+                                <Ionicons name="chevron-back" size={35} color="black" />
+                            </TouchableOpacity>
+                        )
+                    }
+
+
                 </View>
                 <View style={{width: 300}}>
                     <Text style={{fontSize: 17, marginHorizontal: 10, color: 'black', fontWeight: 'bold'}}>
@@ -357,4 +375,4 @@ const stylesCard = StyleSheet.create({
         padding: 10,
         justifyContent: 'space-between',
     },
-    });
+});
