@@ -180,5 +180,44 @@ patientRouter.get("/createDate", async (req: Request, res: Response) => {
 
 });
 
+patientRouter.post("/verifyAccessToken", async (req: Request, res: Response) => {
+    const jsonRes: RespondesModel = new RespondesModel();
+    const {id_patient} = req.body;
+
+    const ress = await patients.findOne({_id: id_patient}).then(async (res) => {
+        if (res) {
+            jsonRes.code = 200;
+            jsonRes.message = "paciente";
+            jsonRes.status = true;
+            jsonRes.data = res;
+            return jsonRes;
+        }else{
+            jsonRes.code = 400;
+            jsonRes.message = "no hay paciente";
+            jsonRes.status = false;
+            return jsonRes;
+        }
+    
+    }).catch((err) => {
+        console.log(err)
+    });
+
+    res.json(ress);
+});
+
+patientRouter.post("/saveAccessToken", async (req: Request, res: Response) => {
+    const jsonRes: RespondesModel = new RespondesModel();
+
+    const {id_patient,accessToken} = req.body;
+
+    await patients.findOneAndUpdate({_id: id_patient}, {accessToken: accessToken})
+
+    jsonRes.code = 200;
+    jsonRes.message = "token guardado";
+    jsonRes.status = true;
+
+    res.json(jsonRes);
+
+});
 
 export default patientRouter;
