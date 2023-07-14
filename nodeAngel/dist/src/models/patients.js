@@ -8,6 +8,7 @@ const patientsSchema = new mongoose_1.Schema({
     birthdate: String,
     phone: String,
     address: String,
+    city: String,
     gender: String,
     ensurancePolicy: String,
     policyNumber: String,

@@ -6,9 +6,10 @@ const medicsSchema = new mongoose_1.Schema({
     typeDni: String,
     dni: String,
     birthdate: String,
-    specialty: String,
+    speciality: String,
     phone: String,
     address: String,
+    city: String,
     gender: String,
     id_user: {
         type: mongoose_1.Schema.Types.ObjectId

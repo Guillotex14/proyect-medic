@@ -15,84 +15,50 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const axios_1 = __importDefault(require("axios"));
 const querystring_1 = __importDefault(require("querystring"));
-const CLIENT_ID = '23R7C6'; // Reemplaza con tu cliente ID de Fitbit
-const CLIENT_SECRET = '0017003c1ad27fba89b724a16c4716d5'; // Reemplaza con tu cliente secreto de Fitbit
-const REDIRECT_URI = 'exp://192.168.0.16:19000/--/*'; // Reemplaza con tu URI de redirección
 const authFitbit = (0, express_1.Router)();
-let accessToken = null;
-let refreshToken = null;
-const authenticate = (code) => __awaiter(void 0, void 0, void 0, function* () {
+const clientId = '23R7C6'; // Reemplaza con tu cliente ID de Fitbit
+const clientSecret = '0017003c1ad27fba89b724a16c4716d5'; // Reemplaza con tu cliente secreto de Fitbit
+const redirectUri = 'exp://192.168.0.12:19000/--/*'; // Reemplaza con la URL de tu backend
+const frontendUri = 'exp://192.168.0.12:19000/--/*'; // Reemplaza con la URL de tu frontend
+authFitbit.get('/callback', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { code, codeVerifier } = req.query;
+    console.log('code', code);
+    console.log('codeVerifier', codeVerifier);
+    if (!code || !codeVerifier) {
+        return res.status(400).json({ error: 'No se proporcionó el código de autorización o el codeVerifier.' });
+    }
+    const tokenEndpoint = 'https://api.fitbit.com/oauth2/token';
+    const headers = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`,
+    };
     const params = {
-        code: code,
+        code: code.toString(),
         grant_type: 'authorization_code',
-        redirect_uri: REDIRECT_URI,
+        clientId: '23R7C6',
+        redirect_uri: redirectUri,
+        code_verifier: codeVerifier.toString(),
     };
-    const headers = {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        Authorization: `Basic ${Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64')}`,
-    };
-    console.log(querystring_1.default.stringify(params));
-    console.log(headers);
     try {
-        const response = yield axios_1.default.post('https://api.fitbit.com/oauth2/token', querystring_1.default.stringify(params), {
-            headers: headers,
+        const response = yield axios_1.default.post(tokenEndpoint, querystring_1.default.stringify(params), {
+            headers,
         });
-        accessToken = response.data.access_token;
-        refreshToken = response.data.refresh_token;
-        console.log('Access token:', accessToken);
-        console.log('Refresh token:', refreshToken);
-    }
-    catch (error) {
-        console.error('Error al autenticar:');
-    }
-});
-const refreshTokens = () => __awaiter(void 0, void 0, void 0, function* () {
-    if (!refreshToken) {
-        console.log('No hay token de refresco');
-        return;
-    }
-    const params = {
-        grant_type: 'refresh_token',
-        refresh_token: refreshToken,
-    };
-    const headers = {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        Authorization: `Basic ${Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64')}`,
-    };
-    try {
-        const response = yield axios_1.default.post('https://api.fitbit.com/oauth2/token', querystring_1.default.stringify(params), {
-            headers: headers,
-        });
-        accessToken = response.data.access_token;
-        refreshToken = response.data.refresh_token;
-        console.log('Nuevo access token:', accessToken);
-        console.log('Nuevo refresh token:', refreshToken);
-    }
-    catch (error) {
-        console.error('Error al renovar los tokens:');
-    }
-});
-authFitbit.get('/profile', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        if (!accessToken) {
-            console.log('No hay token de acceso');
-            res.sendStatus(401);
-            return;
-        }
-        const response = yield axios_1.default.get('https://api.fitbit.com/1/user/-/profile.json', {
+        const accessToken = response.data.access_token;
+        const profileEndpoint = 'https://api.fitbit.com/1/user/-/profile.json';
+        const profileResponse = yield axios_1.default.get(profileEndpoint, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
-            }
+            },
         });
-        const data = response.data;
-        res.json(data);
+        const profileData = profileResponse.data;
+        const redirectFrontendUrl = `${frontendUri}?accessToken=${accessToken}&profileData=${encodeURIComponent(JSON.stringify(profileData))}`;
+        // Redireccionar al frontend con los datos obtenidos
+        res.redirect(redirectFrontendUrl);
     }
     catch (error) {
-        console.error('Error al obtener los datos de perfil:');
-        res.sendStatus(500);
+        console.error('Error al obtener los datos de perfil:', error.response.data);
+        res.status(500).json({ error: 'Error al obtener los datos de perfil.' });
     }
 }));
-// Renovar automáticamente el token cada 24 horas
-setInterval(refreshTokens, 24 * 60 * 60 * 1000);
 exports.default = authFitbit;
 //# sourceMappingURL=fitbitAuth.js.map

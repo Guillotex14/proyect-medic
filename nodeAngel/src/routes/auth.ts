@@ -45,6 +45,7 @@ authRouter.post("/loginPatient", async (req: Request, res: Response) => {
                             birthdate: res2.birthdate,
                             phone: res2.phone,
                             address: res2.address,
+                            city: res2.city,
                             id_patient: res2._id,
                             ensuracePolicy: res2.ensurancePolicy != "" ? res2.ensurancePolicy : "",
                             policyNumber: res2.policyNumber != "" ? res2.policyNumber : "",
@@ -111,8 +112,9 @@ authRouter.post("/loginMedic", async (req: Request, res: Response) => {
                                     birthdate: res2.birthdate,
                                     phone: res2.phone,
                                     address: res2.address,
+                                    city: res2.city,
                                     id_medic: res2._id,
-                                    speciality: res2.specialty,
+                                    speciality: res2.speciality,
                                     gender: res2.gender,
                                     university: res3.university,
                                     uniAdmissionDate: res3.uniAdmissionDate,
@@ -168,14 +170,14 @@ authRouter.post("/loginMedic", async (req: Request, res: Response) => {
 authRouter.post("/registerMedic", async (req: Request, res: Response) => {
     const jsonRes: RespondesModel = new RespondesModel();
 
-    const { fullName,typeDNISelected,dni,email,password,phone,address,speciality,gender,university,uniAdmissionDate,uniGraduationDate,mpps,postgrade,postgradeUniversity,postgradeGraduationDate,postgradeAdmissionDate,additional,dayService,dayService2 } = req.body;
+    const { fullName,typeDNISelected,dni,email,password,phone,address,speciality,gender,university,uniAdmissionDate,uniGraduationDate,mpps,postgrade,postgradeUniversity,postgradeGraduationDate,postgradeAdmissionDate,additional,dayService,dayService2,city } = req.body;
 
     const saltRounds = 10;
 
     const hash = await bcrypt.hash(password, saltRounds);
     
     const newUser = new Users({email, password: hash, type_user: "doctor"});
-    const newMedic = new medics({fullName,typeDNISelected,dni,phone,address,gender,speciality});
+    const newMedic = new medics({fullName,typeDNISelected,dni,phone,address,city,gender,speciality});
 
     const newDataProfessional = new dataProfessional({university,uniAdmissionDate,uniGraduationDate,mpps,postgrade,postgradeGraduationDate,postgradeUniversity,postgradeAdmissionDate,additional,dayService,dayService2});
     
@@ -204,7 +206,7 @@ authRouter.post("/registerMedic", async (req: Request, res: Response) => {
         birthdate: newMedic.birthdate,
         phone: newMedic.phone,
         address: newMedic.address,
-        speciality: newMedic.specialty,
+        speciality: newMedic.speciality,
         university: newDataProfessional.university,
         uniAdmissionDate: newDataProfessional.uniAdmissionDate,
         uniGraduationDate: newDataProfessional.uniGraduationDate,
@@ -230,14 +232,14 @@ authRouter.post("/registerMedic", async (req: Request, res: Response) => {
 authRouter.post("/registerPatient", async (req: Request, res: Response) => {
     const jsonRes: RespondesModel = new RespondesModel();
 
-    const { fullName,typeDni,dni,email,password,phone,address,gender,diseases,alergies,condition,aditional,birthdate } = req.body;
+    const { fullName,typeDni,dni,email,password,phone,address,gender,diseases,alergies,condition,aditional,birthdate,city } = req.body;
     
     const saltRounds = 10;
 
     const hash = await bcrypt.hash(password, saltRounds);
 
     const newUser = new Users({email, password:hash, type_user: "paciente"});
-    const newPatient = new patients({fullName,typeDni,dni,birthdate,phone,address,gender})
+    const newPatient = new patients({fullName,typeDni,dni,birthdate,phone,address,gender,city})
 
     let stringDiseases = "";
     let stringAlergies = "";

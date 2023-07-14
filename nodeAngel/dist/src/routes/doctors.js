@@ -18,21 +18,25 @@ const Users_1 = __importDefault(require("../models/Users"));
 const medics_1 = __importDefault(require("../models/medics"));
 const patients_1 = __importDefault(require("../models/patients"));
 const medicalFile_1 = __importDefault(require("../models/medicalFile"));
+const dataProfessional_1 = __importDefault(require("../models/dataProfessional"));
 const doctorRouter = (0, express_1.Router)();
 doctorRouter.post("/updateProfile", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const jsonRes = new response_1.RespondesModel();
     const { fullName, typeDni, dni, email, phone, address, speciality, gender, university, uniAdmissionDate, uniGraduationDate, mpps, postgrade, postgradeUniversity, postgradeGraduationDate, postgradeAdmissionDate, additional, dayService, dayService2, id, id_medic } = req.body;
     const idUser = { id_user: id };
     const _id = { _id: id };
+    const idMedic = { id_medic: id_medic };
     const update_user = { email: email };
     const update_medic = {
         fullName: fullName,
-        typeDNISelected: typeDni,
+        typeDni: typeDni,
         dni: dni,
         phone: phone,
         address: address,
-        speciality: speciality,
         gender: gender,
+        speciality: speciality,
+    };
+    const update_dataprof = {
         university: university,
         uniAdmissionDate: uniAdmissionDate,
         uniGraduationDate: uniGraduationDate,
@@ -47,6 +51,7 @@ doctorRouter.post("/updateProfile", (req, res) => __awaiter(void 0, void 0, void
     };
     yield Users_1.default.findOneAndUpdate(_id, update_user);
     yield medics_1.default.findOneAndUpdate(idUser, update_medic);
+    yield dataProfessional_1.default.findOneAndUpdate(idMedic, update_dataprof);
     jsonRes.code = 200;
     jsonRes.message = "actualizado";
     jsonRes.status = true;

@@ -51,6 +51,7 @@ authRouter.post("/loginPatient", (req, res) => __awaiter(void 0, void 0, void 0,
                             birthdate: res2.birthdate,
                             phone: res2.phone,
                             address: res2.address,
+                            city: res2.city,
                             id_patient: res2._id,
                             ensuracePolicy: res2.ensurancePolicy != "" ? res2.ensurancePolicy : "",
                             policyNumber: res2.policyNumber != "" ? res2.policyNumber : "",
@@ -100,10 +101,8 @@ authRouter.post("/loginMedic", (req, res) => __awaiter(void 0, void 0, void 0, f
                 jsonRes.message = "login success";
                 jsonRes.status = true;
                 yield medics_1.default.findOne({ id_user: res._id }).then((res2) => __awaiter(void 0, void 0, void 0, function* () {
-                    console.log(res2);
                     if (res2) {
                         yield dataProfessional_1.default.findOne({ id_medic: res2._id }).then((res3) => __awaiter(void 0, void 0, void 0, function* () {
-                            console.log(res3);
                             if (res3) {
                                 let me = {
                                     id: res._id,
@@ -115,8 +114,9 @@ authRouter.post("/loginMedic", (req, res) => __awaiter(void 0, void 0, void 0, f
                                     birthdate: res2.birthdate,
                                     phone: res2.phone,
                                     address: res2.address,
+                                    city: res2.city,
                                     id_medic: res2._id,
-                                    speciality: res2.specialty,
+                                    speciality: res2.speciality,
                                     gender: res2.gender,
                                     university: res3.university,
                                     uniAdmissionDate: res3.uniAdmissionDate,
@@ -202,7 +202,7 @@ authRouter.post("/registerMedic", (req, res) => __awaiter(void 0, void 0, void 0
         birthdate: newMedic.birthdate,
         phone: newMedic.phone,
         address: newMedic.address,
-        speciality: newMedic.specialty,
+        speciality: newMedic.speciality,
         university: newDataProfessional.university,
         uniAdmissionDate: newDataProfessional.uniAdmissionDate,
         uniGraduationDate: newDataProfessional.uniGraduationDate,
@@ -223,11 +223,11 @@ authRouter.post("/registerMedic", (req, res) => __awaiter(void 0, void 0, void 0
 }));
 authRouter.post("/registerPatient", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const jsonRes = new response_1.RespondesModel();
-    const { fullName, typeDni, dni, email, password, phone, address, gender, diseases, alergies, condition, aditional, birthdate } = req.body;
+    const { fullName, typeDni, dni, email, password, phone, address, gender, diseases, alergies, condition, aditional, birthdate, city } = req.body;
     const saltRounds = 10;
     const hash = yield bcrypt_1.default.hash(password, saltRounds);
     const newUser = new Users_1.default({ email, password: hash, type_user: "paciente" });
-    const newPatient = new patients_1.default({ fullName, typeDni, dni, birthdate, phone, address, gender });
+    const newPatient = new patients_1.default({ fullName, typeDni, dni, birthdate, phone, address, gender, city });
     let stringDiseases = "";
     let stringAlergies = "";
     for (let i = 0; i < diseases.length; i++) {
