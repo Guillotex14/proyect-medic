@@ -14,10 +14,7 @@ const patientsSchema = new Schema({
     id_user: {
         type: Schema.Types.ObjectId
     },
-    fitbitAccessToken: {
-        type: String,
-        default: ""
-    },
+    fitbitAccessToken: String
 });
 
 export default model("patients", patientsSchema);

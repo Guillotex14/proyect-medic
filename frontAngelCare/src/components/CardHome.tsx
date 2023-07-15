@@ -260,11 +260,7 @@ export const CardHome = () => {
         fetchRespirationData(fitbitJson);
         fetchSleepData(fitbitJson);
         return
-    }else{
-        console.log("entra a pedir token")
-        handleAuthButtonPress();
     }
-
 
     return (
 
