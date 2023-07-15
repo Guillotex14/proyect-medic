@@ -60,12 +60,29 @@ export const CardHome = () => {
     }
 
     const saveAccessToken = async(accessToken1:any) => {
+        console.log("*********************")
+            console.log("desde saveAccessToken", accessToken1)
+            console.log("*********************")
         await apiConnection.post('patient/saveAccessToken',{
             id_patient: id_patient,
             accessToken: accessToken1
-        }).then((response) => {
+        }).then(async(response) => {
             if(response.data.status){
-                setFitbitJson(accessToken);
+                console.log("*********************")
+                console.log("Token guardado en la db")
+                console.log("*********************")
+                setFitbitJson(accessToken1);
+
+                let me = await AsyncStorage.getItem('me');
+                let meJson = JSON.parse(me!);
+
+                let mee = {
+                    ...meJson,
+                    fitbitAccessToken: accessToken1
+                }
+
+                await AsyncStorage.setItem('me', JSON.stringify(mee));
+
             }
         }, (error) => {
             console.log(error);
@@ -75,52 +92,56 @@ export const CardHome = () => {
     const handleAuthButtonPress = async () => {
         // Configura el redirectUri con una URL válida
         const redirectUri = 'exp://192.168.0.12:19000/--/*';
-
+    
         // Inicia la solicitud de autorización
         const authUrl = `${authorizationEndpoint}?client_id=${config.clientId}&response_type=code&scope=${encodeURIComponent(
-        config.scopes.join(' ')
+          config.scopes.join(' ')
         )}&redirect_uri=${encodeURIComponent(redirectUri)}`;
-        
         const response = await AuthSession.startAsync({ authUrl, returnUrl: redirectUri });
-
+    
         if (response.type === 'success') {
-        // Extrae el código de autorización de la respuesta
-        const { code } = response.params;
-
-        // Intercambia el código de autorización por un token de acceso
-        const requestBody = {
+          // Extrae el código de autorización de la respuesta
+          const { code } = response.params;
+    
+          // Intercambia el código de autorización por un token de acceso
+          const requestBody = {
             code,
             grant_type: 'authorization_code',
             redirect_uri: redirectUri,
             client_id: config.clientId,
             client_secret: config.clientSecret,
             expires_in: '31536000',
-        };
-
-        try {
+          };
+    
+          try {
             const tokenResponse = await axios.post(
-            tokenEndpoint,
-            new URLSearchParams(requestBody).toString(),
-            {
+              tokenEndpoint,
+              new URLSearchParams(requestBody).toString(),
+              {
                 headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Authorization': 'Basic ' + 'MjNSN0M2OjAwMTcwMDNjMWFkMjdmYmE4OWI3MjRhMTZjNDcxNmQ1',
+                  'Content-Type': 'application/x-www-form-urlencoded',
+                  'Authorization': 'Basic ' + 'MjNSN0M2OjAwMTcwMDNjMWFkMjdmYmE4OWI3MjRhMTZjNDcxNmQ1',
                 },
-            }
+              }
             );
+            console.log("*********************")
+            console.log("tokenResponse", tokenResponse.data)
+            console.log("*********************")
             const { access_token } = tokenResponse.data;
-            setAccessToken(access_token);
-            fetchProfileAndHeartRateData(access_token);
-            fetchSpo2Data(access_token);
-            fetchSkinTemperatureData(access_token);
-            fetchRespirationData(access_token);
-            fetchSleepData(access_token);
+            console.log('Token de acceso:', access_token);
             saveAccessToken(access_token);
-        } catch (error: any) {
+            setFitbitJson(access_token);
+            setAccessToken(access_token);
+            // fetchProfileAndHeartRateData(access_token);
+            // fetchSpo2Data(access_token);
+            // fetchSkinTemperatureData(access_token);
+            // fetchRespirationData(access_token);
+            // fetchSleepData(access_token);
+          } catch (error: any) {
             console.error('Error al obtener el token de acceso:', error.response.data);
+          }
         }
-        }
-    };
+      };
 
     const fetchProfileAndHeartRateData = async (accessToken: string) => {
         try {
@@ -235,17 +256,14 @@ export const CardHome = () => {
         console.log(me)
         let meJson = JSON.parse(me!)
         console.log(meJson)
-        // if (meJson.fitbitAccesstoken != '') {
-            
-        //     setFitbitJson(meJson.fitbitAccesstoken)
-        //     setAccessToken(meJson.fitbitAccesstoken)
-        //     setDataFitbit(true)
-        // }else{
-        //     setId_patient(meJson.id_patient)
-        //     setDataFitbit(false)
-        // }
-
-    
+        if (meJson.fitbitAccessToken !== '') {
+            setFitbitJson(meJson.fitbitAccessToken)
+            setAccessToken(meJson.fitbitAccessToken)
+            setDataFitbit(true)
+        }else{
+            setId_patient(meJson.id_patient)
+            setDataFitbit(false)
+        }
     }
 
     useEffect(() => {
@@ -259,7 +277,6 @@ export const CardHome = () => {
         fetchSkinTemperatureData(fitbitJson);
         fetchRespirationData(fitbitJson);
         fetchSleepData(fitbitJson);
-        return
     }
 
     return (

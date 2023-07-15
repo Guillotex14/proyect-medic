@@ -210,7 +210,7 @@ patientRouter.post("/saveAccessToken", async (req: Request, res: Response) => {
 
     const {id_patient,accessToken} = req.body;
 
-    await patients.findOneAndUpdate({_id: id_patient}, {accessToken: accessToken})
+    await patients.findOneAndUpdate({_id: id_patient}, {fitbitAccessToken: accessToken})
 
     jsonRes.code = 200;
     jsonRes.message = "token guardado";
