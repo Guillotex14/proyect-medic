@@ -35,6 +35,7 @@ export const ProfileDoctorScreen = ({navigation}: Props) => {
     const [birthdate, setBirthdate ] = useState('');
     const [phone, setPhone] = useState('');
     const [address, setAddress] = useState('');
+    const [city, setCity] = useState('');
     const [speciality, setSpeciality] = useState('');
     const [gender, setGender] = useState('');
     const [university, setUniversity] = useState('');
@@ -134,6 +135,7 @@ export const ProfileDoctorScreen = ({navigation}: Props) => {
             dayService: dayService,
             dayService2: dayService2,
             additional: additional,
+            city: city,
             id: id,
             id_medic: id_medic
         }).then((response) => {
@@ -382,6 +384,8 @@ export const ProfileDoctorScreen = ({navigation}: Props) => {
         setId(meJson.id);
         setId_medic(meJson.id_medic);
         setTypeUser(meJson.typeUser);
+        setGender(meJson.gender)
+        setCity(meJson.city)
     }
 
     const presentToast = (message: string) => {
@@ -407,7 +411,9 @@ export const ProfileDoctorScreen = ({navigation}: Props) => {
                 <View style={{ flexDirection: 'row', height: 150,  alignItems: 'center', alignSelf: 'center', marginTop: -30, justifyContent: 'space-between'}}>
                     <View style={{width: 0}} >
                         <TouchableOpacity onPress={()=>{navigation.navigate('HomeMedic')}}>
-                            <ChevronLeftIcon color="white" size="lg" style={{alignSelf: 'center', marginTop: 15, marginRight: 40 }}/>
+                            {/* <ChevronLeftIcon color="white" size="lg" style={{alignSelf: 'center', marginTop: 15, marginRight: 40 }}/> */}
+                            {/* <Ionicons name="chevron-back" size={24} style={{alignSelf: 'center', marginTop: 15, marginRight: 40, color:"#fff" }} /> */}
+                            <Ionicons name='chevron-back' size={40} color={"#000"}/>
                         </TouchableOpacity>
                     </View>
                     <View style={{width: '80%'}}>
@@ -481,6 +487,11 @@ export const ProfileDoctorScreen = ({navigation}: Props) => {
                         <Text style={{ marginLeft: 20 }}> Correo Electronico</Text>
                         <TextInput style={{ ...styles.input, marginLeft: 15,}} value={email} onChangeText={setEmail}/>
                     </View>
+                    
+                    <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>
+                        <Text style={{color: '#0E54BE', fontSize: 15, fontWeight: 'bold', marginHorizontal: 15}}>Ciudad</Text>
+                        <TextInput style={{...styles.input, backgroundColor: 'white'}} value={city} onChangeText={setCity}/>
+                    </View>
 
                     <View style={{ width: '100%', marginTop: 20 }}>
                         <Text style={{ marginLeft: 20 }}> Direccion</Text>
@@ -490,9 +501,9 @@ export const ProfileDoctorScreen = ({navigation}: Props) => {
                     <View style={{ width: '95%', alignSelf: 'center', marginTop: 20 }}>
                         <Text style={{ color: '#000', fontSize: 13, marginHorizontal: 15, marginBottom: 10 }}>Genero</Text>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 15 }}>
-                        <Radio.Group name="Genero" defaultValue="1" size={10} onChange={valueSelected =>{ 
+                        <Radio.Group name="Genero" value={gender} size={10} onChange={valueSelected =>{ 
                             setGender(valueSelected);
-                        }} value={gender}>
+                        }} >
                             <Stack direction={{ base: 'row', md: 'row' }} alignItems={{ base: 'flex-start', md: 'center' }}
                             space={7} w="85%" maxW="300px">
                             <Radio value="masculino" colorScheme="blue" size="sm" my={1}>
@@ -541,7 +552,9 @@ export const ProfileDoctorScreen = ({navigation}: Props) => {
                         <Text style={{fontSize: 15, marginHorizontal: 5, marginBottom: 10, color: '#000'
                     }}>Post-grado</Text>
                         <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 15}}>
-                            <Radio.Group name="Post-grado" size={10} value={postgrade} onChange={setPostgrade}>
+                            <Radio.Group name="Post-grado" size={10} value={postgrade} onChange={valueselect=>{
+                                setPostgrade(valueselect)
+                            }}>
                                 <Stack direction={{ base: 'row', md: 'row' }} alignItems={{ base: 'flex-start', md: 'center' }} 
                                 space={12} w="100%" maxW="100%">
                                     <Radio value="si" colorScheme="blue" size="sm" my={1}>

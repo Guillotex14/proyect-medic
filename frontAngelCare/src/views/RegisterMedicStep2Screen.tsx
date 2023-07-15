@@ -81,6 +81,7 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
   const [validTypeDni, setValidTypeDni] = useState(false);
   const [validPhone, setValidPhone] = useState(false);
   const [validAddress, setValidAddress] = useState(false);
+  const [validCity, setValidCity] = useState(false);
   const [validSpeciality, setValidSpeciality] = useState(false);
   const [validGender, setValidGender] = useState(false);
   const [validBirthDate, setValidBirthDate] = useState(false);
@@ -104,6 +105,7 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
   const [password, setPassword] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
+  const [city, setCity] = useState('');
   const [speciality, setSpeciality] = useState('');
   const [gender, setGender] = useState('');
   const [birthDate, setBirthDate] = useState('');
@@ -242,6 +244,14 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
       }
     }
 
+    if (city === '') {
+      presentToast('el campo ciudad es requerido');
+      setValidCity(true);
+      return;
+    }else{
+      setValidCity(false);
+    }
+
     if ( address === '') {
       presentToast('el campo direccion es requerido');
       setValidAddress(true);
@@ -361,6 +371,7 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
       password: password,
       phone: phone,
       address: address,
+      city: city,
       speciality: speciality,
       gender: gender,
       university: university,
@@ -374,19 +385,19 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
       additional: additional,
       dayService: dayService,
       dayService2:dayService2 
-      }).then((response) => {
-        console.log(response);
-        if (response.data.status) {
-          AsyncStorage.setItem('me',JSON.stringify(response.data.data));
-          setTimeout(() => {
-            setShowSpinner(false);
-            navigation.navigate('HomeMedic');
-          }, 3000);
-        }
-      }).catch((error) => {
-        console.log(error);
-        setShowSpinner(false);
-      });
+    }).then((response) => {
+      console.log(response);
+      if (response.data.status) {
+        AsyncStorage.setItem('me',JSON.stringify(response.data.data));
+        setTimeout(() => {
+          setShowSpinner(false);
+          navigation.navigate('HomeMedic');
+        }, 3000);
+      }
+    }).catch((error) => {
+      console.log(error);
+      setShowSpinner(false);
+    });
 
   }
 
@@ -643,6 +654,11 @@ export const RegisterMedicStep2Screen = ({navigation, route}:Props) => {
               <View style={{ width: '100%', marginTop: 20 }}>
                 <Text style={{ marginLeft: 20 }}> Correo Electronico</Text>
                 <TextInput style={{ ...styles.input, marginLeft: 15,borderColor: validEmail ? 'red' : '#aaaaaa',fontWeight: "500" }} value={email} onChangeText={setEmail}/>
+              </View>
+                      
+              <View style={{ width: '100%', marginTop: 20 }}>
+                <Text style={{ marginLeft: 20 }}> Ciudad</Text>
+                <TextInput style={{ ...styles.input, marginLeft: 15,borderColor: validCity ? 'red' : '#aaaaaa',fontWeight: "500" }} onChangeText={setCity} value={city}/>
               </View>
 
               <View style={{ width: '100%', marginTop: 20 }}>

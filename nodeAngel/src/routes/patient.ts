@@ -193,7 +193,7 @@ patientRouter.post("/verifyAccessToken", async (req: Request, res: Response) => 
             return jsonRes;
         }else{
             jsonRes.code = 400;
-            jsonRes.message = "no hay paciente";
+            jsonRes.message = "no hay token";
             jsonRes.status = false;
             return jsonRes;
         }

@@ -52,6 +52,7 @@ export const RegisterStep2Screen = ({navigation, route}:Props) => {
   const [validDNI, setValidDNI] = useState(false);
   const [validPhone, setValidPhone] = useState(false);
   const [validAddress, setValidAddress] = useState(false);
+  const [validCity, setValidCity] = useState(false);
   const [validGender, setValidGender] = useState(false);
   const [validCondition, setValidCondition] = useState(false);
   const [validAditional, setValidAditional] = useState(false);
@@ -66,6 +67,7 @@ export const RegisterStep2Screen = ({navigation, route}:Props) => {
   const [password, setPassword] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
+  const [city, setCity] = useState('');
   const [gender, setGender] = useState('');
   const [disease, setDisease] = useState('');
   const [birthDate, setBirthDate] = useState('');
@@ -167,6 +169,14 @@ export const RegisterStep2Screen = ({navigation, route}:Props) => {
     }
   }
 
+  if (city === '') {
+    presentToast('La ciudad no puede estar vacia');
+    setValidCity(true);
+    return;
+  }else{
+    setValidCity(false);
+  }
+
     if (address === '') {
       presentToast('La direccion no puede estar vacia');
       setValidAddress(true);
@@ -240,6 +250,7 @@ export const RegisterStep2Screen = ({navigation, route}:Props) => {
       password: password,
       phone: phone,
       address: address,
+      city: city,
       gender: gender,
       diseases: arrayDisease,
       alergies: arrayAlergies,
@@ -430,6 +441,11 @@ export const RegisterStep2Screen = ({navigation, route}:Props) => {
                 <Text style={{ marginLeft: 20 }}> Correo Electronico</Text>
                 <TextInput style={{ ...styles.input, marginLeft: 15,borderColor: validEmail ? 'red' : '#aaaaaa' }} value={email} onChangeText={setEmail}/>
               </View>
+              
+              <View style={{ width: '100%', marginTop: 20 }}>
+                <Text style={{ marginLeft: 20 }}> Ciudad</Text>
+                <TextInput style={{ ...styles.input, marginLeft: 15,borderColor: validCity ? 'red' : '#aaaaaa',fontWeight: "500" }} onChangeText={setCity} value={city}/>
+              </View>
 
               <View style={{ width: '100%', marginTop: 20 }}>
                 <Text style={{ marginLeft: 20 }}> Direccion</Text>
@@ -595,7 +611,6 @@ export const RegisterStep2Screen = ({navigation, route}:Props) => {
                 </View>
             </>
           )
-          
         }
 
         {

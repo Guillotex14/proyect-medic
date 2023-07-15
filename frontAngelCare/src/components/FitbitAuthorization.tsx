@@ -29,6 +29,7 @@ function FitbitAuthorization() {
         const authUrl = `${authorizationEndpoint}?client_id=${config.clientId}&response_type=code&scope=${encodeURIComponent(
         config.scopes.join(' ')
         )}&redirect_uri=${encodeURIComponent(redirectUri)}`;
+        
         const response = await AuthSession.startAsync({ authUrl, returnUrl: redirectUri });
 
         if (response.type === 'success') {
@@ -225,6 +226,6 @@ function FitbitAuthorization() {
         )}
         </View>
     );
-    }
+}
 
 export default FitbitAuthorization;

@@ -21,16 +21,21 @@ export const CardDateHome = () => {
 
         let current_day = "";
         let current_month = "";
-        let current_year = "";
         let current_hour = "";
         let current_minutes = "";
 
         if(day < 10){
             current_day = `0${day}`;
+        }else{
+            current_day = `${day}`
         }
+
         if(month < 10){
             current_month = `0${month}`;
+        }else{
+            current_month = `${month}`;
         }
+
         if(hour < 10){
             current_hour = `0${hour}`;
         }else{

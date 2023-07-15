@@ -69,13 +69,13 @@ export const StackNavigations = () => {
                 backgroundColor: 'white',
             },
         }}>
-            {/* <Stack.Screen name="Login" component={LoginScreen} /> */}
-             {/*<Stack.Screen name="Register" component={RegisterScreen} />
+            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Register" component={RegisterScreen} />
             <Stack.Screen name="RegisterStep2" component={RegisterStep2Screen} />
-            <Stack.Screen name="RegisterMedicStep2" component={RegisterMedicStep2Screen} /> */}
-            
+            <Stack.Screen name="RegisterMedicStep2" component={RegisterMedicStep2Screen} />
+
             {/* navigation of pactients */}
-            {/* <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="DatesHistorial" component={DateHistorialScreen} />
             <Stack.Screen name="Services" component={ServicesScreen} />
             <Stack.Screen name="Ambulance" component={AmbulanceScreen} />
@@ -86,10 +86,10 @@ export const StackNavigations = () => {
             <Stack.Screen name="ChatList" component={ListachatScreen} />
             <Stack.Screen name="Chat" component={ChatScreen} />
             <Stack.Screen name="ChatDate" component={ChatDateScreen} />
-            <Stack.Screen name="DoctorList" component={ListDoctorsScreen} /> */}
+            <Stack.Screen name="DoctorList" component={ListDoctorsScreen} />
 
             {/* navigation of doctors */}
-            {/* <Stack.Screen name="HomeMedic" component={HomeDoctorScreen} /> */}
+            <Stack.Screen name="HomeMedic" component={HomeDoctorScreen} />
             <Stack.Screen name="ProfileMedic" component={ProfileDoctorScreen} />
             <Stack.Screen name="Vizualise" component={VisualizeScreen} />
             <Stack.Screen name="MedicalRecord" component={MedicalRecordScreen} />

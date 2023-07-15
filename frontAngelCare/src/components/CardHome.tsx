@@ -1,189 +1,459 @@
-import React, { useState } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
-import { Images } from '../assets/imgs/imgs';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Modal } from 'native-base';
 import { Button, Card } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
+import * as AuthSession from 'expo-auth-session';
+import axios from 'axios';
+import apiConnection from '../api/Concecction';
 import { styles } from '../theme/ThemeApp';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+const config = {
+    clientId: '23R7C6', // Reemplaza con tu cliente ID de Fitbit
+    clientSecret: '0017003c1ad27fba89b724a16c4716d5', // Reemplaza con tu cliente secreto de Fitbit
+    scopes: ['profile', 'heartrate', 'oxygen_saturation', 'temperature', 'sleep', 'respiratory_rate'], // Agrega los alcances requeridos
+};
 
+const authorizationEndpoint = 'https://www.fitbit.com/oauth2/authorize';
+const tokenEndpoint = 'https://api.fitbit.com/oauth2/token';
 
 export const CardHome = () => {
     const { top } = useSafeAreaInsets();
 
     const [isModalVisible, setModalVisible] = useState(false);
+    const [dataFitbit, setDataFitbit] = useState(false);
+    const [fitbitJson, setFitbitJson] = useState('');
+    const [accessToken, setAccessToken] = useState<any>('');
+    const [profileData, setProfileData] = useState<any>(null);
+    const [heartRateData, setHeartRateData] = useState<any>({});
+    const [spo2Data, setSpo2Data] = useState<any>(null);
+    const [skinTemperatureData, setSkinTemperatureData] = useState<any>(null);
+    const [respirationData, setRespirationData] = useState<any>(null);
+    const [sleepData, setSleepData] = useState<any>(null);
+    const [id_patient, setId_patient] = useState<any>(null);
 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
 
-    return (
-            <View style={{...stylesCard.container, marginTop: top +30}}>
+    const verifyAccessToken = async() => {
 
-                <View style={{marginBottom: 10}}>
-                    <Text style={{color: '#000', fontSize: 13, fontWeight: '500'}}>
-                        Mediciones
-                    </Text>
-                </View>
+        await apiConnection.post('patient/verifyAccessToken',{
+            id_patient: id_patient
+        }).then((response) => {
+            console.log(response.data)
+            if(response.data.status){
+                if (response.data.data.fitbitAccessToken !== '') {
+                    setDataFitbit(true);
+                    setFitbitJson(response.data.data.fitbitAccessToken);
+                }else{
+                    setDataFitbit(false);
+                }
+            }
 
-                <Card style={stylesCard.cardContainer}>
-                    <Card.Content>
-                        <View style={{flexDirection: 'row', width: 310}}>
-                            <View style={{...stylesCard.cardRectangle, flexDirection: 'row'}}>
-                                <View style={{alignSelf: 'center', width: '50%'}}>
-                                    <Text style={{color: '#0E54BE', fontSize: 13, marginLeft: 10, fontWeight: '400'}}>Sensor Ritmo Cardíaco</Text>
-                                    <Text style={{ color: '#0E54BE', fontSize: 13, marginLeft: 10, fontWeight: '400'}}>
-                                        <Text style={{fontWeight: 'bold', fontSize: 25}}>90</Text>&nbsp;
-                                        bpm
-                                    </Text>
-                                </View>
-                                <View style={{alignSelf: 'center', alignContent: 'center', alignItems: 'center' ,width: '50%'}}>
-                                    {/* <Image source={Images.sensor_cardiaco} style={{width: 70,height: 60}}/> */}
-                                    <Ionicons name="pulse" color="#0E54BE" style={{fontSize: 65}}/>
-                                </View>
-                            </View>
-                            <View style={{marginLeft: -6, marginTop: 0}}>
-                                <TouchableOpacity onPress={toggleModal}>
-                                    {/* <Text style={{color: '#0E54BE', fontSize: 20, fontWeight: 'bold', marginTop: -10}}>.</Text>
-                                    <Text style={{color: '#0E54BE', fontSize: 20, fontWeight: 'bold', marginTop: -18}}>.</Text>
-                                    <Text style={{color: '#0E54BE', fontSize: 20, fontWeight: 'bold', marginTop: -18}}>.</Text> */}
-                                    <Ionicons name="ellipsis-vertical" color="#0E54BE" size={35}/>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
+        }, (error) => {
+            console.log(error);
+        });
+    }
 
-                        <View style={{...stylesCard.cardRectangle, flexDirection: 'row', borderWidth: 0, marginTop: 0}}>
-                            <View style={{width: '45%', alignSelf: 'center'}}>
-                                <View style={{flexDirection: 'row', alignItems: 'center', alignContent: 'center', alignSelf: 'center'}}>
-                                    {/* <Image source={Images.oxigen_blood} style={{width: 20, height: 25}}/> */}
-                                    <Ionicons name="water" color="red" size={35}/>
-                                    <Text style={{color: '#0E54BE', fontSize: 22, textAlign: 'center', fontWeight: 'bold', marginHorizontal: 5}}>92</Text>
-                                </View>
-                                <Text style={{ color: '#0E54BE', fontSize: 11, textAlign: 'center', fontWeight: '600'}}>Presión sanguinea</Text>
-                            </View>
-                            <View style={{width: '0%', height: 50,borderWidth: 0.3, borderColor: '#0E54B',alignSelf: 'center'}} />
-                            <View style={{width: '45%', alignSelf: 'center'}}>
-                            <View style={{flexDirection: 'row', alignItems: 'center', alignContent: 'center', alignSelf: 'center'}}>
-                                    {/* <Image source={Images.ritmo_cardiaco} style={{width: 35, height: 25}}/>
-                                     */}
-                                    <Ionicons name="heart" color="red" size={35}/>
-                                    <Text style={{color: '#0E54BE', fontSize: 22, textAlign: 'center', fontWeight: 'bold', marginHorizontal: 5}}>76</Text>
-                                </View>
-                                <Text style={{ color: '#0E54BE', fontSize: 11, textAlign: 'center', fontWeight: '600'}}>Presión sanguinea</Text>
-                            </View>
-                        </View>
-                    </Card.Content>
-                </Card>
+    const saveAccessToken = async(accessToken1:any) => {
+        await apiConnection.post('patient/saveAccessToken',{
+            id_patient: id_patient,
+            accessToken: accessToken1
+        }).then((response) => {
+            if(response.data.status){
+                setFitbitJson(accessToken);
+            }
+        }, (error) => {
+            console.log(error);
+        });
+    }
 
-                <Modal isOpen={isModalVisible} onClose={!isModalVisible}>
-                    <Modal.Content width="340px" height="550px">
-                        <Modal.CloseButton onPress={toggleModal}/>
-                        <Modal.Body>
+    const handleAuthButtonPress = async () => {
+        // Configura el redirectUri con una URL válida
+        const redirectUri = 'exp://192.168.0.12:19000/--/*';
 
-                            <View style={{flexDirection: 'row', width: '100%', marginTop: 35}}>
-                                <View style={{...stylesCard.cardRectangle, flexDirection: 'row'}}>
-                                    <View style={{alignSelf: 'center', width: '50%'}}>
-                                        <Text style={{color: '#0E54BE', fontSize: 12.5, marginLeft: 10}}>Sensor Ritmo Cardíaco</Text>
-                                        <Text style={{ color: '#0E54BE', fontSize: 12.5, marginLeft: 10}}>
-                                            <Text style={{fontWeight: 'bold', fontSize: 25}}>90</Text>&nbsp;
-                                            bpm
-                                        </Text>
-                                    </View>
-                                    <View style={{alignSelf: 'center', alignContent: 'center', alignItems: 'center' ,width: '50%'}}>
-                                        {/* <Image source={Images.sensor_cardiaco} style={{width: 70,height: 60}}/>
-                                         */}
-                                        <Ionicons name="pulse" color="#0E54BE" style={{fontSize: 65}}/>
-                                    </View>
-                                </View>
-                            </View>
+        // Inicia la solicitud de autorización
+        const authUrl = `${authorizationEndpoint}?client_id=${config.clientId}&response_type=code&scope=${encodeURIComponent(
+        config.scopes.join(' ')
+        )}&redirect_uri=${encodeURIComponent(redirectUri)}`;
+        
+        const response = await AuthSession.startAsync({ authUrl, returnUrl: redirectUri });
 
-                            <View style={{...stylesCard.cardRectangle, flexDirection: 'row', borderWidth: 0, marginTop: 0}}>
-                                <View style={{width: '45%', alignSelf: 'center'}}>
-                                    <View style={{flexDirection: 'row', alignItems: 'center', alignContent: 'center', alignSelf: 'center'}}>
-                                        {/* <Image source={Images.oxigen_blood} style={{width: 20, height: 25}}/> */}
-                                        <Ionicons name="water" color="red" size={35}/>
-                                        <Text style={{color: '#0E54BE', fontSize: 22, textAlign: 'center', fontWeight: 'bold', marginHorizontal: 5}}>92</Text>
-                                    </View>
-                                    <Text style={{ color: '#0E54BE', fontSize: 11, fontWeight: '600',textAlign: 'center'}}>Oxigeno en la sangre</Text>
-                                </View>
-                                <View style={{width: '0%', height: 50,borderWidth: 0.3, borderColor: '#0E54B',alignSelf: 'center'}} />
-                                <View style={{width: '45%', alignSelf: 'center'}}>
-                                <View style={{flexDirection: 'row', alignItems: 'center', alignContent: 'center', alignSelf: 'center'}}>
-                                        {/* <Image source={Images.ritmo_cardiaco} style={{width: 30, height: 25}}/> */}
-                                        <Ionicons name="heart" color="red" size={35}/>
-                                        <Text style={{color: '#0E54BE', fontSize: 22, textAlign: 'center', fontWeight: 'bold', marginHorizontal: 5}}>76</Text>
-                                    </View>
-                                    <Text style={{ color: '#0E54BE', fontSize: 11, fontWeight: '600', textAlign: 'center'}}>Sensor Ritmo Cardiaco</Text>
-                                </View>
-                            </View>
+        if (response.type === 'success') {
+        // Extrae el código de autorización de la respuesta
+        const { code } = response.params;
 
-                            <View style={{...stylesCard.cardRectangle, flexDirection: 'row', borderWidth: 0, marginTop: 0}}>
-                                <View style={{width: '45%', alignSelf: 'center'}}>
-                                    <View style={{flexDirection: 'row', alignItems: 'center', alignContent: 'center', alignSelf: 'center'}}>
-                                        {/* <Image source={Images.temper} style={{width: 12, height: 20}}/> */}
-                                        <Ionicons name="thermometer" color="orange" size={35}/>
-                                        <Text style={{color: '#0E54BE', fontSize: 22, textAlign: 'center', fontWeight: 'bold', marginHorizontal: 5}}>36°</Text>
-                                    </View>
-                                    <Text style={{ color: '#0E54BE', fontSize: 11, fontWeight: '600', textAlign: 'center'}}>Temperatura</Text>
-                                </View>
-                                <View style={{width: '0%', height: 50,borderWidth: 0.3, borderColor: '#0E54B',alignSelf: 'center'}} />
-                                <View style={{width: '45%', alignSelf: 'center'}}>
-                                <View style={{flexDirection: 'row', alignItems: 'center', alignContent: 'center', alignSelf: 'center'}}>
-                                        {/* <Image source={Images.presion_arterial} style={{width: 20, height: 25}}/> */}
-                                        <Ionicons name="git-network" color="#0E54BE" size={35}/>
-                                        <Text style={{color: '#0E54BE', fontSize: 22, textAlign: 'center', fontWeight: 'bold', marginHorizontal: 5}}>120/80</Text>
-                                    </View>
-                                    <Text style={{ color: '#0E54BE', fontSize: 11, fontWeight: '600', textAlign: 'center'}}>Presión Arterial</Text>
-                                </View>
-                            </View>
+        // Intercambia el código de autorización por un token de acceso
+        const requestBody = {
+            code,
+            grant_type: 'authorization_code',
+            redirect_uri: redirectUri,
+            client_id: config.clientId,
+            client_secret: config.clientSecret,
+            expires_in: '31536000',
+        };
 
-                            <View style={{...stylesCard.cardRectangle, flexDirection: 'row', borderWidth: 0, marginTop: 0}}>
-                                <View style={{width: '45%', alignSelf: 'center'}}>
-                                    <View style={{flexDirection: 'row', alignItems: 'center', alignContent: 'center', alignSelf: 'center'}}>
-                                        {/* <Image source={Images.ciclo_menstrual} style={{width: 30, height: 28}}/> */}
-                                        <Ionicons name="flower-outline" color="purple" size={35}/>
-                                        <Text style={{color: '#0E54BE', fontSize: 22, textAlign: 'center', fontWeight: 'bold', marginHorizontal: 5}}>96</Text>
-                                    </View>
-                                    <Text style={{ color: '#0E54BE', fontSize: 11, fontWeight: '600', textAlign: 'center'}}>Clico menstrual</Text>
-                                </View>
-                                <View style={{width: '0%', height: 50,borderWidth: 0.3, borderColor: '#0E54B',alignSelf: 'center'}} />
-                                <View style={{width: '45%', alignSelf: 'center'}}>
-                                <View style={{flexDirection: 'row', alignItems: 'center', alignContent: 'center', alignSelf: 'center'}}>
-                                        {/* <Image source={Images.sueño} style={{width: 30, height: 28}}/> */}
-                                        <Ionicons name="moon" color="blue" size={35}/>
-                                        <Text style={{color: '#0E54BE', fontSize: 22, textAlign: 'center', fontWeight: 'bold', marginHorizontal: 5}}>8</Text>
-                                    </View>
-                                    <Text style={{ color: '#0E54BE', fontSize: 11, fontWeight: '600', textAlign: 'center'}}>Seguimiento del sueño</Text>
-                                </View>
-                            </View>
+        try {
+            const tokenResponse = await axios.post(
+            tokenEndpoint,
+            new URLSearchParams(requestBody).toString(),
+            {
+                headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': 'Basic ' + 'MjNSN0M2OjAwMTcwMDNjMWFkMjdmYmE4OWI3MjRhMTZjNDcxNmQ1',
+                },
+            }
+            );
+            const { access_token } = tokenResponse.data;
+            setAccessToken(access_token);
+            fetchProfileAndHeartRateData(access_token);
+            fetchSpo2Data(access_token);
+            fetchSkinTemperatureData(access_token);
+            fetchRespirationData(access_token);
+            fetchSleepData(access_token);
+            saveAccessToken(access_token);
+        } catch (error: any) {
+            console.error('Error al obtener el token de acceso:', error.response.data);
+        }
+        }
+    };
 
-                            <View style={{...stylesCard.cardRectangle, flexDirection: 'row', borderWidth: 0, marginTop: 0}}>
-                                <View style={{width: '45%', alignSelf: 'center'}}>
-                                    <View style={{flexDirection: 'row', alignItems: 'center', alignContent: 'center', alignSelf: 'center'}}>
-                                        {/* <Image source={Images.estres} style={{width: 22, height: 25}}/> */}
-                                        <Ionicons name="ellipse" color="orange" size={35}/>
-                                        <Text style={{color: '#0E54BE', fontSize: 22, textAlign: 'center', fontWeight: 'bold', marginHorizontal: 5}}>50</Text>
-                                    </View>
-                                    <Text style={{ color: '#0E54BE', fontSize: 11, fontWeight: '600',textAlign: 'center'}}>Niveles de estrés</Text>
-                                </View>
-                                <View style={{width: '0%', height: 50,borderWidth: 0.3, borderColor: '#0E54B',alignSelf: 'center'}} />
-                                <View style={{width: '45%', alignSelf: 'center'}}>
-                                <View style={{flexDirection: 'row', alignItems: 'center', alignContent: 'center', alignSelf: 'center'}}>
-                                        {/* <Image source={Images.presion_sanguinea} style={{width: 20, height: 25}}/> */}
-                                        <Ionicons name="body-outline" size={35} color="green"/>
-                                        <Text style={{color: '#0E54BE', fontSize: 22, textAlign: 'center', fontWeight: 'bold', marginHorizontal: 5}}>76</Text>
-                                    </View>
-                                    <Text style={{ color: '#0E54BE', fontSize: 11, fontWeight: '600',textAlign: 'center'}}>Presión sanguinea</Text>
-                                </View>
-                            </View>
-
-                        </Modal.Body>
-                    </Modal.Content>
-                </Modal>
-            </View>
+    const fetchProfileAndHeartRateData = async (accessToken: string) => {
+        try {
+          const profileResponse = await axios.get('https://api.fitbit.com/1/user/-/profile.json', {
+            headers: {
+              'Authorization': 'Bearer ' + accessToken,
+            },
+          });
+          setProfileData(profileResponse.data);
+    
+          const today = new Date(); // Obtén la fecha actual
+          today.setDate(today.getDate() - 1); // Resta un día a la fecha actual
+          const yesterday = today.toISOString().slice(0, 10); // Obtén la fecha de ayer en formato 'YYYY-MM-DD'
+          const heartRateResponse = await axios.get(`https://api.fitbit.com/1/user/-/activities/heart/date/${yesterday}/1d.json`, {
+              headers: {
+                'Authorization': 'Bearer ' + accessToken,
+              },
+            }
+          );
+          const heartRateValues = heartRateResponse.data['activities-heart'][0].value;
+          setHeartRateData(heartRateValues);
+          //console.log(heartRateResponse.data['activities-heart']);
+        } catch (error: any) {
+          console.error('Error al obtener los datos de frecuencia cardíaca:', error.response.data);
+        }
+    };
+    
+    const fetchSpo2Data = async (accessToken: string) => {
+        try {
+          const today = new Date().toISOString().slice(0, 10);
+          const spo2Response = await axios.get(`https://api.fitbit.com/1/user/-/spo2/date/${today}.json`, {
+            headers: {
+              'Authorization': 'Bearer ' + accessToken,
+            },
+          });
+          const spo2Value = spo2Response.data.value;
+          setSpo2Data(spo2Value);
+          //console.log(spo2Response.data);
+        } catch (error: any) {
+          console.error('Error al obtener los datos de SpO2:', error.response?.data || error.message);
+        }
+    };
+    
+    const fetchSkinTemperatureData = async (accessToken: string) => {
+    try {
+        const today = new Date().toISOString().slice(0, 10);
+        const skinTemperatureResponse = await axios.get(
+        `https://api.fitbit.com/1/user/-/temp/skin/date/${today}.json`,
+        {
+            headers: {
+            'Authorization': 'Bearer ' + accessToken,
+            },
+        }
         );
+        if (skinTemperatureResponse.data && skinTemperatureResponse.data['tempSkin'] && skinTemperatureResponse.data['tempSkin'].length > 0) {
+        const skinTemperatureValue = skinTemperatureResponse.data['tempSkin'].value;
+        setSkinTemperatureData(skinTemperatureValue);
+        } else {
+        setSkinTemperatureData(null);
+        }
+    } catch (error: any) {
+        console.error('Error al obtener los datos de temperatura de la piel:', error.response?.data || error.message);
+    }
+    };
+
+    const fetchRespirationData = async (accessToken: string) => {
+    try {
+        const today = new Date().toISOString().slice(0, 10);
+        const respirationResponse = await axios.get(
+        `https://api.fitbit.com/1/user/-/br/date/${today}.json`,
+        {
+            headers: {
+            'Authorization': 'Bearer ' + accessToken,
+            },
+        }
+        );
+        if (respirationResponse.data && respirationResponse.data['br'] && respirationResponse.data['br'].length > 0) {
+        const respirationValue = respirationResponse.data['br'][0].value;
+        setRespirationData(respirationValue);
+        console.log(respirationValue);
+        } else {
+        setRespirationData(null);
+        }
+    } catch (error: any) {
+        console.error('Error al obtener los datos de respiración:', error.response?.data || error.message);
+    }
+    };
+    
+    const fetchSleepData = async (accessToken: string) => {
+    try {
+        const today = new Date().toISOString().slice(0, 10);
+        const sleepResponse = await axios.get(`https://api.fitbit.com/1.2/user/-/sleep/date/${today}.json`, {
+        headers: {
+            'Authorization': 'Bearer ' + accessToken,
+        },
+        });
+
+        if (sleepResponse.data && sleepResponse.data.sleep && sleepResponse.data.sleep.length > 0) {
+        const sleepValue = sleepResponse.data.sleep[0];
+        setSleepData(sleepValue);
+        console.log(sleepValue);
+        } else {
+        setSleepData(null);
+        }
+    } catch (error: any) {
+        console.error('Error al obtener los datos de sueño:', error.response?.data || error.message);
+    }
+    };
+
+    const getIdPatient = async () => {
+        const me = await AsyncStorage.getItem('me')
+        console.log(me)
+        let meJson = JSON.parse(me!)
+        console.log(meJson)
+        // if (meJson.fitbitAccesstoken != '') {
+            
+        //     setFitbitJson(meJson.fitbitAccesstoken)
+        //     setAccessToken(meJson.fitbitAccesstoken)
+        //     setDataFitbit(true)
+        // }else{
+        //     setId_patient(meJson.id_patient)
+        //     setDataFitbit(false)
+        // }
+
+    
+    }
+
+    useEffect(() => {
+        getIdPatient()
+        // verifyAccessToken()
+    } , [])
+
+    if (dataFitbit === true) {
+        fetchProfileAndHeartRateData(fitbitJson);
+        fetchSpo2Data(fitbitJson);
+        fetchSkinTemperatureData(fitbitJson);
+        fetchRespirationData(fitbitJson);
+        fetchSleepData(fitbitJson);
+        return
+    }else{
+        console.log("entra a pedir token")
+        handleAuthButtonPress();
+    }
+
+
+    return (
+
+        <View style={{...stylesCard.container, marginTop: top +30}}>
+
+            {
+                accessToken ? (
+                    <>
+                        <View style={{ marginBottom: 10 }}>
+                            <Text style={{ color: '#000', fontSize: 13, fontWeight: '500' }}>
+                                Mediciones
+                            </Text>
+                        </View>
+
+                        <Card style={stylesCard.cardContainer}>
+                            <Card.Content>
+                                <View style={{ flexDirection: 'row', width: 310 }}>
+                                    <View style={{ ...stylesCard.cardRectangle, flexDirection: 'row' }}>
+                                        <View style={{ alignSelf: 'center', width: '50%' }}>
+                                            <Text style={{ color: '#0E54BE', fontSize: 13, marginLeft: 10, fontWeight: '400' }}>Sensor Ritmo Cardíaco</Text>
+                                            <Text style={{ color: '#0E54BE', fontSize: 13, marginLeft: 10, fontWeight: '400' }}>
+                                                <Text style={{ fontWeight: 'bold', fontSize: 25 }}>{heartRateData.heartRateZones[0].min}</Text>&nbsp;
+                                                bpm
+                                            </Text>
+                                        </View>
+                                        <View style={{ alignSelf: 'center', alignContent: 'center', alignItems: 'center', width: '50%' }}>
+                                            {/* <Image source={Images.sensor_cardiaco} style={{width: 70,height: 60}}/> */}
+                                            <Ionicons name="pulse" color="#0E54BE" style={{ fontSize: 65 }} />
+                                        </View>
+                                    </View>
+                                    <View style={{ marginLeft: -6, marginTop: 0 }}>
+                                        <TouchableOpacity onPress={toggleModal}>
+                                            <Ionicons name="ellipsis-vertical" color="#0E54BE" size={35} />
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+
+                                <View style={{ ...stylesCard.cardRectangle, flexDirection: 'row', borderWidth: 0, marginTop: 0 }}>
+                                    <View style={{ width: '45%', alignSelf: 'center' }}>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center', alignContent: 'center', alignSelf: 'center' }}>
+                                            {/* <Image source={Images.oxigen_blood} style={{width: 20, height: 25}}/> */}
+                                            <Ionicons name="water" color="red" size={35} />
+                                            <Text style={{ color: '#0E54BE', fontSize: 22, textAlign: 'center', fontWeight: 'bold', marginHorizontal: 5 }}>{spo2Data.avg}</Text>
+                                        </View>
+                                        <Text style={{ color: '#0E54BE', fontSize: 11, textAlign: 'center', fontWeight: '600' }}>Presión sanguinea</Text>
+                                    </View>
+                                    <View style={{ width: '0%', height: 50, borderWidth: 0.3, borderColor: '#0E54B', alignSelf: 'center' }} />
+                                    <View style={{ width: '45%', alignSelf: 'center' }}>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center', alignContent: 'center', alignSelf: 'center' }}>
+
+                                            <Ionicons name="heart" color="red" size={35} />
+                                            <Text style={{ color: '#0E54BE', fontSize: 22, textAlign: 'center', fontWeight: 'bold', marginHorizontal: 5 }}>{heartRateData.heartRateZones[0].min}</Text>
+                                        </View>
+                                        <Text style={{ color: '#0E54BE', fontSize: 11, textAlign: 'center', fontWeight: '600' }}>Ritmo Cardiaco</Text>
+                                    </View>
+                                </View>
+                            </Card.Content>
+                        </Card>
+                        
+                        <Modal isOpen={isModalVisible} onClose={!isModalVisible}>
+                            <Modal.Content width="340px" height="550px">
+                                <Modal.CloseButton onPress={toggleModal} />
+                                <Modal.Body>
+
+                                    <View style={{ flexDirection: 'row', width: '100%', marginTop: 35 }}>
+                                        <View style={{ ...stylesCard.cardRectangle, flexDirection: 'row' }}>
+                                            <View style={{ alignSelf: 'center', width: '50%' }}>
+                                                <Text style={{ color: '#0E54BE', fontSize: 12.5, marginLeft: 10 }}>Sensor Ritmo Cardíaco</Text>
+                                                <Text style={{ color: '#0E54BE', fontSize: 12.5, marginLeft: 10 }}>
+                                                    <Text style={{ fontWeight: 'bold', fontSize: 25 }}>{heartRateData.restingHeartRate}</Text>&nbsp;
+                                                    bpm
+                                                </Text>
+                                            </View>
+                                            <View style={{ alignSelf: 'center', alignContent: 'center', alignItems: 'center', width: '50%' }}>
+                                                <Ionicons name="pulse" color="#0E54BE" style={{ fontSize: 65 }} />
+                                            </View>
+                                        </View>
+                                    </View>
+
+                                    <View style={{ ...stylesCard.cardRectangle, flexDirection: 'row', borderWidth: 0, marginTop: 0 }}>
+                                        <View style={{ width: '45%', alignSelf: 'center' }}>
+                                            <View style={{ flexDirection: 'row', alignItems: 'center', alignContent: 'center', alignSelf: 'center' }}>
+                                                <Ionicons name="water" color="red" size={35} />
+                                                <Text style={{ color: '#0E54BE', fontSize: 22, textAlign: 'center', fontWeight: 'bold', marginHorizontal: 5 }}>{spo2Data.avg}</Text>
+                                            </View>
+                                            <Text style={{ color: '#0E54BE', fontSize: 11, fontWeight: '600', textAlign: 'center' }}>Oxigeno en la sangre</Text>
+                                        </View>
+                                        <View style={{ width: '0%', height: 50, borderWidth: 0.3, borderColor: '#0E54B', alignSelf: 'center' }} />
+                                        <View style={{ width: '45%', alignSelf: 'center' }}>
+                                            <View style={{ flexDirection: 'row', alignItems: 'center', alignContent: 'center', alignSelf: 'center' }}>
+                                                <Ionicons name="heart" color="red" size={35} />
+                                                <Text style={{ color: '#0E54BE', fontSize: 22, textAlign: 'center', fontWeight: 'bold', marginHorizontal: 5 }}>{heartRateData.restingHeartRate}</Text>
+                                            </View>
+                                            <Text style={{ color: '#0E54BE', fontSize: 11, fontWeight: '600', textAlign: 'center' }}>Sensor Ritmo Cardiaco</Text>
+                                        </View>
+                                    </View>
+
+                                    <View style={{ ...stylesCard.cardRectangle, flexDirection: 'row', borderWidth: 0, marginTop: 0 }}>
+                                        <View style={{ width: '45%', alignSelf: 'center' }}>
+                                            <View style={{ flexDirection: 'row', alignItems: 'center', alignContent: 'center', alignSelf: 'center' }}>
+                                                <Ionicons name="thermometer" color="orange" size={35} />
+                                                <Text style={{ color: '#0E54BE', fontSize: 22, textAlign: 'center', fontWeight: 'bold', marginHorizontal: 5 }}>{skinTemperatureData}°</Text>
+                                            </View>
+                                            <Text style={{ color: '#0E54BE', fontSize: 11, fontWeight: '600', textAlign: 'center' }}>Temperatura</Text>
+                                        </View>
+                                        <View style={{ width: '0%', height: 50, borderWidth: 0.3, borderColor: '#0E54B', alignSelf: 'center' }} />
+                                        <View style={{ width: '45%', alignSelf: 'center' }}>
+                                            <View style={{ flexDirection: 'row', alignItems: 'center', alignContent: 'center', alignSelf: 'center' }}>
+                                                <Ionicons name="moon" color="blue" size={35} />
+                                                <Text style={{ color: '#0E54BE', fontSize: 22, textAlign: 'center', fontWeight: 'bold', marginHorizontal: 5 }}>{sleepData.efficiency}%</Text>
+                                            </View>
+                                            <Text style={{ color: '#0E54BE', fontSize: 11, fontWeight: '600', textAlign: 'center' }}>Seguimiento del sueño</Text>
+                                        </View>
+                                        {/* <View style={{ width: '45%', alignSelf: 'center' }}>
+                                            <View style={{ flexDirection: 'row', alignItems: 'center', alignContent: 'center', alignSelf: 'center' }}>
+                                                <Ionicons name="git-network" color="#0E54BE" size={35} />
+                                                <Text style={{ color: '#0E54BE', fontSize: 22, textAlign: 'center', fontWeight: 'bold', marginHorizontal: 5 }}>120/80</Text>
+                                            </View>
+                                            <Text style={{ color: '#0E54BE', fontSize: 11, fontWeight: '600', textAlign: 'center' }}>Presión Arterial</Text>
+                                        </View> */}
+                                    </View>
+
+                                    {/* <View style={{ ...stylesCard.cardRectangle, flexDirection: 'row', borderWidth: 0, marginTop: 0 }}>
+                                        <View style={{ width: '45%', alignSelf: 'center' }}>
+                                            <View style={{ flexDirection: 'row', alignItems: 'center', alignContent: 'center', alignSelf: 'center' }}>
+                                                <Ionicons name="moon" color="blue" size={35} />
+                                                <Text style={{ color: '#0E54BE', fontSize: 22, textAlign: 'center', fontWeight: 'bold', marginHorizontal: 5 }}>{sleepData.efficiency}%</Text>
+                                            </View>
+                                            <Text style={{ color: '#0E54BE', fontSize: 11, fontWeight: '600', textAlign: 'center' }}>Seguimiento del sueño</Text>
+                                        </View>
+                                        <View style={{ width: '0%', height: 50, borderWidth: 0.3, borderColor: '#0E54B', alignSelf: 'center' }} />
+                                        <View style={{ width: '45%', alignSelf: 'center' }}>
+                                            <View style={{ flexDirection: 'row', alignItems: 'center', alignContent: 'center', alignSelf: 'center' }}>
+                                                <Ionicons name="flower-outline" color="purple" size={35} />
+                                                <Text style={{ color: '#0E54BE', fontSize: 22, textAlign: 'center', fontWeight: 'bold', marginHorizontal: 5 }}>96</Text>
+                                            </View>
+                                            <Text style={{ color: '#0E54BE', fontSize: 11, fontWeight: '600', textAlign: 'center' }}>Clico menstrual</Text>
+                                        </View>
+                                    </View> */}
+
+                                    {/* <View style={{ ...stylesCard.cardRectangle, flexDirection: 'row', borderWidth: 0, marginTop: 0 }}>
+                                        <View style={{ width: '45%', alignSelf: 'center' }}>
+                                            <View style={{ flexDirection: 'row', alignItems: 'center', alignContent: 'center', alignSelf: 'center' }}>
+                                                <Ionicons name="ellipse" color="orange" size={35} />
+                                                <Text style={{ color: '#0E54BE', fontSize: 22, textAlign: 'center', fontWeight: 'bold', marginHorizontal: 5 }}>50</Text>
+                                            </View>
+                                            <Text style={{ color: '#0E54BE', fontSize: 11, fontWeight: '600', textAlign: 'center' }}>Niveles de estrés</Text>
+                                        </View>
+                                        <View style={{ width: '0%', height: 50, borderWidth: 0.3, borderColor: '#0E54B', alignSelf: 'center' }} />
+                                        <View style={{ width: '45%', alignSelf: 'center' }}>
+                                            <View style={{ flexDirection: 'row', alignItems: 'center', alignContent: 'center', alignSelf: 'center' }}>
+                                                <Ionicons name="body-outline" size={35} color="green" />
+                                                <Text style={{ color: '#0E54BE', fontSize: 22, textAlign: 'center', fontWeight: 'bold', marginHorizontal: 5 }}>76</Text>
+                                            </View>
+                                            <Text style={{ color: '#0E54BE', fontSize: 11, fontWeight: '600', textAlign: 'center' }}>Presión sanguinea</Text>
+                                        </View>
+                                    </View> */}
+
+                                </Modal.Body>
+                            </Modal.Content>
+                        </Modal>
+                    </>
+                ) : (
+                    <>
+
+                        <Card style={stylesCard.cardContainer}>
+                            <Card.Content>
+                                {/* <Button title="Authorize Fitbit" onPress={handleAuthButtonPress} /> */}
+                                <TouchableOpacity style={{...styles.button, width: 300}} onPress={handleAuthButtonPress}>
+                                    <Text style={{fontSize: 20, fontWeight: '500', color: '#fff'}}>
+                                        Authorize Fitbit
+                                    </Text>
+                                </TouchableOpacity>
+
+                                <Text style={{fontSize: 15, fontWeight: '500', color: '#000', textAlign: 'center', marginTop: 15}}>
+                                    Para poder ver tus datos de Fitbit, debes autorizar la aplicación.
+                                </Text>
+                                <Text style={{fontSize: 15, fontWeight: '500', color: '#000', textAlign: 'center', marginTop: 15}}>
+                                    Oprime el botón de arriba para autorizar.
+                                </Text>
+                            </Card.Content>
+                        </Card>
+
+                    </>
+                )
+            }
+
+        </View>
+    );
 };
 
 export const CardHomeMedic = () => {

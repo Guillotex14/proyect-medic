@@ -49,7 +49,8 @@ authRouter.post("/loginPatient", async (req: Request, res: Response) => {
                             id_patient: res2._id,
                             ensuracePolicy: res2.ensurancePolicy != "" ? res2.ensurancePolicy : "",
                             policyNumber: res2.policyNumber != "" ? res2.policyNumber : "",
-                            gender: res2.gender
+                            gender: res2.gender,
+                            fitbitAccessToken: res2.fitbitAccessToken,
                         }
 
                         jsonRes.data = patientInfo;

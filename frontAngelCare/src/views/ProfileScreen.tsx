@@ -27,6 +27,7 @@ export const ProfileScreen = ({navigation}: Props) => {
     const [typeDni, setTypeDni] = useState('');
     const [dni, setDni] = useState('');
     const [address, setAddress] = useState('');
+    const [city, setCity] = useState('');
     const [ensurancePolicy, setEnsurancePolicy] = useState('');
     const [policyNumber, setPolicyNumber] = useState('');
     const [gender, setGender] = useState('');
@@ -97,7 +98,8 @@ export const ProfileScreen = ({navigation}: Props) => {
                     id: id,
                     idPatient: idPatient,
                     typeUser: typeUser,
-                    gender: gender
+                    gender: gender,
+                    city: city
                 }
                 AsyncStorage.setItem('me', JSON.stringify(me));
                 setIsEdit(!isEdit);
@@ -162,6 +164,7 @@ export const ProfileScreen = ({navigation}: Props) => {
         setId(meJson.id);
         setIdPatient(meJson.idPatient);
         setTypeUser(meJson.typeUser);
+        setCity(meJson.city);
     }
 
     const onPressModal = (value:string) => {
@@ -218,11 +221,6 @@ export const ProfileScreen = ({navigation}: Props) => {
                         <TextInput placeholder="" style={{...styles.input, backgroundColor: 'white'}} value={fullName} onChangeText={setFullName}/>
                     </View>
 
-                    {/* <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>
-                        <Text style={{color: '#0E54BE', fontSize: 15, fontWeight: 'bold', marginHorizontal: 15}}>Cedula</Text>
-                        <TextInput placeholder="" style={{...styles.input, backgroundColor: 'white'}} value={dni} onChangeText={setDni}/>
-                    </View> */}
-
                     <View style={{ width: '100%' }}>
 
                         <View style={{ marginLeft: 20, marginTop: 15 }}>
@@ -262,6 +260,11 @@ export const ProfileScreen = ({navigation}: Props) => {
                         </Pressable>
                         {showPicker && isFocused && (<DatePicker mode="date" display="calendar" value={date} onChange={onChange}/>)}
                     </View>
+                    
+                    <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>
+                        <Text style={{color: '#0E54BE', fontSize: 15, fontWeight: 'bold', marginHorizontal: 15}}>Ciudad</Text>
+                        <TextInput style={{...styles.input, backgroundColor: 'white'}} value={city} onChangeText={setCity}/>
+                    </View>
 
                     <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>
                         <Text style={{color: '#0E54BE', fontSize: 15, fontWeight: 'bold', marginHorizontal: 15}}>Dirección</Text>
@@ -281,7 +284,7 @@ export const ProfileScreen = ({navigation}: Props) => {
                     <View style={{width: '95%', alignSelf: 'center', marginTop: 30}}>
                         <Text style={{color: '#0E54BE', fontSize: 15, fontWeight: 'bold', marginHorizontal: 15}}>Genero</Text>
                         <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 15}}>
-                            <Radio.Group name="Genero" defaultValue={gender} onChange={gen => {
+                            <Radio.Group name="Genero" value={gender} onChange={gen => {
                                 setGender(gen);
                             }}>
                                 <Stack direction={{ base: 'row', md: 'row' }} alignItems={{ base: 'flex-start', md: 'center' }} 
