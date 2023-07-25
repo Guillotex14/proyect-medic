@@ -24,10 +24,6 @@ const dataProfessional_1 = __importDefault(require("../models/dataProfessional")
 const medics_1 = __importDefault(require("../models/medics"));
 const medicalFile_1 = __importDefault(require("../models/medicalFile"));
 const codeVerification_1 = __importDefault(require("../models/codeVerification"));
-const CLIENT_ID = '23R7C6'; // Reemplazar con tu Client ID de Fitbit
-const REDIRECT_URI = 'http://localhost'; // Reemplazar con tu Redirect URI de Fitbit
-const STATE = 'YOUR_STATE'; // Reemplazar con un valor aleatorio o único para protección CSRF
-const SCOPES = 'activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight'; // No modificar
 const authRouter = (0, express_1.Router)();
 authRouter.post("/loginPatient", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const jsonRes = new response_1.RespondesModel();
@@ -55,7 +51,8 @@ authRouter.post("/loginPatient", (req, res) => __awaiter(void 0, void 0, void 0,
                             id_patient: res2._id,
                             ensuracePolicy: res2.ensurancePolicy != "" ? res2.ensurancePolicy : "",
                             policyNumber: res2.policyNumber != "" ? res2.policyNumber : "",
-                            gender: res2.gender
+                            gender: res2.gender,
+                            fitbitAccessToken: res2.fitbitAccessToken,
                         };
                         jsonRes.data = patientInfo;
                         return jsonRes;
@@ -174,11 +171,11 @@ authRouter.post("/loginMedic", (req, res) => __awaiter(void 0, void 0, void 0, f
 }));
 authRouter.post("/registerMedic", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const jsonRes = new response_1.RespondesModel();
-    const { fullName, typeDNISelected, dni, email, password, phone, address, speciality, gender, university, uniAdmissionDate, uniGraduationDate, mpps, postgrade, postgradeUniversity, postgradeGraduationDate, postgradeAdmissionDate, additional, dayService, dayService2 } = req.body;
+    const { fullName, typeDNISelected, dni, email, password, phone, address, speciality, gender, university, uniAdmissionDate, uniGraduationDate, mpps, postgrade, postgradeUniversity, postgradeGraduationDate, postgradeAdmissionDate, additional, dayService, dayService2, city } = req.body;
     const saltRounds = 10;
     const hash = yield bcrypt_1.default.hash(password, saltRounds);
     const newUser = new Users_1.default({ email, password: hash, type_user: "doctor" });
-    const newMedic = new medics_1.default({ fullName, typeDNISelected, dni, phone, address, gender, speciality });
+    const newMedic = new medics_1.default({ fullName, typeDNISelected, dni, phone, address, city, gender, speciality });
     const newDataProfessional = new dataProfessional_1.default({ university, uniAdmissionDate, uniGraduationDate, mpps, postgrade, postgradeGraduationDate, postgradeUniversity, postgradeAdmissionDate, additional, dayService, dayService2 });
     yield newUser.save().then((res) => {
         newMedic.id_user = newUser._id;
@@ -409,31 +406,6 @@ authRouter.post("/emailExist", (req, res) => __awaiter(void 0, void 0, void 0, f
         console.log(err);
     });
     res.json(ress);
-}));
-// Ruta para mostrar el botón de autorización
-authRouter.get('/fitbitAuth', (req, res) => {
-    const authUrl = `https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=${CLIENT_ID}&scope=${SCOPES}`;
-    const html = `<html><body><a href="${authUrl}"><button>Iniciar sesión con Fitbit</button></a></body></html>`;
-    res.send(html);
-});
-authRouter.get('/fitbitCallback', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const accessToken = '3e1d22b2013e08a4f57de703077f197934421076'; // Reemplazar con tu access token obtenido
-    const profileUrl = 'https://api.fitbit.com/1/user/-/profile.json';
-    const requestOptions = {
-        headers: {
-            Authorization: `Bearer ${accessToken}`
-        }
-    };
-    fetch(profileUrl, requestOptions)
-        .then(response => response.json())
-        .then(data => {
-        // Hacer algo con los datos del perfil del usuario
-        console.log(data);
-    })
-        .catch(error => {
-        // Manejar el error de la solicitud
-        console.error(error);
-    });
 }));
 exports.default = authRouter;
 //# sourceMappingURL=auth.js.map

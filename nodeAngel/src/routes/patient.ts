@@ -2,7 +2,7 @@ import { Router, Request, Response, json } from "express";
 import { RespondesModel } from "../models/response";
 import Users from "../models/Users";
 import patients from "../models/patients";
-import moment from "moment";
+// import moment from "moment";
 import dates from "../models/dates";
 import medics from "../models/medics";
 import dataProfessional from "../models/dataProfessional";
@@ -153,20 +153,31 @@ patientRouter.post("/updateProfile", async (req: Request, res: Response) => {
     res.json(jsonRes);
 });
 
-patientRouter.get("/createDate", async (req: Request, res: Response) => {
+patientRouter.post("/createDate", async (req: Request, res: Response) => {
 
     const jsonRes: RespondesModel = new RespondesModel();
 
-    const {id_patient,id_doctor,reason,symptoms,date} = req.body;
+    const {id_patient,id_medic,reason,symptoms,date} = req.body;
 
-    // const dateNow= moment().format('YYYY/MM/DD');
+    let symptomsString = "";
+
+    symptoms.forEach((element: any) => {
+
+        if (symptomsString.length == 0) {
+            symptomsString = element;
+        }else{
+            symptomsString = symptomsString + element + ", ";
+        }
+
+    });
+
 
     const newDate = new dates({
         id_patient: id_patient,
-        id_medic: id_doctor,
+        id_medic: id_medic,
         date: date,
         reason: reason,
-        symptoms: symptoms,
+        symptoms: symptomsString,
         status: "pendiente"
     });
 

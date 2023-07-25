@@ -162,7 +162,7 @@ export const ProfileScreen = ({navigation}: Props) => {
         setGender(meJson.gender)
         setDateOfBirth(meJson.birthdate);
         setId(meJson.id);
-        setIdPatient(meJson.idPatient);
+        setIdPatient(meJson.id_patient);
         setTypeUser(meJson.typeUser);
         setCity(meJson.city);
     }

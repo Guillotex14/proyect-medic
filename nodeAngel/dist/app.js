@@ -11,7 +11,7 @@ const auth_1 = __importDefault(require("./src/routes/auth"));
 const patient_1 = __importDefault(require("./src/routes/patient"));
 const doctors_1 = __importDefault(require("./src/routes/doctors"));
 const path_1 = __importDefault(require("path"));
-const fitbitAuth_1 = __importDefault(require("./src/routes/fitbitAuth"));
+// import authFitbit from "./src/routes/fitbitAuth";
 class App {
     constructor() {
         this.app = (0, express_1.default)();
@@ -31,7 +31,7 @@ class App {
         this.app.use("/auth", auth_1.default);
         this.app.use("/patient", patient_1.default);
         this.app.use("/doctor", doctors_1.default);
-        this.app.use("/fitbit", fitbitAuth_1.default);
+        // this.app.use("/fitbit", authFitbit)
         this.app.use(express_1.default.static(path_1.default.join(__dirname, "src")));
         this.app.use(express_1.default.static(path_1.default.join(__dirname, "dist")));
     }

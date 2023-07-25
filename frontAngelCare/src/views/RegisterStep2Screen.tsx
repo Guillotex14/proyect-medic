@@ -593,9 +593,7 @@ export const RegisterStep2Screen = ({navigation, route}:Props) => {
                 <View style={{alignItems: 'center', marginHorizontal: 10, marginTop: top+20, marginBottom: 30}}>
                   <FormControl style={{marginVertical: 5}}>
                       <FormControl.Label style={{marginLeft: 10}}>Adicional</FormControl.Label>
-                      <FormControl.ErrorMessage>Este campo es obligatorio</FormControl.ErrorMessage>
                       <TextInput
-                    editable
                     multiline
                     numberOfLines={6}
                     maxLength={240}

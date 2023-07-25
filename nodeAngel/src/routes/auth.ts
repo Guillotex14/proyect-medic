@@ -11,10 +11,7 @@ import dataProfessional from "../models/dataProfessional";
 import medics from "../models/medics";
 import medicalFile from "../models/medicalFile";
 import codeVerification from "../models/codeVerification";
-const CLIENT_ID = '23R7C6'; // Reemplazar con tu Client ID de Fitbit
-const REDIRECT_URI = 'http://localhost'; // Reemplazar con tu Redirect URI de Fitbit
-const STATE = 'YOUR_STATE'; // Reemplazar con un valor aleatorio o único para protección CSRF
-const SCOPES = 'activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight'; // No modificar
+
 const authRouter = Router();
 
 authRouter.post("/loginPatient", async (req: Request, res: Response) => {
@@ -468,39 +465,6 @@ authRouter.post("/emailExist", async (req: Request, res: Response) => {
     res.json(ress);
 
 });
-
-
-// Ruta para mostrar el botón de autorización
-authRouter.get('/fitbitAuth', (req, res) => {
-  const authUrl = `https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=${CLIENT_ID}&scope=${SCOPES}`;
-  const html = `<html><body><a href="${authUrl}"><button>Iniciar sesión con Fitbit</button></a></body></html>`;
-  res.send(html);
-});
-
-authRouter.get('/fitbitCallback', async (req, res) => {
-    const accessToken = '3e1d22b2013e08a4f57de703077f197934421076'; // Reemplazar con tu access token obtenido
-
-    const profileUrl = 'https://api.fitbit.com/1/user/-/profile.json';
-
-    const requestOptions = {
-    headers: {
-        Authorization: `Bearer ${accessToken}`
-    }
-    };
-
-    fetch(profileUrl, requestOptions)
-    .then(response => response.json())
-    .then(data => {
-        // Hacer algo con los datos del perfil del usuario
-        console.log(data);
-    })
-    .catch(error => {
-        // Manejar el error de la solicitud
-        console.error(error);
-    });
-
-});
-
 
 
 export default authRouter;

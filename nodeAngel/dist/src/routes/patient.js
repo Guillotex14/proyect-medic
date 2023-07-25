@@ -16,6 +16,7 @@ const express_1 = require("express");
 const response_1 = require("../models/response");
 const Users_1 = __importDefault(require("../models/Users"));
 const patients_1 = __importDefault(require("../models/patients"));
+// import moment from "moment";
 const dates_1 = __importDefault(require("../models/dates"));
 const medics_1 = __importDefault(require("../models/medics"));
 const dataProfessional_1 = __importDefault(require("../models/dataProfessional"));
@@ -142,21 +143,60 @@ patientRouter.post("/updateProfile", (req, res) => __awaiter(void 0, void 0, voi
     jsonRes.status = true;
     res.json(jsonRes);
 }));
-patientRouter.get("/createDate", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+patientRouter.post("/createDate", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const jsonRes = new response_1.RespondesModel();
-    const { id_patient, id_doctor, reason, symptoms, date } = req.body;
-    // const dateNow= moment().format('YYYY/MM/DD');
+    const { id_patient, id_medic, reason, symptoms, date } = req.body;
+    let symptomsString = "";
+    symptoms.forEach((element) => {
+        if (symptomsString.length == 0) {
+            symptomsString = element;
+        }
+        else {
+            symptomsString = symptomsString + element + ", ";
+        }
+    });
     const newDate = new dates_1.default({
         id_patient: id_patient,
-        id_medic: id_doctor,
+        id_medic: id_medic,
         date: date,
         reason: reason,
-        symptoms: symptoms,
+        symptoms: symptomsString,
         status: "pendiente"
     });
     yield newDate.save();
     jsonRes.code = 200;
     jsonRes.message = "cita creada";
+    jsonRes.status = true;
+    res.json(jsonRes);
+}));
+patientRouter.post("/verifyAccessToken", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const jsonRes = new response_1.RespondesModel();
+    const { id_patient } = req.body;
+    const ress = yield patients_1.default.findOne({ _id: id_patient }).then((res) => __awaiter(void 0, void 0, void 0, function* () {
+        if (res) {
+            jsonRes.code = 200;
+            jsonRes.message = "paciente";
+            jsonRes.status = true;
+            jsonRes.data = res;
+            return jsonRes;
+        }
+        else {
+            jsonRes.code = 400;
+            jsonRes.message = "no hay token";
+            jsonRes.status = false;
+            return jsonRes;
+        }
+    })).catch((err) => {
+        console.log(err);
+    });
+    res.json(ress);
+}));
+patientRouter.post("/saveAccessToken", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const jsonRes = new response_1.RespondesModel();
+    const { id_patient, accessToken } = req.body;
+    yield patients_1.default.findOneAndUpdate({ _id: id_patient }, { fitbitAccessToken: accessToken });
+    jsonRes.code = 200;
+    jsonRes.message = "token guardado";
     jsonRes.status = true;
     res.json(jsonRes);
 }));

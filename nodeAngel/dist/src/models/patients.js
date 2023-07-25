@@ -14,7 +14,8 @@ const patientsSchema = new mongoose_1.Schema({
     policyNumber: String,
     id_user: {
         type: mongoose_1.Schema.Types.ObjectId
-    }
+    },
+    fitbitAccessToken: String
 });
 exports.default = (0, mongoose_1.model)("patients", patientsSchema);
 //# sourceMappingURL=patients.js.map

@@ -1,4 +1,4 @@
-import { Text, TextInput, TouchableOpacity, View, Image, FlatList, Modal, ScrollView} from 'react-native';
+import { Text, TextInput, TouchableOpacity, View, Image, FlatList, Modal, ScrollView, Platform} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { styles } from '../theme/ThemeApp';
 import { useToast } from 'native-base';
@@ -12,6 +12,8 @@ import apiConnection from '../api/Concecction';
 import { CardDateSearch } from '../components/CardDateSearch';
 import Carousel from 'react-native-snap-carousel';
 import DatePicker from '@react-native-community/datetimepicker';
+import Moment from 'moment';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 interface Props extends StackScreenProps<any, any> {}
@@ -29,12 +31,13 @@ export const DatesScreen = ({navigation}:Props) => {
   const [validReason, setValidReason] = useState(false);
   const [validSymptom, setValidSymptom] = useState(false);
   const [validArraySymptoms, setValidArraySymptoms] = useState(false);
-  const [showDate, setShowDate] = useState(false);
   const [showPicker, setShowPicker] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const [showDateAvailable, setShowDateAvailable] = useState(false);
   const [idMedic, setIdMedic] = useState('')
   const [idPatient, setIdPatient] = useState('')
-  const [date, setDate] = useState('');
+  const [dates, setDates] = useState('')
+  const [date, setDate] = useState(new Date());
   const [city, setCity] = useState('');
   const [speciality, setSpeciality] = useState('');
   const [arrayMedics, setArrayMedics] = useState<any[]>([]);
@@ -70,21 +73,27 @@ export const DatesScreen = ({navigation}:Props) => {
 
   const createDate = async () => {
 
-    await apiConnection.post('/patient/createDate', {
-      id_medic: idMedic,
-      id_patient: idPatient,
-      reason: reason,
-      symptoms: arraySymptoms,
-      date: date,
+    console.log(idMedic)
+    console.log(idPatient)
+    console.log(reason)
+    console.log(arraySymptoms)
+    console.log(dates)
 
-    }).then(resp=>{
+    // await apiConnection.post('/patient/createDate', {
+    //   id_medic: idMedic,
+    //   id_patient: idPatient,
+    //   reason: reason,
+    //   symptoms: arraySymptoms,
+    //   date: dates,
 
-    }).catch(error=>{
-      console.log(error)
-    })
+    // }).then(resp=>{
 
-    setIsSeach(true);
-    setIsSend(false);
+    // }).catch(error=>{
+    //   console.log(error)
+    // })
+
+    // setIsSeach(true);
+    // setIsSend(false);
   }
 
   const sendDates = () => {
@@ -158,8 +167,69 @@ export const DatesScreen = ({navigation}:Props) => {
 
   };
 
+  const handleFocus = () => {
+    setIsFocused(true);
+    setShowPicker(true);
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
+    setDate(new Date());
+  };
+
+  const toggleDatepicker = () => {
+    setShowPicker(!showPicker);
+  };
+  
+  const onChange = (event: any, selectedDate?: Date | undefined) => {
+    setShowPicker(false);
+    if (event.type === "set" && selectedDate){
+    const currentDate = Moment(selectedDate).toDate();
+    setDate(currentDate);
+
+        if (Platform.OS === 'android') {
+            toggleDatepicker();
+            setDates(Moment(currentDate).format('DD/MM/YYYY'));
+        }
+
+        if (Platform.OS === 'ios') {
+          toggleDatepicker();
+          setDates(Moment(currentDate).format('DD/MM/YYYY'));
+        }
+
+    } else {
+
+      toggleDatepicker();
+
+    }
+  };
+
+  const getStorage = async () => {
+    const me = await AsyncStorage.getItem('me');
+    let meJson = JSON.parse(me!);
+    
+    console.log("asdsadasdasdasdas", me)
+    setIdPatient(meJson.id_patient);
+
+  }
+
+  const nextStep = () => {
+    if (idMedic === '') {
+      presentToast('Debe seleccionar un medico para continuar');
+      return;
+    }
+
+    if (dates === '') {
+      presentToast('campo fecha vacio, seleccione una fecha por favor');
+      return;
+    }
+
+    setSelectMedic(true);
+  }
+
   useEffect(() => {
     allMedics();
+    getStorage();
   }, [])
   
 
@@ -224,8 +294,12 @@ export const DatesScreen = ({navigation}:Props) => {
 
   const filterMeds = () => {
 
+    if (city === '' && speciality === '' ) {
+      allMedics(); 
+    }
+
     if (city !== '' && speciality !== ''){
-      const filter = arrayMedics.filter((item) => item.type_user === city && item.email === speciality);
+      const filter = arrayMedics.filter((item) => item.city === city && item.speciality === speciality);
 
       if (filter.length > 0){
         setArrayMedics(filter);
@@ -234,14 +308,32 @@ export const DatesScreen = ({navigation}:Props) => {
         presentToast('No se encontraron medicos con estos filtros');
       }
 
-    }else{
-      allMedics();
-      return
     }
+
+    if (city !== '' && speciality === '' ) {
+      const filter = arrayMedics.filter((item) => item.city === city);
+      if (filter.length > 0){
+        setArrayMedics(filter);
+      }else{
+        allMedics();
+        presentToast('No se encontraron medicos con estos filtros');
+      }
+    }
+
+    if (city === '' && speciality !== '' ) {
+      const filter = arrayMedics.filter((item) => item.speciality === speciality);
+      if (filter.length > 0){
+        setArrayMedics(filter);
+      }else{
+        allMedics();
+        presentToast('No se encontraron medicos con estos filtros');
+      }
+
+    }
+
   }
 
   const showCalendar = (day1:any,day2:any) => {
-    console.log(day1,day2)
     setShowDateAvailable(true);
   }
 
@@ -250,16 +342,16 @@ export const DatesScreen = ({navigation}:Props) => {
     return (
 
       <View>
-        <TouchableOpacity onPress={()=>{showCalendar(item._id,item._id)}}>
+        <TouchableOpacity onPress={()=>{showCalendar(item.dayService,item.dayService2);setIdMedic(item.id_medic)}}>
           <Card style={{width: 170, height: 250, marginTop: 20, marginBottom: 90, marginHorizontal: 20, backgroundColor: '#fff'}}>
             <Card.Content>
               <Avatar.Image source={Images.doctor} size={100} style={{
                   alignSelf: 'center',
                   height: 100,
               }}/>
-              <Text style={{fontSize: 14, textAlign: 'center', marginTop: 15}}>{item._id}</Text>
-              <Text style={{fontSize: 12, color: '#0E54BE',textAlign: 'center', marginTop: 5}}>{item.type_user}</Text>
-              <Text style={{fontSize: 12, color: '#0E54BE',textAlign: 'center', marginTop: 5}}>{item.email}</Text>
+              <Text style={{fontSize: 18, textAlign: 'center', marginTop: 25}}>{item.fullName}</Text>
+              <Text style={{fontSize: 16, color: '#0E54BE',textAlign: 'center', marginTop: 5}}>{item.speciality}</Text>
+              <Text style={{fontSize: 16, color: '#0E54BE',textAlign: 'center', marginTop: 5}}>{item.city}</Text>
             </Card.Content>
           </Card>
         </TouchableOpacity>
@@ -269,16 +361,28 @@ export const DatesScreen = ({navigation}:Props) => {
 }
 
   return (
-    <ScrollView style={{flex: 1}}>
+    <ScrollView style={{flex: 1, backgroundColor: '#E6F1FF'}}>
       <View style={{...styles.container, flex: 1}}>
 
         
         <View style={{width: '100%', marginHorizontal: 40, alignSelf: 'center', marginTop: 70, flexDirection: 'row', alignContent: 'center', alignItems: 'center', justifyContent: 'center' }}>
           <View style={{width: '15%'}}>
-            <TouchableOpacity onPress={()=>{navigation.pop()}}
-            style={{marginLeft: 25}}>
-              <Ionicons name='chevron-back' size={40} color={"#000"}/>
-            </TouchableOpacity>
+            {
+              !selectMedic && (
+                <TouchableOpacity onPress={()=>{navigation.pop()}}
+                style={{marginLeft: 25}}>
+                  <Ionicons name='chevron-back' size={40} color={"#000"}/>
+                </TouchableOpacity>
+              )
+            }
+            {
+              selectMedic && (
+                <TouchableOpacity onPress={()=>{setSelectMedic(false)}}
+                style={{marginLeft: 25}}>
+                  <Ionicons name='chevron-back' size={40} color={"#000"}/>
+                </TouchableOpacity>
+              )
+            }
           </View>
           <View style={{width: '75%'}}>
             <Text style={{fontSize: 17, marginHorizontal: 10, color: 'black', fontWeight: 'bold', textAlign: 'center'}}>
@@ -288,6 +392,7 @@ export const DatesScreen = ({navigation}:Props) => {
           <View style={{width: '15%'}}>
           </View>
         </View>
+
         {
           !selectMedic && (
             <>
@@ -299,10 +404,8 @@ export const DatesScreen = ({navigation}:Props) => {
                   itemWidth={170}
                   layout={'default'}
                 />
-                {/* <CardDateSearch/> */}
 
                 {
-
                   arrayMedics.length > 0 && (<Text>
                     {arrayMedics.length} Medicos encontrados
                   </Text>
@@ -332,15 +435,15 @@ export const DatesScreen = ({navigation}:Props) => {
                   
                     <View style={{width: '100%', alignContent: 'center', marginHorizontal: 20, alignSelf: 'center', marginTop: 50, alignItems: 'center'}}>
                       <Text>Fecha de la consulta</Text>
-                      <TouchableOpacity style={{width: "80%"}}>
-                        <TextInput value={date} onChangeText={setDate} style={{...styles.input}}></TextInput>
+                      <TouchableOpacity style={{width: "80%"}} onPress={toggleDatepicker}>
+                        <TextInput value={dates} style={{...styles.input}} onFocus={handleFocus} onBlur={handleBlur} onChangeText={setDates}/>
                         <Ionicons style={{position: 'absolute', right: 30, marginTop: 25}} name="md-calendar" size={24} color="#818181" />
-                        {/* <DatePicker ></DatePicker> */}
+                        { showPicker && (<DatePicker mode="date" display="calendar" value={date} minimumDate={new Date()} onChange={onChange}/>) }
                       </TouchableOpacity>
                     </View>
 
                     <View style={{width: '100%', alignContent: 'center', marginHorizontal: 20, alignSelf: 'center', marginTop: 50, alignItems: 'center'}}>
-                      <TouchableOpacity style={{...styles.button}}>
+                      <TouchableOpacity style={{...styles.button}} onPress={nextStep}>
                         <Text style={{fontSize: 20, fontWeight: '500', color: '#fff'}}> Continuar</Text>
                       </TouchableOpacity>
                     </View>
@@ -361,11 +464,10 @@ export const DatesScreen = ({navigation}:Props) => {
                   Razón por la cual acude a la consulta
                 </Text>
                 <TextInput
-                  editable
-                  multiline
+                  multiline={true}
                   numberOfLines={6}
                   maxLength={240}
-                  style={{padding: 10, backgroundColor: 'white', borderRadius: 10, width: '90%', borderColor: 'gray', borderWidth: 1, marginHorizontal: 10, marginVertical: 5}}
+                  style={{padding: 10, backgroundColor: 'white', borderRadius: 10, width: '90%', borderWidth: 1, marginHorizontal: 10, marginVertical: 5, textAlignVertical: 'top',height: 150, borderColor: validReason ? 'red' : '#0E54BE'}}
                   value={reason}
                   onChangeText={setReason}
                 />
@@ -377,7 +479,7 @@ export const DatesScreen = ({navigation}:Props) => {
                   <Text style={{fontSize: 17, marginHorizontal: 10, color: 'black', fontWeight: '300', alignSelf:'flex-start', marginLeft: 20}}>
                     Sintomas
                   </Text>
-                  <TextInput style={{...styles.input}} value={symptoms} onChangeText={setSymptoms}/>
+                  <TextInput style={{...styles.input, borderColor: validSymptom ? 'red': '#0E54BE' }} value={symptoms} onChangeText={setSymptoms}/>
                 </View>
                 <View style={{alignContent: 'center', alignSelf: 'center', marginTop: 10,width: "20%" }}>
                   <TouchableOpacity style={{...styles.button, marginTop: 30, width: 45, height:45}} onPress={()=>addSymptoms()}>
