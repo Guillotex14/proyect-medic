@@ -27,7 +27,7 @@ export const CardHome = () => {
     const [fitbitJson, setFitbitJson] = useState('');
     const [isModalVisible, setModalVisible] = useState(false);
     const [id_patient, setId_patient] = useState<any>(null);
-
+    const [responseSuccess, setResponseSuccess] = useState(false);
 
     const [accessToken, setAccessToken] = useState<any>('');
     const [profileData, setProfileData] = useState<any>(null);
@@ -57,26 +57,6 @@ export const CardHome = () => {
         setModalVisible(!isModalVisible);
     };
 
-    // const verifyAccessToken = async() => {
-
-    //     await apiConnection.post('patient/verifyAccessToken',{
-    //         id_patient: id_patient
-    //     }).then((response) => {
-    //         console.log(response.data)
-    //         if(response.data.status){
-    //             if (response.data.data.fitbitAccessToken !== '') {
-    //                 setDataFitbit(true);
-    //                 setFitbitJson(response.data.data.fitbitAccessToken);
-    //             }else{
-    //                 setDataFitbit(false);
-    //             }
-    //         }
-
-    //     }, (error) => {
-    //         console.log(error);
-    //     });
-    // }
-
     const saveAccessToken = async(accessToken1:any) => {
         await apiConnection.post('patient/saveAccessToken',{
             id_patient: id_patient,
@@ -102,7 +82,6 @@ export const CardHome = () => {
     }
 
     const fetchProfileAndHeartRateData = async (accessToken: string) => {
-        console.log('fetchProfileAndHeartRateData', accessToken)
         try {
             const profileResponse = await axios.get('https://api.fitbit.com/1/user/-/profile.json', {
                 headers: {
@@ -119,10 +98,6 @@ export const CardHome = () => {
                 },
             });
 
-            console.log('******************************')
-            console.log('heartRateResponse',heartRateResponse.data['activities-heart'][0].value)
-            console.log('******************************')
-
             const heartRateValues = heartRateResponse.data['activities-heart'][0].value;
             setHeartRateData(heartRateValues);
         } catch (error: any) {
@@ -134,7 +109,6 @@ export const CardHome = () => {
     };
 
     const fetchSpo2Data = async (accessToken: string) => {
-        console.log('fetchSpo2Data', accessToken)
     try {
         const today = new Date('2023-07-25').toISOString().slice(0, 10);
         const spo2Response = await axios.get(`https://api.fitbit.com/1/user/-/spo2/date/${today}.json`, {
@@ -143,9 +117,7 @@ export const CardHome = () => {
         },
         });
 
-        console.log('******************************')
-        console.log('spo2Response',spo2Response.data)
-        console.log('******************************')
+
 
         const spo2Value = spo2Response.data.summary?.oxygenSaturation;
         setSpo2Data(spo2Value);
@@ -158,8 +130,6 @@ export const CardHome = () => {
 
     const fetchSkinTemperatureData = async (accessToken: string) => {
 
-        console.log('fetchSkinTemperatureData', accessToken)
-
     try {
         const today = new Date('2023-07-25').toISOString().slice(0, 10);
         const skinTemperatureResponse = await axios.get(
@@ -170,10 +140,6 @@ export const CardHome = () => {
             },
         }
         );
-
-        console.log('******************************')
-        console.log('skinTemperatureResponse',skinTemperatureResponse.data)
-        console.log('******************************')
 
         if (skinTemperatureResponse.data && skinTemperatureResponse.data['body-temperature'] && skinTemperatureResponse.data['body-temperature'].length > 0) {
         const skinTemperatureValue = skinTemperatureResponse.data['body-temperature'][0].value;
@@ -200,9 +166,7 @@ export const CardHome = () => {
             },
         }
         );
-        console.log('******************************')
-        console.log('respirationResponse',respirationResponse.data)
-        console.log('******************************')
+
         if (respirationResponse.data && respirationResponse.data['activities-respiration'] && respirationResponse.data['activities-respiration'].length > 0) {
         const respirationValue = respirationResponse.data['activities-respiration'][0].value;
         setRespirationData(respirationValue);
@@ -226,10 +190,6 @@ export const CardHome = () => {
         },
         });
 
-        console.log('******************************')
-        console.log('sleepResponse',sleepResponse.data)
-        console.log('******************************')
-
         if (sleepResponse.data && sleepResponse.data.sleep && sleepResponse.data.sleep.length > 0) {
         const sleepValue = sleepResponse.data.sleep[0];
         setSleepData(sleepValue);
@@ -244,64 +204,81 @@ export const CardHome = () => {
     };
     
     const handleAuthButtonPress = async () => { 
-        // // Configura el redirectUri con una URL válida
-        // const redirectUri = 'com.mujica93.frontAngelCare://*';
-
-        // // Inicia la solicitud de autorización
-        // const authUrl = `${authorizationEndpoint}?client_id=${config.clientId}&response_type=code&scope=${encodeURIComponent(
-        //     config.scopes.join(' ')
-        // )}&redirect_uri=${encodeURIComponent(redirectUri)}`;
-        // const response = await AuthSession.startAsync({ authUrl, returnUrl: redirectUri });
-
-        // if (response.type === 'success') {
-        //     // Extrae el código de autorización de la respuesta
-        //     const { code } = response.params;
-
-        //     // Intercambia el código de autorización por un token de acceso
-        //     const requestBody = {
-        //     code,
-        //     grant_type: 'authorization_code',
-        //     redirect_uri: redirectUri,
-        //     client_id: config.clientId,
-        //     client_secret: config.clientSecret,
-        //     expires_in: '31536000',
-        //     };
-
-        //     try {
-        //     const tokenResponse = await axios.post(
-        //         tokenEndpoint,
-        //         new URLSearchParams(requestBody).toString(),
-        //         {
-        //         headers: {
-        //             'Content-Type': 'application/x-www-form-urlencoded',
-        //             'Authorization': 'Basic ' + 'MjNSN0M2OjAwMTcwMDNjMWFkMjdmYmE4OWI3MjRhMTZjNDcxNmQ1',
-        //         },
-        //         }
-        //     );
-
-        //         const { access_token } = tokenResponse.data;
-        //         console.log('Token de acceso:', access_token);
-        //         saveAccessToken(access_token);
-        //         setFitbitJson(access_token);
-        //         setAccessToken(access_token);
-        //         fetchProfileAndHeartRateData(access_token);
-        //         fetchSpo2Data(access_token);
-        //         fetchSkinTemperatureData(access_token);
-        //         fetchRespirationData(access_token);
-        //         fetchSleepData(access_token);
-        //     } catch (error: any) {
-        //     console.error('Error al obtener el token de acceso:', error.response.data);
-        //     }
-        // }
-        
         try {
             const result = await promptAsync();
             // promptAsync abrirá la ventana de inicio de sesión/autorización
             console.log('PromptAsync Result:', result);
+            console.log(response)
+            setResponseSuccess(true);
         } catch (error) {
             console.error('Error al iniciar la autorización:', error);
         }
 
+        // if (response?.type === 'success') {
+        //     const { code } = response.params;
+        //     // Intercambia el código de autorización por un token de acceso
+        //     const handleTokenExchange = async () => {
+        //         const requestBody = {
+        //             code,
+        //             grant_type: 'authorization_code',
+        //             redirect_uri: 'com.mujica93.frontAngelCare://*',
+        //             client_id: config.clientId,
+        //             client_secret: config.clientSecret,
+        //             expires_in: '31536000',
+        //         };
+
+        //         try {
+        //             const tokenResponse = await axios.post(
+        //                 tokenEndpoint,
+        //                 new URLSearchParams(requestBody).toString(),
+        //                 {
+        //                     headers: {
+        //                         'Content-Type': 'application/x-www-form-urlencoded',
+        //                         'Authorization': 'Basic MjNSN0M2OjAwMTcwMDNjMWFkMjdmYmE4OWI3MjRhMTZjNDcxNmQ1',
+        //                     },
+        //                 }
+        //             );
+        //             const { access_token } = tokenResponse.data;
+
+        //             setAccessToken(access_token);
+        //             saveAccessToken(access_token);
+        //             fetchProfileAndHeartRateData(access_token);
+        //             fetchSpo2Data(access_token);
+        //             fetchSkinTemperatureData(access_token);
+        //             fetchRespirationData(access_token);
+        //             fetchSleepData(access_token);
+        //         } catch (error: any) {
+        //             console.error('Error al obtener el token de acceso:', error.response?.data || error.message);
+        //         }
+        //     };
+
+        //     handleTokenExchange();
+        // }
+
+    };
+
+    const getIdPatient = async () => {
+        const me = await AsyncStorage.getItem('me')
+        console.log(me)
+        let meJson = JSON.parse(me!)
+        console.log(meJson)
+        if (meJson.fitbitAccessToken !== '') {
+            setFitbitJson(meJson.fitbitAccessToken)
+            setAccessToken(meJson.fitbitAccessToken)
+            fetchProfileAndHeartRateData(meJson.fitbitAccessToken);
+            fetchSpo2Data(meJson.fitbitAccessToken);
+            fetchSkinTemperatureData(meJson.fitbitAccessToken);
+            fetchRespirationData(meJson.fitbitAccessToken);
+            fetchSleepData(meJson.fitbitAccessToken);
+            setDataFitbit(true)
+        }else{
+            setId_patient(meJson.id_patient)
+            setDataFitbit(false)
+        }
+    }
+
+    if (responseSuccess) {
+        console.log('responseSuccess', responseSuccess)
         if (response?.type === 'success') {
             const { code } = response.params;
             // Intercambia el código de autorización por un token de acceso
@@ -339,48 +316,14 @@ export const CardHome = () => {
                     console.error('Error al obtener el token de acceso:', error.response?.data || error.message);
                 }
             };
-
+            
             handleTokenExchange();
-        }
-
-    };
-
-    //   const handleAuthButtonPress = async () => {
-    //     try {
-    //         const result = await promptAsync();
-    //         // promptAsync abrirá la ventana de inicio de sesión/autorización
-    //         console.log('PromptAsync Result:', result);
-    //     } catch (error) {
-    //         console.error('Error al iniciar la autorización:', error);
-    //     }
-    // };
-
-    const getIdPatient = async () => {
-        const me = await AsyncStorage.getItem('me')
-        console.log(me)
-        let meJson = JSON.parse(me!)
-        console.log(meJson)
-        if (meJson.fitbitAccessToken !== '') {
-            setFitbitJson(meJson.fitbitAccessToken)
-            setAccessToken(meJson.fitbitAccessToken)
-            fetchProfileAndHeartRateData(meJson.fitbitAccessToken);
-            fetchSpo2Data(meJson.fitbitAccessToken);
-            fetchSkinTemperatureData(meJson.fitbitAccessToken);
-            fetchRespirationData(meJson.fitbitAccessToken);
-            fetchSleepData(meJson.fitbitAccessToken);
-            setDataFitbit(true)
-        }else{
-            setId_patient(meJson.id_patient)
-            setDataFitbit(false)
         }
     }
 
     useEffect(() => {
         getIdPatient()
-    } , 
-    []
-    // [response]
-    )
+    },[])
 
     return (
 
@@ -512,7 +455,7 @@ export const CardHome = () => {
                                             <View style={{ flexDirection: 'row', alignItems: 'center', alignContent: 'center', alignSelf: 'center' }}>
                                                 <Ionicons name="moon" color="blue" size={35} />
                                                 <Text style={{ color: '#0E54BE', fontSize: 22, textAlign: 'center', fontWeight: 'bold', marginHorizontal: 5 }}>
-                                                {sleepData && (sleepData.quality)}
+                                                {sleepData && (sleepData.efficiency)}
                                                 {!sleepData && (0)}
                                                 %</Text>
                                             </View>

@@ -367,7 +367,7 @@ export const LoginScreen = ({navigation}: Props) => {
                         // flexDirection: 'row',
                     }
                 }>
-                    <FitbitAuthorization />
+                    {/* <FitbitAuthorization /> */}
                     {/* <TouchableOpacity style={styles.buttonGoogleLogin}
                     onPress={() => console.log('Hola')}>
 
