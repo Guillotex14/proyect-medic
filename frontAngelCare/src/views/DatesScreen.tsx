@@ -79,21 +79,27 @@ export const DatesScreen = ({navigation}:Props) => {
     console.log(arraySymptoms)
     console.log(dates)
 
-    // await apiConnection.post('/patient/createDate', {
-    //   id_medic: idMedic,
-    //   id_patient: idPatient,
-    //   reason: reason,
-    //   symptoms: arraySymptoms,
-    //   date: dates,
+    await apiConnection.post('/patient/createDate', {
+      id_medic: idMedic,
+      id_patient: idPatient,
+      reason: reason,
+      symptoms: arraySymptoms,
+      date: dates,
 
-    // }).then(resp=>{
+    }).then(resp=>{
+      console.log(resp.data)
+      if (resp.data.status) {
+        presentToast('Cita creada con exito');
+        // navigation.navigate('Home');
+      }else{
+        presentToast('Error al crear la cita');
+      }
+    }).catch(error=>{
+      console.log(error)
+    })
 
-    // }).catch(error=>{
-    //   console.log(error)
-    // })
-
-    // setIsSeach(true);
-    // setIsSend(false);
+    setIsSeach(true);
+    setIsSend(false);
   }
 
   const sendDates = () => {

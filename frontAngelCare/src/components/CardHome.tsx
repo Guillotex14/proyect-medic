@@ -112,7 +112,7 @@ export const CardHome = () => {
 
             setProfileData(profileResponse.data);
     
-            const today = new Date().toISOString().slice(0, 10); // Obtén la fecha actual en el formato 'YYYY-MM-DD'
+            const today = new Date('2023-07-25').toISOString().slice(0, 10); // Obtén la fecha actual en el formato 'YYYY-MM-DD'
             const heartRateResponse = await axios.get(`https://api.fitbit.com/1/user/-/activities/heart/date/${today}/1d/1min.json`,{
                 headers: {
                     'Authorization': 'Bearer ' + accessToken,
@@ -136,7 +136,7 @@ export const CardHome = () => {
     const fetchSpo2Data = async (accessToken: string) => {
         console.log('fetchSpo2Data', accessToken)
     try {
-        const today = new Date().toISOString().slice(0, 10);
+        const today = new Date('2023-07-25').toISOString().slice(0, 10);
         const spo2Response = await axios.get(`https://api.fitbit.com/1/user/-/spo2/date/${today}.json`, {
         headers: {
             'Authorization': 'Bearer ' + accessToken,
@@ -161,7 +161,7 @@ export const CardHome = () => {
         console.log('fetchSkinTemperatureData', accessToken)
 
     try {
-        const today = new Date().toISOString().slice(0, 10);
+        const today = new Date('2023-07-25').toISOString().slice(0, 10);
         const skinTemperatureResponse = await axios.get(
         `https://api.fitbit.com/1/user/-/temp/skin/date/${today}.json`,
         {
@@ -191,7 +191,7 @@ export const CardHome = () => {
     const fetchRespirationData = async (accessToken: string) => {
         console.log('fetchRespirationData', accessToken)
     try {
-        const today = new Date().toISOString().slice(0, 10);
+        const today = new Date('2023-07-25').toISOString().slice(0, 10);
         const respirationResponse = await axios.get(
         `https://api.fitbit.com/1/user/-/br/date/${today}.json`,
         {
@@ -243,7 +243,7 @@ export const CardHome = () => {
     }
     };
     
-    const handleAuthButtonPress = async () => {
+    const handleAuthButtonPress = async () => { 
         // // Configura el redirectUri con una URL válida
         // const redirectUri = 'com.mujica93.frontAngelCare://*';
 
@@ -403,7 +403,7 @@ export const CardHome = () => {
                                             <Text style={{ color: '#0E54BE', fontSize: 13, marginLeft: 10, fontWeight: '400' }}>Sensor Ritmo Cardíaco</Text>
                                             <Text style={{ color: '#0E54BE', fontSize: 13, marginLeft: 10, fontWeight: '400' }}>
                                                 <Text style={{ fontWeight: 'bold', fontSize: 25 }}>
-                                                {Object.keys(heartRateData).length > 0 && (Math.round(heartRateData.heartRateZones[0].max/heartRateData.heartRateZones[0].min*20))}
+                                                {Object.keys(heartRateData).length > 0 && (heartRateData.heartRateZones[0].max)}
                                                 {Object.keys(heartRateData).length === 0 && (0)}
                                                 </Text>&nbsp;
                                                 bpm
@@ -437,7 +437,7 @@ export const CardHome = () => {
 
                                             <Ionicons name="heart" color="red" size={35} />
                                             <Text style={{ color: '#0E54BE', fontSize: 22, textAlign: 'center', fontWeight: 'bold', marginHorizontal: 5 }}>
-                                                {Object.keys(heartRateData).length > 0 && (Math.round(heartRateData.heartRateZones[0].max/heartRateData.heartRateZones[0].min*20))}
+                                                {Object.keys(heartRateData).length > 0 && (heartRateData.heartRateZones[0].max)}
                                                 {Object.keys(heartRateData).length === 0 && (0)}
                                             </Text>
                                         </View>
@@ -457,7 +457,7 @@ export const CardHome = () => {
                                             <View style={{ alignSelf: 'center', width: '50%' }}>
                                                 <Text style={{ color: '#0E54BE', fontSize: 12.5, marginLeft: 10 }}>Sensor Ritmo Cardíaco</Text>
                                                 <Text style={{ color: '#0E54BE', fontSize: 12.5, marginLeft: 10 }}>
-                                                    <Text style={{ fontWeight: 'bold', fontSize: 25 }}>    {Object.keys(heartRateData).length > 0 && (heartRateData.restingHeartRate)}
+                                                    <Text style={{ fontWeight: 'bold', fontSize: 25 }}>    {Object.keys(heartRateData).length > 0 && (heartRateData.heartRateZones[0].max)}
                                                 {Object.keys(heartRateData).length == 0 && (0)}</Text>&nbsp;
                                                     bpm
                                                 </Text>
@@ -484,7 +484,7 @@ export const CardHome = () => {
                                             <View style={{ flexDirection: 'row', alignItems: 'center', alignContent: 'center', alignSelf: 'center' }}>
                                                 <Ionicons name="heart" color="red" size={35} />
                                                 <Text style={{ color: '#0E54BE', fontSize: 22, textAlign: 'center', fontWeight: 'bold', marginHorizontal: 5 }}>
-                                                {Object.keys(heartRateData).length > 0 && (heartRateData.restingHeartRate)}
+                                                {Object.keys(heartRateData).length > 0 && (heartRateData.heartRateZones[0].max)}
                                                 {Object.keys(heartRateData).length == 0 && (0)}
                                                 </Text>
                                             </View>
@@ -512,7 +512,7 @@ export const CardHome = () => {
                                             <View style={{ flexDirection: 'row', alignItems: 'center', alignContent: 'center', alignSelf: 'center' }}>
                                                 <Ionicons name="moon" color="blue" size={35} />
                                                 <Text style={{ color: '#0E54BE', fontSize: 22, textAlign: 'center', fontWeight: 'bold', marginHorizontal: 5 }}>
-                                                {sleepData && (sleepData.efficiency)}
+                                                {sleepData && (sleepData.quality)}
                                                 {!sleepData && (0)}
                                                 %</Text>
                                             </View>
