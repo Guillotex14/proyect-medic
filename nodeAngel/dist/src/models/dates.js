@@ -11,7 +11,7 @@ const datesSchema = new mongoose_1.Schema({
     date: String,
     reason: String,
     symptoms: String,
-    status: String
+    status: Number
 });
 exports.default = (0, mongoose_1.model)("dates", datesSchema);
 //# sourceMappingURL=dates.js.map

@@ -59,9 +59,12 @@ export const DatesScreen = ({navigation}:Props) => {
   }
 
   const allMedics = async () => {
-    await apiConnection.get('/patient/allMedics').then(resp=>{
+
+    console.log(city)
+    console.log(speciality)
+    await apiConnection.get('/patient/allMedics?city='+city+'&speciality='+speciality).then(resp=>{
       if (resp.data.status) {
-        console.log(resp.data.data)
+        
         setArrayMedics(resp.data.data)
         setAuxMedics(resp.data.data)
       }
@@ -72,20 +75,12 @@ export const DatesScreen = ({navigation}:Props) => {
   }
 
   const createDate = async () => {
-
-    console.log(idMedic)
-    console.log(idPatient)
-    console.log(reason)
-    console.log(arraySymptoms)
-    console.log(dates)
-
     await apiConnection.post('/patient/createDate', {
       id_medic: idMedic,
       id_patient: idPatient,
       reason: reason,
       symptoms: arraySymptoms,
-      date: dates,
-
+      date: dates
     }).then(resp=>{
       console.log(resp.data)
       if (resp.data.status) {
@@ -302,40 +297,44 @@ export const DatesScreen = ({navigation}:Props) => {
 
     if (city === '' && speciality === '' ) {
       allMedics(); 
+      return;
     }
 
-    if (city !== '' && speciality !== ''){
-      const filter = arrayMedics.filter((item) => item.city === city && item.speciality === speciality);
+    allMedics();
 
-      if (filter.length > 0){
-        setArrayMedics(filter);
-      }else{
-        allMedics();
-        presentToast('No se encontraron medicos con estos filtros');
-      }
 
-    }
+    // if (city !== '' && speciality !== ''){
+    //   const filter = arrayMedics.filter((item) => item.city === city && item.speciality === speciality);
 
-    if (city !== '' && speciality === '' ) {
-      const filter = arrayMedics.filter((item) => item.city === city);
-      if (filter.length > 0){
-        setArrayMedics(filter);
-      }else{
-        allMedics();
-        presentToast('No se encontraron medicos con estos filtros');
-      }
-    }
+    //   if (filter.length > 0){
+    //     setArrayMedics(filter);
+    //   }else{
+    //     allMedics();
+    //     presentToast('No se encontraron medicos con estos filtros');
+    //   }
 
-    if (city === '' && speciality !== '' ) {
-      const filter = arrayMedics.filter((item) => item.speciality === speciality);
-      if (filter.length > 0){
-        setArrayMedics(filter);
-      }else{
-        allMedics();
-        presentToast('No se encontraron medicos con estos filtros');
-      }
+    // }
 
-    }
+    // if (city !== '' && speciality === '' ) {
+    //   const filter = arrayMedics.filter((item) => item.city === city);
+    //   if (filter.length > 0){
+    //     setArrayMedics(filter);
+    //   }else{
+    //     allMedics();
+    //     presentToast('No se encontraron medicos con estos filtros');
+    //   }
+    // }
+
+    // if (city === '' && speciality !== '' ) {
+    //   const filter = arrayMedics.filter((item) => item.speciality === speciality);
+    //   if (filter.length > 0){
+    //     setArrayMedics(filter);
+    //   }else{
+    //     allMedics();
+    //     presentToast('No se encontraron medicos con estos filtros');
+    //   }
+
+    // }
 
   }
 

@@ -10,7 +10,7 @@ const datesSchema = new Schema({
     date: String,
     reason: String,
     symptoms: String,
-    status: String
+    status: Number
 });
 
 export default model("dates", datesSchema);

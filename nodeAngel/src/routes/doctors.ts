@@ -1,11 +1,14 @@
 import { Router, Request, Response } from "express";
 
+import mongoose from 'mongoose';
+
 import { RespondesModel } from "../models/response";
 import users from "../models/Users";
 import medics from "../models/medics";
 import patients from "../models/patients";
 import medicalFiles from "../models/medicalFile";
 import dataProfessional from "../models/dataProfessional";
+import dates from "../models/dates";
 
 const doctorRouter = Router();
 
@@ -148,5 +151,106 @@ doctorRouter.post("/getMedicalFile", async (req: Request, res: Response) => {
     res.json(jsonRes);
 
 });
+
+doctorRouter.get("/getMyDates", async (req: Request, res: Response) => {
+    
+        const jsonRes: RespondesModel = new RespondesModel();
+    
+        const myDates = await dates.find({id_medic: req.query.id_medic});
+
+        if (myDates) {
+            jsonRes.code = 200;
+            jsonRes.message = "citas encontradas";
+            jsonRes.status = true;
+            jsonRes.data = myDates;
+        }else{
+            jsonRes.code = 400;
+            jsonRes.message = "citas no encontradas";
+            jsonRes.status = false;
+        }
+
+        res.json(jsonRes);
+    
+});
+
+doctorRouter.get("/lastDate", async (req: Request, res: Response) => {
+
+    const jsonRes: RespondesModel = new RespondesModel();
+
+    const {id_medic} = req.query;
+
+    const query = {
+        id_medic: new mongoose.Types.ObjectId(`${id_medic}`),
+        status: 2
+    }
+
+    const lastDate = await dates.aggregate([
+        {
+            $match: query
+        },
+        {
+            $lookup: {
+                from: "patients",
+                localField: "id_patient",
+                foreignField: "_id",
+                as: "patient"
+            }
+        }
+    ]).sort({date: -1}).limit(1);
+
+    // const lastDate = await dates.find({id_medic: id_medic, status: 1}).sort({date: -1}).limit(1);
+// console.log(lastDate.length > 0)
+    if (lastDate.length > 0) {
+        jsonRes.code = 200;
+        jsonRes.message = "cita encontrada";
+        jsonRes.status = true;
+        jsonRes.data = lastDate[0];
+    }else{
+        jsonRes.code = 400;
+        jsonRes.message = "cita no encontrada";
+        jsonRes.status = false;
+        jsonRes.data = [];
+    }
+
+    res.json(jsonRes);
+}); 
+
+doctorRouter.get("/myDates", async (req: Request, res: Response) => {
+    const jsonRes: RespondesModel = new RespondesModel();
+
+    const {id_medic} = req.query;
+
+    let query = {
+        id_medic: new mongoose.Types.ObjectId(`${id_medic}`)
+    }
+
+    const myDates = await dates.aggregate([
+        {
+            $match: query
+        },
+        {
+            $lookup: {
+                from: "patients",
+                localField: "id_patient",
+                foreignField: "_id",
+                as: "patient"
+            }
+        },
+    ]).sort({date: -1});
+
+    if (myDates) {
+        jsonRes.code = 200;
+        jsonRes.message = "citas encontradas";
+        jsonRes.status = true;
+        jsonRes.data = myDates;
+    }else{
+        jsonRes.code = 400;
+        jsonRes.message = "citas no encontradas";
+        jsonRes.status = false;
+    }
+
+    res.json(jsonRes);
+});
+
 
 export default doctorRouter;
